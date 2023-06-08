@@ -118,6 +118,7 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.beans.factory.support.RootBeanDefinition#getDestroyMethodName
  */
 public interface BeanFactory {
+	// the first commit for test
 
 	/**
 	 * Used to dereference a {@link FactoryBean} instance and distinguish it from
