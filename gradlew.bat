@@ -13,6 +13,7 @@
 @rem See the License for the specific language governing permissions and
 @rem limitations under the License.
 @rem
+@rem 一个shell脚本和一个Windows批处理脚本，用于使用 Wrap程序执行构建。
 
 @if "%DEBUG%"=="" @echo off
 @rem ##########################################################################
