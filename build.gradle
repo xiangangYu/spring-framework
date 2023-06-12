@@ -1,3 +1,6 @@
+// gradle的build配置文件
+
+// 配置插件
 plugins {
 	id 'io.freefair.aspectj' version '8.0.1' apply false
 	// kotlinVersion is managed in gradle.properties
@@ -11,13 +14,18 @@ plugins {
 	id 'me.champeau.mrjar' version '0.1.1'
 }
 
+// 拓展配置
 ext {
+	// 子项目的配置
 	moduleProjects = subprojects.findAll { it.name.startsWith("spring-") }
 	javaProjects = subprojects - project(":framework-bom") - project(":framework-platform")
 }
 
+// 对项目进行配置，下面进行了仓库和变量的配置
 configure(allprojects) { project ->
+	// 仓库
 	repositories {
+		// maven中心
 		mavenCentral()
 		maven {
 			url "https://repo.spring.io/milestone"
@@ -34,33 +42,48 @@ configure(allprojects) { project ->
 		}
 	}
 	configurations.all {
+		// 解决策略
 		resolutionStrategy {
 			cacheChangingModulesFor 0, "seconds"
+			// 缓存动态版本
 			cacheDynamicVersionsFor 0, "seconds"
 		}
 	}
 }
 
+// 对项目进行配置
 configure([rootProject] + javaProjects) { project ->
+	// 项目组名称
 	group = "org.springframework"
 
+	// 应用java 插件
 	apply plugin: "java"
+	// 应用java-test-fixtures插件
 	apply plugin: "java-test-fixtures"
+	// 应用org.springframework.build.conventions插件
 	apply plugin: 'org.springframework.build.conventions'
+	// 应用从下面配置文件的插件
 	apply from: "${rootDir}/gradle/toolchains.gradle"
 	apply from: "${rootDir}/gradle/ide.gradle"
 
+	// 配置项
 	configurations {
+		// 依赖管理
 		dependencyManagement {
+			// 属性赋值
 			canBeConsumed = false
 			canBeResolved = false
 			visible = false
 		}
+		// 匹配指定的文件名称，执行相应的配置
 		matching { it.name.endsWith("Classpath") }.all { it.extendsFrom(dependencyManagement) }
 	}
 
+	// 依赖的包
 	dependencies {
+		// 依赖管理
 		dependencyManagement(enforcedPlatform(dependencies.project(path: ":framework-platform")))
+		// 测试的依赖
 		testImplementation("org.junit.jupiter:junit-jupiter-api")
 		testImplementation("org.junit.jupiter:junit-jupiter-params")
 		testImplementation("org.junit.platform:junit-platform-suite-api")
@@ -69,6 +92,7 @@ configure([rootProject] + javaProjects) { project ->
 		testImplementation("io.mockk:mockk")
 		testImplementation("org.assertj:assertj-core")
 		// Pull in the latest JUnit 5 Launcher API to ensure proper support in IDEs.
+		// 仅仅运行时测试
 		testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 		testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 		testRuntimeOnly("org.junit.platform:junit-platform-suite-engine")
@@ -76,10 +100,13 @@ configure([rootProject] + javaProjects) { project ->
 		testRuntimeOnly("org.apache.logging.log4j:log4j-jul")
 		testRuntimeOnly("org.apache.logging.log4j:log4j-slf4j2-impl")
 		// JSR-305 only used for non-required meta-annotations
+		// 仅仅编译
 		compileOnly("com.google.code.findbugs:jsr305")
+		// 仅仅编译测试
 		testCompileOnly("com.google.code.findbugs:jsr305")
 	}
 
+	// 拓展配置，配置了java文档的links
 	ext.javadocLinks = [
 			"https://docs.oracle.com/en/java/javase/17/docs/api/",
 			"https://jakarta.ee/specifications/platform/9/apidocs/",
@@ -109,10 +136,12 @@ configure([rootProject] + javaProjects) { project ->
 	] as String[]
 }
 
+// 配置子项目(模块)
 configure(moduleProjects) { project ->
 	apply from: "${rootDir}/gradle/spring-module.gradle"
 }
 
+// 配置根项目
 configure(rootProject) {
 	description = "Spring Framework"
 	apply plugin: 'org.springframework.build.api-diff'

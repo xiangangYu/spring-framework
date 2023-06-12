@@ -1,16 +1,25 @@
+// 文件描述：settings.gradle是模块Module配置文件，主要是用于配置子模块，根目录下的setting.gradle脚本文件是针对module的全局配置
+
+// 插件管理
 pluginManagement {
+	// 仓库
 	repositories {
+		// 仓库中心
 		mavenCentral()
+		// gradle 插件门户
 		gradlePluginPortal()
+		// maven 仓库
 		maven { url "https://repo.spring.io/release" }
 	}
 }
 
+// 插件
 plugins {
 	id "com.gradle.enterprise" version "3.12.6"
 	id "io.spring.ge.conventions" version "0.0.13"
 }
 
+// 引入的子项目
 include "spring-aop"
 include "spring-aspects"
 include "spring-beans"
@@ -39,11 +48,14 @@ include "framework-docs"
 include "framework-platform"
 include "integration-tests"
 
+// 项目名称
 rootProject.name = "spring"
+// 配置每个子项目的build文件名
 rootProject.children.each {project ->
 	project.buildFileName = "${project.name}.gradle"
 }
 
+// 项目加载，里面进行一些逻辑判断并进行变量赋值
 settings.gradle.projectsLoaded {
 	gradleEnterprise {
 		buildScan {
