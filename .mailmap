@@ -1,3 +1,5 @@
+# 如果文件.mailmap存在于版本库的顶层，或者位于 mailmap.file 或 mailmap.blob 配置选项指向的位置，则它用于将作者和提交者名称以及
+# 电子邮件地址映射到规范的实名和电子邮件地址。在简单的形式中，文件中的每一行由作者的标准真实姓名，空格以及在提交中使用的电子邮件地址（用<and 括起来>）映射到名称
 Juergen Hoeller <jhoeller@vmware.com>
 Juergen Hoeller <jhoeller@vmware.com> <jhoeller@pivotal.io>
 Juergen Hoeller <jhoeller@vmware.com> <jhoeller@gopivotal.com>
