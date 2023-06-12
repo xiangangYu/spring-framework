@@ -1,4 +1,4 @@
-# Miscellaneous
+# Miscellaneous(杂项)
 *.java.hsp
 *.sonarj
 *.sw*
@@ -15,7 +15,7 @@ jxl.log
 jmx.log
 derby.log
 
-# Gradle artifacts
+# Gradle artifacts(工件)
 .gradle
 .gradletasknamecache
 /build
