@@ -132,6 +132,7 @@ public class PathResourceResolver extends AbstractResourceResolver {
 	}
 
 
+	// 下面的两个注解，@Override在上面，@Nullable在下面
 	@Override
 	@Nullable
 	protected Resource resolveResourceInternal(@Nullable HttpServletRequest request, String requestPath,
