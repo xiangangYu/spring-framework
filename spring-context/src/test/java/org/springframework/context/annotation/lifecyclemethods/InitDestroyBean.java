@@ -14,30 +14,23 @@
  * limitations under the License.
  */
 
-package org.springframework.jms.listener.adapter;
+package org.springframework.context.annotation.lifecyclemethods;
 
-/**
- * Stub extension of the {@link MessageListenerAdapter} class for use in testing.
- *
- * @author Rick Evans
- */
-public class StubMessageListenerAdapter extends MessageListenerAdapter {
+import java.util.ArrayList;
+import java.util.List;
 
-	private boolean wasCalled;
+public class InitDestroyBean {
+
+	public final List<String> initMethods = new ArrayList<>();
+	public final List<String> destroyMethods = new ArrayList<>();
 
 
-	public boolean wasCalled() {
-		return this.wasCalled;
+	public void initMethod() {
+		this.initMethods.add("initMethod");
 	}
 
-
-	public void handleMessage(String message) {
-		this.wasCalled = true;
-	}
-
-	@Override
-	protected void handleListenerException(Throwable ex) {
-		// System.out.println(ex);
+	public void destroyMethod() {
+		this.destroyMethods.add("destroyMethod");
 	}
 
 }
