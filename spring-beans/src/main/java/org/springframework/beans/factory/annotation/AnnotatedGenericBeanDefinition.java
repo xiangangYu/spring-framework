@@ -105,4 +105,6 @@ public class AnnotatedGenericBeanDefinition extends GenericBeanDefinition implem
 		return this.factoryMethodMetadata;
 	}
 
+	// read for mark
+
 }

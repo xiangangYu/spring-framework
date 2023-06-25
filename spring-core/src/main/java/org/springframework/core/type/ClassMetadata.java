@@ -32,28 +32,33 @@ public interface ClassMetadata {
 
 	/**
 	 * Return the name of the underlying class.
+	 * 返回底层类的名字
 	 */
 	String getClassName();
 
 	/**
 	 * Return whether the underlying class represents an interface.
+	 * 返回底层的类是否代表了一个接口
 	 */
 	boolean isInterface();
 
 	/**
 	 * Return whether the underlying class represents an annotation.
+	 * 返回底层的类是否代表了一个注解
 	 * @since 4.1
 	 */
 	boolean isAnnotation();
 
 	/**
 	 * Return whether the underlying class is marked as abstract.
+	 * 返回底层类是否标记为抽象
 	 */
 	boolean isAbstract();
 
 	/**
 	 * Return whether the underlying class represents a concrete class,
 	 * i.e. neither an interface nor an abstract class.
+	 * 返回底层的类是否代表了一个具体的类，像接口和抽象就不是一个具体的类
 	 */
 	default boolean isConcrete() {
 		return !(isInterface() || isAbstract());
@@ -61,6 +66,7 @@ public interface ClassMetadata {
 
 	/**
 	 * Return whether the underlying class is marked as 'final'.
+	 * 返回底层的类是否被标记为final了
 	 */
 	boolean isFinal();
 
@@ -68,6 +74,7 @@ public interface ClassMetadata {
 	 * Determine whether the underlying class is independent, i.e. whether
 	 * it is a top-level class or a nested class (static inner class) that
 	 * can be constructed independently of an enclosing class.
+	 * 检测是否底层的类是独立的
 	 */
 	boolean isIndependent();
 
@@ -77,6 +84,7 @@ public interface ClassMetadata {
 	 * local class within a method).
 	 * <p>If this method returns {@code false}, then the underlying
 	 * class is a top-level class.
+	 * 判断底层的类是否申明在一个封装类
 	 */
 	default boolean hasEnclosingClass() {
 		return (getEnclosingClassName() != null);
@@ -85,12 +93,14 @@ public interface ClassMetadata {
 	/**
 	 * Return the name of the enclosing class of the underlying class,
 	 * or {@code null} if the underlying class is a top-level class.
+	 * 返回底层类封装类的名字
 	 */
 	@Nullable
 	String getEnclosingClassName();
 
 	/**
 	 * Return whether the underlying class has a superclass.
+	 * 返回底层类是否有超类
 	 */
 	default boolean hasSuperClass() {
 		return (getSuperClassName() != null);
@@ -99,6 +109,7 @@ public interface ClassMetadata {
 	/**
 	 * Return the name of the superclass of the underlying class,
 	 * or {@code null} if there is no superclass defined.
+	 * 返回超类的名字
 	 */
 	@Nullable
 	String getSuperClassName();
@@ -106,6 +117,7 @@ public interface ClassMetadata {
 	/**
 	 * Return the names of all interfaces that the underlying class
 	 * implements, or an empty array if there are none.
+	 * 返回底层类所实现的所有接口
 	 */
 	String[] getInterfaceNames();
 
@@ -115,6 +127,7 @@ public interface ClassMetadata {
 	 * access, and private classes and interfaces declared by the class, but excludes
 	 * inherited classes and interfaces. An empty array is returned if no member classes
 	 * or interfaces exist.
+	 * 返回成员类名字
 	 * @since 3.1
 	 */
 	String[] getMemberClassNames();
