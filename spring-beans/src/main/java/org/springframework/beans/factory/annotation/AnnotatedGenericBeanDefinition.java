@@ -105,6 +105,6 @@ public class AnnotatedGenericBeanDefinition extends GenericBeanDefinition implem
 		return this.factoryMethodMetadata;
 	}
 
-	// read for mark
+	// 这个是 AnnotatedBeanDefinition 的实现类 read for mark
 
 }
