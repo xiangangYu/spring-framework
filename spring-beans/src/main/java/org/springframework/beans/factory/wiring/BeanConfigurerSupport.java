@@ -49,6 +49,7 @@ import org.springframework.util.ClassUtils;
  */
 public class BeanConfigurerSupport implements BeanFactoryAware, InitializingBean, DisposableBean {
 
+	// Disposabl 一次性的
 	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 

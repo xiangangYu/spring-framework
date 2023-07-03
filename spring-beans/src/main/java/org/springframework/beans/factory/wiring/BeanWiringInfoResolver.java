@@ -24,9 +24,11 @@ import org.springframework.lang.Nullable;
  * {@link #resolveWiringInfo} method on this interface will be driven by
  * the AspectJ pointcut in the relevant concrete aspect.
  *
- * <p>Metadata resolution strategy can be pluggable. A good default is
+ * <p>Metadata resolution strategy can be pluggable(可插拔的). A good default is
  * {@link ClassNameBeanWiringInfoResolver}, which uses the fully-qualified
  * class name as bean name.
+ *
+ * Wiring(装配),bean 的装配
  *
  * @author Rod Johnson
  * @since 2.0

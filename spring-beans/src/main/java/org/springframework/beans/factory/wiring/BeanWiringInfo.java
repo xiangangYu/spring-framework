@@ -21,8 +21,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
- * Holder for bean wiring metadata information about a particular class. Used in
- * conjunction with the {@link org.springframework.beans.factory.annotation.Configurable}
+ * Holder(持有者) for bean wiring metadata information about a particular class. Used in
+ * conjunction with(连同) the {@link org.springframework.beans.factory.annotation.Configurable}
  * annotation and the AspectJ {@code AnnotationBeanConfigurerAspect}.
  *
  * @author Rod Johnson
@@ -33,6 +33,10 @@ import org.springframework.util.Assert;
  * @see org.springframework.beans.factory.annotation.Configurable
  */
 public class BeanWiringInfo {
+
+	/**
+	 * 自动装配主要有两种方式，一种是通过名称，一种是通过类型，还有另外的两种是构造函数和自动检测
+	 */
 
 	/**
 	 * Constant that indicates autowiring bean properties by name.
