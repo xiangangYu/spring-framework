@@ -14,12 +14,6 @@
  * limitations under the License.
  */
 
-package org.springframework.core
+package org.springframework.beans.testfixture.beans
 
-/**
- * Tests for [KotlinReflectionParameterNameDiscoverer].
- *
- * @author Sebastien Deleuze
- */
-class KotlinReflectionParameterNameDiscovererTests :
-    AbstractReflectionParameterNameDiscovererKotlinTests(KotlinReflectionParameterNameDiscoverer())
+class KotlinTestBeanWithOptionalParameter(private val other: KotlinTestBean = KotlinTestBean())

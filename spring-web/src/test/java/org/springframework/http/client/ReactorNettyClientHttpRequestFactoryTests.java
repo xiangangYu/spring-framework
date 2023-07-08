@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2023 the original author or authors.
+ * Copyright 2023-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,27 @@
  * limitations under the License.
  */
 
-package org.springframework.core
+package org.springframework.http.client;
+
+import org.junit.jupiter.api.Test;
+
+import org.springframework.http.HttpMethod;
 
 /**
- * Tests for [KotlinReflectionParameterNameDiscoverer].
- *
- * @author Sebastien Deleuze
+ * @author Arjen Poutsma
  */
-class KotlinReflectionParameterNameDiscovererTests :
-    AbstractReflectionParameterNameDiscovererKotlinTests(KotlinReflectionParameterNameDiscoverer())
+public class ReactorNettyClientHttpRequestFactoryTests extends AbstractHttpRequestFactoryTests {
+
+	@Override
+	protected ClientHttpRequestFactory createRequestFactory() {
+		return new ReactorNettyClientRequestFactory();
+	}
+
+	@Override
+	@Test
+	public void httpMethods() throws Exception {
+		super.httpMethods();
+		assertHttpMethod("patch", HttpMethod.PATCH);
+	}
+
+}
