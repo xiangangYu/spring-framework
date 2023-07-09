@@ -23,6 +23,7 @@ import org.springframework.util.StringUtils;
 
 // 这种导入方式见得比较少，下面是导入了内部类，而且是static导入
 import static org.springframework.scheduling.config.ScheduledTaskObservationDocumentation.LowCardinalityKeyNames;
+import static org.springframework.scheduling.support.ScheduledTaskObservationDocumentation.LowCardinalityKeyNames;
 
 /**
  * Default implementation for {@link ScheduledTaskObservationConvention}.
