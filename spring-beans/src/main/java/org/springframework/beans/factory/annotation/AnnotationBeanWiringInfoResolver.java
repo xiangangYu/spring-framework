@@ -29,6 +29,8 @@ import org.springframework.util.ClassUtils;
  * if specified; otherwise the default will be the fully-qualified name of the
  * class being configured.
  *
+ * 使用注解来标记哪个类需要自动的装配
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @since 2.0
