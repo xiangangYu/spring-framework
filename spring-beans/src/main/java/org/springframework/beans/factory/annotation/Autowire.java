@@ -70,4 +70,6 @@ public enum Autowire {
 		return (this == BY_NAME || this == BY_TYPE);
 	}
 
+	// read for mark
+
 }
