@@ -137,7 +137,6 @@ public class MBeanExporter extends MBeanRegistrationSupport implements MBeanExpo
 	/**
 	 * Map of constant names to constant values for the autodetect constants defined
 	 * in this class.
-	 * @since 6.0.11
 	 */
 	private static final Map<String, Integer> constants = Map.of(
 			"AUTODETECT_NONE", AUTODETECT_NONE,
@@ -153,7 +152,7 @@ public class MBeanExporter extends MBeanRegistrationSupport implements MBeanExpo
 
 	/** The autodetect mode to use for this MBeanExporter. */
 	@Nullable
-	private Integer autodetectMode;
+	Integer autodetectMode;
 
 	/** Whether to eagerly initialize candidate beans when autodetecting MBeans. */
 	private boolean allowEagerInit = false;
@@ -233,7 +232,6 @@ public class MBeanExporter extends MBeanRegistrationSupport implements MBeanExpo
 	 * @throws IllegalArgumentException if the supplied value is not resolvable
 	 * to one of the {@code AUTODETECT_} constants or is {@code null}
 	 * @see #setAutodetectMode(int)
-	 * @see #getAutodetectMode()
 	 * @see #AUTODETECT_ALL
 	 * @see #AUTODETECT_ASSEMBLER
 	 * @see #AUTODETECT_MBEAN
@@ -251,7 +249,6 @@ public class MBeanExporter extends MBeanRegistrationSupport implements MBeanExpo
 	 * @throws IllegalArgumentException if the supplied value is not
 	 * one of the {@code AUTODETECT_} constants
 	 * @see #setAutodetectModeName(String)
-	 * @see #getAutodetectMode()
 	 * @see #AUTODETECT_ALL
 	 * @see #AUTODETECT_ASSEMBLER
 	 * @see #AUTODETECT_MBEAN
@@ -261,19 +258,6 @@ public class MBeanExporter extends MBeanRegistrationSupport implements MBeanExpo
 		Assert.isTrue(constants.containsValue(autodetectMode),
 				"Only values of autodetect constants allowed");
 		this.autodetectMode = autodetectMode;
-	}
-
-	/**
-	 * Get the autodetect mode to use for this {@code MBeanExporter}.
-	 * @return the configured autodetect mode, or {@code null} if not explicitly
-	 * configured
-	 * @since 6.0.11
-	 * @see #setAutodetectModeName(String)
-	 * @see #setAutodetectMode(int)
-	 */
-	@Nullable
-	public Integer getAutodetectMode() {
-		return this.autodetectMode;
 	}
 
 	/**

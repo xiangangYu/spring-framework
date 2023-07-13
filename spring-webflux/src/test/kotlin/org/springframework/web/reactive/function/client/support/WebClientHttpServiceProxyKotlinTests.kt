@@ -41,7 +41,8 @@ import java.util.function.Consumer
  * @author DongHyeon Kim
  * @author Sebastien Deleuze
  */
-class WebClientHttpServiceProxyKotlinTests {
+@Suppress("DEPRECATION")
+class KotlinWebClientHttpServiceProxyTests {
 
 	private lateinit var server: MockWebServer
 
@@ -127,10 +128,8 @@ class WebClientHttpServiceProxyKotlinTests {
 	}
 
 	private fun initHttpService(webClient: WebClient): TestHttpService {
-		return HttpServiceProxyFactory.builder()
-			.clientAdapter(WebClientAdapter.forClient(webClient))
-			.build()
-			.createClient()
+		val adapter = WebClientAdapter.forClient(webClient)
+		return HttpServiceProxyFactory.builderFor(adapter).build().createClient()
 	}
 
 	private fun prepareResponse(consumer: Consumer<MockResponse>) {
