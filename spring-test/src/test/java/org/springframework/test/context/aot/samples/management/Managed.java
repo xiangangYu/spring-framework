@@ -14,17 +14,22 @@
  * limitations under the License.
  */
 
-package org.springframework.build.hint;
+package org.springframework.test.context.aot.samples.management;
 
-import org.gradle.api.provider.SetProperty;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Entry point to the DSL extension for the {@link RuntimeHintsAgentPlugin} Gradle plugin.
- * @author Brian Clozel
+ * Marker annotation for "managed" beans.
+ *
+ * @author Sam Brannen
+ * @since 6.0.12
  */
-public interface RuntimeHintsAgentExtension {
-
-	SetProperty<String> getIncludedPackages();
-
-	SetProperty<String> getExcludedPackages();
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface Managed {
 }

@@ -14,17 +14,23 @@
  * limitations under the License.
  */
 
-package org.springframework.build.hint;
+package org.springframework.test.context.aot.samples.management;
 
-import org.gradle.api.provider.SetProperty;
+import org.springframework.test.context.aot.samples.common.MessageService;
 
 /**
- * Entry point to the DSL extension for the {@link RuntimeHintsAgentPlugin} Gradle plugin.
- * @author Brian Clozel
+ * {@link MessageService} implemented in a different package.
+ *
+ * <p>See <a href="https://github.com/spring-projects/spring-framework/issues/30861">gh-30861</a>.
+ *
+ * @author Sam Brannen
+ * @since 6.0.12
  */
-public interface RuntimeHintsAgentExtension {
+class ManagementMessageService implements MessageService {
 
-	SetProperty<String> getIncludedPackages();
+	@Override
+	public String generateMessage() {
+		return "Hello, Management!";
+	}
 
-	SetProperty<String> getExcludedPackages();
 }

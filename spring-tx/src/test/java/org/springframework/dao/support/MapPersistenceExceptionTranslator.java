@@ -14,17 +14,27 @@
  * limitations under the License.
  */
 
-package org.springframework.build.hint;
+package org.springframework.dao.support;
 
-import org.gradle.api.provider.SetProperty;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Entry point to the DSL extension for the {@link RuntimeHintsAgentPlugin} Gradle plugin.
- * @author Brian Clozel
- */
-public interface RuntimeHintsAgentExtension {
+import org.springframework.dao.DataAccessException;
 
-	SetProperty<String> getIncludedPackages();
+public class MapPersistenceExceptionTranslator implements PersistenceExceptionTranslator {
 
-	SetProperty<String> getExcludedPackages();
+	// in to out
+	private final Map<RuntimeException, RuntimeException> translations = new HashMap<>();
+
+
+	public void addTranslation(RuntimeException in, RuntimeException out) {
+		this.translations.put(in, out);
+	}
+
+
+	@Override
+	public DataAccessException translateExceptionIfPossible(RuntimeException ex) {
+		return (DataAccessException) this.translations.get(ex);
+	}
+
 }
