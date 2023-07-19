@@ -154,14 +154,17 @@ import org.springframework.util.StringUtils;
 public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationAwareBeanPostProcessor,
 		MergedBeanDefinitionPostProcessor, BeanRegistrationAotProcessor, PriorityOrdered, BeanFactoryAware {
 
+	// 大部分地方使用的是private static final Log, 这个要根据具体的业务来进行处理
 	protected final Log logger = LogFactory.getLog(getClass());
 
+	// 获取自动装配的注解类型，这里的Set使用了泛型，这里值得注意后面的初始化大小的值
 	private final Set<Class<? extends Annotation>> autowiredAnnotationTypes = new LinkedHashSet<>(4);
 
 	private String requiredParameterName = "required";
 
 	private boolean requiredParameterValue = true;
 
+	// 这里为什么是最大值减去2？
 	private int order = Ordered.LOWEST_PRECEDENCE - 2;
 
 	@Nullable
@@ -171,6 +174,7 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 
 	private final Map<Class<?>, Constructor<?>[]> candidateConstructorsCache = new ConcurrentHashMap<>(256);
 
+	// 为什么这几个ConcurrentHashMap的初始化容量都是256？
 	private final Map<String, InjectionMetadata> injectionMetadataCache = new ConcurrentHashMap<>(256);
 
 
@@ -542,6 +546,7 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 		List<InjectionMetadata.InjectedElement> elements = new ArrayList<>();
 		Class<?> targetClass = clazz;
 
+		// do while 循环很少见到了
 		do {
 			final List<InjectionMetadata.InjectedElement> currElements = new ArrayList<>();
 
@@ -594,6 +599,7 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 
 	@Nullable
 	private MergedAnnotation<?> findAutowiredAnnotation(AccessibleObject ao) {
+		// MergedAnnotations.from  这个from方法还是挺特别的，用于构建该类的对象
 		MergedAnnotations annotations = MergedAnnotations.from(ao);
 		for (Class<? extends Annotation> type : this.autowiredAnnotationTypes) {
 			MergedAnnotation<?> annotation = annotations.get(type);
@@ -1032,5 +1038,7 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 		}
 
 	}
+
+	// read for mark
 
 }
