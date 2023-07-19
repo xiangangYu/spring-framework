@@ -63,8 +63,10 @@ public abstract class BeanFactoryAnnotationUtils {
 			ListableBeanFactory beanFactory, Class<T> beanType, String qualifier) throws BeansException {
 
 		String[] candidateBeans = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(beanFactory, beanType);
+		// 这里又出现了初始化HashMap的容量为4
 		Map<String, T> result = new LinkedHashMap<>(4);
 		for (String beanName : candidateBeans) {
+			// 如果匹配了，就添加进入相应的Map
 			if (isQualifierMatch(qualifier::equals, beanName, beanFactory)) {
 				result.put(beanName, beanFactory.getBean(beanName, beanType));
 			}
@@ -152,6 +154,7 @@ public abstract class BeanFactoryAnnotationUtils {
 			Predicate<String> qualifier, String beanName, @Nullable BeanFactory beanFactory) {
 
 		// Try quick bean name or alias match first...
+		// Predicate的使用还是第一次，下面的test是Predicate的方法，上面传过来的参数是"qualifier::equals"
 		if (qualifier.test(beanName)) {
 			return true;
 		}
@@ -200,5 +203,7 @@ public abstract class BeanFactoryAnnotationUtils {
 		}
 		return false;
 	}
+
+	// read for mark
 
 }
