@@ -49,6 +49,7 @@ import org.springframework.util.ClassUtils;
  */
 public class CustomAutowireConfigurer implements BeanFactoryPostProcessor, BeanClassLoaderAware, Ordered {
 
+	// 在业务代码里面不建议在尾部添加注释，但是属性可以在后部进行注释的，下面是一个例子
 	private int order = Ordered.LOWEST_PRECEDENCE;  // default: same as non-Ordered
 
 	@Nullable
@@ -121,4 +122,5 @@ public class CustomAutowireConfigurer implements BeanFactoryPostProcessor, BeanC
 		}
 	}
 
+	// read for mark
 }

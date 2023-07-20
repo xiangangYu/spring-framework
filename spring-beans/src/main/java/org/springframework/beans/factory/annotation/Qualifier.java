@@ -28,6 +28,8 @@ import java.lang.annotation.Target;
  * candidate beans when autowiring. It may also be used to annotate other
  * custom annotations that can then in turn be used as qualifiers.
  *
+ * 用于对于有资格的beans的获胜者，也可以用于注解别的客制化注解作为获胜者
+ *
  * @author Mark Fisher
  * @author Juergen Hoeller
  * @since 2.5
@@ -41,4 +43,5 @@ public @interface Qualifier {
 
 	String value() default "";
 
+	// read for mark
 }
