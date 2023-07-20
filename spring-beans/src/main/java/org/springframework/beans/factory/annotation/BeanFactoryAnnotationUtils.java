@@ -40,6 +40,8 @@ import org.springframework.util.Assert;
  * Convenience methods performing bean lookups related to Spring-specific annotations,
  * for example Spring's {@link Qualifier @Qualifier} annotation.
  *
+ * 这个类是个工具类，类申明为抽象类，里面方法都是静态方法，有意思！
+ *
  * @author Juergen Hoeller
  * @author Chris Beams
  * @since 3.1.2
