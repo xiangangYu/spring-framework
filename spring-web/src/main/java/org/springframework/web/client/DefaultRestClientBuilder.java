@@ -32,7 +32,6 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.http.client.JettyClientHttpRequestFactory;
-import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -64,8 +63,6 @@ final class DefaultRestClientBuilder implements RestClient.Builder {
 
 	private static final boolean httpComponentsClientPresent;
 
-	private static final boolean okHttpClientPresent;
-
 	private static final boolean jettyClientPresent;
 
 	private static final boolean jdkClientPresent;
@@ -89,7 +86,6 @@ final class DefaultRestClientBuilder implements RestClient.Builder {
 		ClassLoader loader = DefaultRestClientBuilder.class.getClassLoader();
 
 		httpComponentsClientPresent = ClassUtils.isPresent("org.apache.hc.client5.http.classic.HttpClient", loader);
-		okHttpClientPresent = ClassUtils.isPresent("okhttp3.OkHttpClient", loader);
 		jettyClientPresent = ClassUtils.isPresent("org.eclipse.jetty.client.HttpClient", loader);
 		jdkClientPresent = ClassUtils.isPresent("java.net.http.HttpClient", loader);
 
@@ -362,9 +358,6 @@ final class DefaultRestClientBuilder implements RestClient.Builder {
 		}
 		else if (httpComponentsClientPresent) {
 			return new HttpComponentsClientHttpRequestFactory();
-		}
-		else if (okHttpClientPresent) {
-			return new OkHttp3ClientHttpRequestFactory();
 		}
 		else if (jettyClientPresent) {
 			return new JettyClientHttpRequestFactory();
