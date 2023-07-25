@@ -87,6 +87,8 @@ import org.springframework.util.ReflectionUtils;
 public class InitDestroyAnnotationBeanPostProcessor implements DestructionAwareBeanPostProcessor,
 		MergedBeanDefinitionPostProcessor, BeanRegistrationAotProcessor, PriorityOrdered, Serializable {
 
+	// 下面的transient表示瞬时的，不参与序列化
+	// 下面的对象创建后面增加方法体的方式见的比较少
 	private final transient LifecycleMetadata emptyLifecycleMetadata =
 			new LifecycleMetadata(Object.class, Collections.emptyList(), Collections.emptyList()) {
 				@Override
@@ -107,17 +109,20 @@ public class InitDestroyAnnotationBeanPostProcessor implements DestructionAwareB
 
 	protected transient Log logger = LogFactory.getLog(getClass());
 
+	// 发现很多地方在初始化集合时，都设置了初始化大小
 	private final Set<Class<? extends Annotation>> initAnnotationTypes = new LinkedHashSet<>(2);
 
 	private final Set<Class<? extends Annotation>> destroyAnnotationTypes = new LinkedHashSet<>(2);
 
 	private int order = Ordered.LOWEST_PRECEDENCE;
 
+	// 在属性中使用@Nullable修改，见的比较少
 	@Nullable
 	private final transient Map<Class<?>, LifecycleMetadata> lifecycleMetadataCache = new ConcurrentHashMap<>(256);
 
 
 	/**
+	 * 一般在bean进行初始化回调，使用PostConstruct注解
 	 * Specify the init annotation to check for, indicating initialization
 	 * methods to call after configuration of a bean.
 	 * <p>Any custom annotation can be used, since there are no required
@@ -142,7 +147,7 @@ public class InitDestroyAnnotationBeanPostProcessor implements DestructionAwareB
 		}
 	}
 
-	/**
+	/** 在bean对象销毁前进行逻辑处理，在业务中用的比较少
 	 * Specify the destroy annotation to check for, indicating destruction
 	 * methods to call when the context is shutting down.
 	 * <p>Any custom annotation can be used, since there are no required
@@ -280,7 +285,9 @@ public class InitDestroyAnnotationBeanPostProcessor implements DestructionAwareB
 		return metadata;
 	}
 
+	// 不是每一个方法都是需要注释的，有些好的方法名就是注释
 	private LifecycleMetadata buildLifecycleMetadata(final Class<?> beanClass) {
+		// 另取一行 && 放在了上面
 		if (!AnnotationUtils.isCandidateClass(beanClass, this.initAnnotationTypes) &&
 				!AnnotationUtils.isCandidateClass(beanClass, this.destroyAnnotationTypes)) {
 			return this.emptyLifecycleMetadata;
@@ -290,6 +297,7 @@ public class InitDestroyAnnotationBeanPostProcessor implements DestructionAwareB
 		List<LifecycleMethod> destroyMethods = new ArrayList<>();
 		Class<?> currentClass = beanClass;
 
+		// do while语句现在很少见了
 		do {
 			final List<LifecycleMethod> currInitMethods = new ArrayList<>();
 			final List<LifecycleMethod> currDestroyMethods = new ArrayList<>();
@@ -319,6 +327,7 @@ public class InitDestroyAnnotationBeanPostProcessor implements DestructionAwareB
 		}
 		while (currentClass != null && currentClass != Object.class);
 
+		// 返回表达式作为最后的结果
 		return (initMethods.isEmpty() && destroyMethods.isEmpty() ? this.emptyLifecycleMetadata :
 				new LifecycleMetadata(beanClass, initMethods, destroyMethods));
 	}
@@ -459,6 +468,7 @@ public class InitDestroyAnnotationBeanPostProcessor implements DestructionAwareB
 
 		@Override
 		public boolean equals(@Nullable Object other) {
+			// 下面的表示式，再一次的说明了Java是从左向右开始的
 			return (this == other || (other instanceof LifecycleMethod that &&
 					this.identifier.equals(that.identifier)));
 		}
@@ -485,5 +495,6 @@ public class InitDestroyAnnotationBeanPostProcessor implements DestructionAwareB
 		}
 
 	}
+	// read for mark
 
 }
