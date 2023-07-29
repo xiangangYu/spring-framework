@@ -36,7 +36,9 @@ class JakartaAnnotationsRuntimeHints implements RuntimeHintsRegistrar {
 		if (ClassUtils.isPresent("jakarta.inject.Inject", classLoader)) {
 			Stream.of("jakarta.inject.Inject", "jakarta.inject.Qualifier").forEach(annotationType ->
 					hints.reflection().registerType(ClassUtils.resolveClassName(annotationType, classLoader)));
+			//resolveClassName方法Resolve the given class name into a Class instance
 		}
 	}
 
+	// read for mark
 }

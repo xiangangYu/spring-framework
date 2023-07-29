@@ -47,7 +47,6 @@ import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.lang.Nullable;
 import org.springframework.r2dbc.connection.ConnectionFactoryUtils;
@@ -58,15 +57,17 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * Default implementation of {@link DatabaseClient}.
+ * The default implementation of {@link DatabaseClient},
+ * as created by the static factory method.
  *
  * @author Mark Paluch
  * @author Mingyuan Wu
  * @author Bogdan Ilchyshyn
  * @author Simon Baslé
  * @since 5.3
+ * @see DatabaseClient#create(ConnectionFactory)
  */
-class DefaultDatabaseClient implements DatabaseClient {
+final class DefaultDatabaseClient implements DatabaseClient {
 
 	private final Log logger = LogFactory.getLog(getClass());
 
@@ -108,7 +109,7 @@ class DefaultDatabaseClient implements DatabaseClient {
 	}
 
 	@Override
-	public <T> Mono<T> inConnection(Function<Connection, Mono<T>> action) throws DataAccessException {
+	public <T> Mono<T> inConnection(Function<Connection, Mono<T>> action) {
 		Assert.notNull(action, "Callback object must not be null");
 		Mono<ConnectionCloseHolder> connectionMono = getConnection().map(
 				connection -> new ConnectionCloseHolder(connection, this::closeConnection));
@@ -130,7 +131,7 @@ class DefaultDatabaseClient implements DatabaseClient {
 	}
 
 	@Override
-	public <T> Flux<T> inConnectionMany(Function<Connection, Flux<T>> action) throws DataAccessException {
+	public <T> Flux<T> inConnectionMany(Function<Connection, Flux<T>> action) {
 		Assert.notNull(action, "Callback object must not be null");
 		Mono<ConnectionCloseHolder> connectionMono = getConnection().map(
 				connection -> new ConnectionCloseHolder(connection, this::closeConnection));
@@ -162,8 +163,7 @@ class DefaultDatabaseClient implements DatabaseClient {
 	/**
 	 * Release the {@link Connection}.
 	 * @param connection to close.
-	 * @return a {@link Publisher} that completes successfully when the connection is
-	 * closed
+	 * @return a {@link Publisher} that completes successfully when the connection is closed
 	 */
 	private Publisher<Void> closeConnection(Connection connection) {
 		return ConnectionFactoryUtils.currentConnectionFactory(
@@ -252,11 +252,12 @@ class DefaultDatabaseClient implements DatabaseClient {
 					"Value at index %d must not be null. Use bindNull(…) instead.", index));
 
 			Map<Integer, Parameter> byIndex = new LinkedHashMap<>(this.byIndex);
-			if (value instanceof Parameter p) {
-				byIndex.put(index, p);
+			if (value instanceof Parameter param) {
+				byIndex.put(index, param);
 			}
-			else if (value instanceof org.springframework.r2dbc.core.Parameter p) {
-				byIndex.put(index, p.hasValue() ? Parameters.in(p.getValue()) : Parameters.in(p.getType()));
+			else if (value instanceof org.springframework.r2dbc.core.Parameter param) {
+				Object pv = param.getValue();
+				byIndex.put(index, (pv != null ? Parameters.in(pv) : Parameters.in(param.getType())));
 			}
 			else {
 				byIndex.put(index, Parameters.in(value));
