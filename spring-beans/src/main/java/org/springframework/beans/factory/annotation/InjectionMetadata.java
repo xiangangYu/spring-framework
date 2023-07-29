@@ -71,6 +71,7 @@ public class InjectionMetadata {
 
 	private final Collection<InjectedElement> injectedElements;
 
+	// 下面的volatile表明属性是易变的，每次这个值涉及到JVM，需要JVM进行数据同步
 	@Nullable
 	private volatile Set<InjectedElement> checkedElements;
 
@@ -94,6 +95,7 @@ public class InjectionMetadata {
 	 * @return the elements to inject
 	 */
 	public Collection<InjectedElement> getInjectedElements() {
+		// 获取不可变的集合
 		return Collections.unmodifiableCollection(this.injectedElements);
 	}
 
@@ -106,6 +108,7 @@ public class InjectionMetadata {
 	 * @since 6.0.10
 	 */
 	public Collection<InjectedElement> getInjectedElements(@Nullable PropertyValues pvs) {
+		// 集合的stream表达式现在用的地方还是很多的。filter,map等等
 		return this.injectedElements.stream().filter(candidate -> candidate.shouldInject(pvs)).toList();
 	}
 
@@ -266,7 +269,12 @@ public class InjectionMetadata {
 			}
 			if (this.isField) {
 				Field field = (Field) this.member;
+				// 设置属性可见
 				ReflectionUtils.makeAccessible(field);
+				// Sets the field represented by this {@code Field} object on the
+				// specified object argument to the specified new value. The new
+				// value is automatically unwrapped if the underlying field has a
+				// primitive type.
 				field.set(target, getResourceToInject(target, requestingBeanName));
 			}
 			else {
@@ -355,4 +363,5 @@ public class InjectionMetadata {
 		}
 	}
 
+	// read for mark
 }
