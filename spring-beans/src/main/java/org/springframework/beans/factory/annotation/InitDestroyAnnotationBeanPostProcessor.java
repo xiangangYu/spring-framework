@@ -64,6 +64,7 @@ import org.springframework.util.ReflectionUtils;
  * Any custom annotation can be used, since there are no required annotation
  * attributes.
  *
+ * 初始化，销毁方法可以注解多个，但是建议只分别注解一个
  * <p>Init and destroy annotations may be applied to methods of any visibility:
  * public, package-protected, protected, or private. Multiple such methods
  * may be annotated, but it is recommended to only annotate one single
