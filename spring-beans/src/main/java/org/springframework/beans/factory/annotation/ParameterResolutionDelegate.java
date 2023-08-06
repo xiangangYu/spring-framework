@@ -161,6 +161,7 @@ public final class ParameterResolutionDelegate {
 	 */
 	private static AnnotatedElement getEffectiveAnnotatedParameter(Parameter parameter, int index) {
 		Executable executable = parameter.getDeclaringExecutable();
+		// Java 表达式是从左到右进行的
 		if (executable instanceof Constructor && ClassUtils.isInnerClass(executable.getDeclaringClass()) &&
 				executable.getParameterAnnotations().length == executable.getParameterCount() - 1) {
 			// Bug in javac in JDK <9: annotation array excludes enclosing instance parameter

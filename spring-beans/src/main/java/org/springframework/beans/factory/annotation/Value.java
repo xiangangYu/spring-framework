@@ -63,4 +63,14 @@ public @interface Value {
 	 */
 	String value();
 
+	// 例如项目中出现的使用方式
+	/*
+	@Value("${wx.appId}")
+    private String appId;
+    @Value("${wx.secret}")
+    private String secret;
+    上面的wx.appId和wx.secret是在配置中心配置的值，在这里直接赋值
+	 */
+	// read for mark
+
 }

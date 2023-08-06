@@ -42,6 +42,48 @@ import java.lang.annotation.Target;
 public @interface Qualifier {
 
 	String value() default "";
+	//通过使用 @Qualifier 注解，我们可以消除需要注入哪个 bean 的问题。让我们重新回顾一下前面的例子，看看我们如何通过包含
+	// @Qualifier 注释来指出我们想要使用哪个 bean 来解决问题
+	/*
+	 @Component
+    public class FooService {
+        @Autowired
+        @Qualifier("fooFormatter")
+        private Formatter formatter;
+    }
+    @Component
+     @Qualifier("fooFormatter")
+     public class FooFormatter implements Formatter {
+         public String format() {
+             return "foo";
+         }
+     }
+
+     @Component
+     @Qualifier("barFormatter")
+     public class BarFormatter implements Formatter {
+         public String format() {
+             return "bar";
+         }
+     }
+
+     还有另一个名为 @Primary 的注解，我们也可以用来发生依赖注入的歧义时决定要注入哪个 bean。
+     当存在多个相同类型的 bean 时，此注解定义了首选项。除非另有说明，否则将使用与 @Primary 注释关联的 bean 。
+     我们来看一个例子：
+
+     @Bean
+    public Employee tomEmployee() {
+        return new Employee("Tom");
+    }
+
+    @Bean
+    @Primary
+    public Employee johnEmployee() {
+        return new Employee("john");
+    }
+	 */
+
+	// Qualifier的意思是合格者
 
 	// read for mark
 }

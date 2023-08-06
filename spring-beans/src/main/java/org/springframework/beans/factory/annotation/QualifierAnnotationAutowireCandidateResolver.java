@@ -59,6 +59,7 @@ import org.springframework.util.ObjectUtils;
  */
 public class QualifierAnnotationAutowireCandidateResolver extends GenericTypeAwareAutowireCandidateResolver {
 
+	// 在进行集合初始化的时候，进行了初始化的数值2
 	private final Set<Class<? extends Annotation>> qualifierTypes = new LinkedHashSet<>(2);
 
 	private Class<? extends Annotation> valueAnnotationType = Value.class;
@@ -384,5 +385,7 @@ public class QualifierAnnotationAutowireCandidateResolver extends GenericTypeAwa
 		}
 		return value;
 	}
+
+	// read for mark
 
 }
