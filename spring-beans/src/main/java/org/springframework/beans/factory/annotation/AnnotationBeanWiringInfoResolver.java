@@ -43,6 +43,7 @@ public class AnnotationBeanWiringInfoResolver implements BeanWiringInfoResolver 
 	@Nullable
 	public BeanWiringInfo resolveWiringInfo(Object beanInstance) {
 		Assert.notNull(beanInstance, "Bean instance must not be null");
+		// 通过反射获取注解
 		Configurable annotation = beanInstance.getClass().getAnnotation(Configurable.class);
 		return (annotation != null ? buildWiringInfo(beanInstance, annotation) : null);
 	}
