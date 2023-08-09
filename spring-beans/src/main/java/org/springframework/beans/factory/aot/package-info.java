@@ -1,5 +1,6 @@
 /**
  * AOT support for bean factories.
+ * AOT（Ahead-of-Time Compilation） 提前编译
  */
 @NonNullApi
 @NonNullFields

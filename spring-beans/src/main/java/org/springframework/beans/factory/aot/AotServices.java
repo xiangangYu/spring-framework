@@ -50,6 +50,7 @@ public final class AotServices<T> implements Iterable<T> {
 	 */
 	public static final String FACTORIES_RESOURCE_LOCATION = "META-INF/spring/aot.factories";
 
+	// <T> 范型
 	private final List<T> services;
 
 	private final Map<String, T> beans;
@@ -75,6 +76,7 @@ public final class AotServices<T> implements Iterable<T> {
 		Map<T, Source> sources = new IdentityHashMap<>();
 		loaded.forEach(service -> sources.put(service, Source.SPRING_FACTORIES_LOADER));
 		beans.forEach(service -> sources.put(service, Source.BEAN_FACTORY));
+		// 很多地方看到返回这个不可修改的map
 		return Collections.unmodifiableMap(sources);
 	}
 
@@ -235,5 +237,7 @@ public final class AotServices<T> implements Iterable<T> {
 		BEAN_FACTORY
 
 	}
+
+	// read for mark
 
 }
