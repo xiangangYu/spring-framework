@@ -32,6 +32,11 @@ import org.springframework.util.ClassUtils;
 @FunctionalInterface
 public interface AutowiredArguments {
 
+	// @FunctionalInterface 用于注解一个接口是函数式接口，函数式接口只有一个抽象方法，可以有多个静态方法，默认方法及从
+	// Object继承的方法。lambda表达式是一个实现了函数式接口的匿名类
+	// 对于接口中定义的变量 一定是public static final 的，因为下面的public static final前缀提示多余了
+	public static final String TestFunctionalInterface = "HelloWorld";
+
 	/**
 	 * Return the resolved argument at the specified index.
 	 * @param <T> the type of the argument
@@ -87,6 +92,9 @@ public interface AutowiredArguments {
 	static AutowiredArguments of(Object[] arguments) {
 		Assert.notNull(arguments, "'arguments' must not be null");
 		return () -> arguments;
+		// 上面的()->表示执行接口函数方法，也就是上面的toArray()
 	}
+
+	// read for mark
 
 }
