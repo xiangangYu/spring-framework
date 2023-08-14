@@ -17,8 +17,13 @@
 package org.springframework.core.type;
 
 import java.lang.annotation.Annotation;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.annotation.MergedAnnotation.Adapt;
 import org.springframework.core.annotation.MergedAnnotationCollectors;
@@ -31,7 +36,8 @@ import org.springframework.util.MultiValueMap;
 /**
  * Defines access to the annotations of a specific type ({@link AnnotationMetadata class}
  * or {@link MethodMetadata method}), in a form that does not necessarily require
- * class loading.
+ * class loading of the types being inspected. Note, however, that classes for
+ * encountered annotations will be loaded.
  *
  * @author Juergen Hoeller
  * @author Mark Fisher
@@ -48,7 +54,7 @@ public interface AnnotatedTypeMetadata {
 	/**
 	 * Get annotation details based on the direct annotations and meta-annotations
 	 * of the underlying element.
-	 * @return merged annotations based on the direct annotations
+	 * @return merged annotations based on the direct annotations and meta-annotations
 	 * @since 5.2
 	 */
 	MergedAnnotations getAnnotations();
@@ -68,8 +74,10 @@ public interface AnnotatedTypeMetadata {
 
 	/**
 	 * Retrieve the attributes of the annotation of the given type, if any (i.e. if
-	 * defined on the underlying element, as direct annotation or meta-annotation),
-	 * also taking attribute overrides on composed annotations into account.
+	 * defined on the underlying element, as direct annotation or meta-annotation).
+	 * <p>{@link org.springframework.core.annotation.AliasFor @AliasFor} semantics
+	 * are fully supported, both within a single annotation and within annotation
+	 * hierarchies.
 	 * @param annotationName the fully-qualified class name of the annotation
 	 * type to look for
 	 * @return a {@link Map} of attributes, with each annotation attribute name
@@ -83,8 +91,10 @@ public interface AnnotatedTypeMetadata {
 
 	/**
 	 * Retrieve the attributes of the annotation of the given type, if any (i.e. if
-	 * defined on the underlying element, as direct annotation or meta-annotation),
-	 * also taking attribute overrides on composed annotations into account.
+	 * defined on the underlying element, as direct annotation or meta-annotation).
+	 * <p>{@link org.springframework.core.annotation.AliasFor @AliasFor} semantics
+	 * are fully supported, both within a single annotation and within annotation
+	 * hierarchies.
 	 * @param annotationName the fully-qualified class name of the annotation
 	 * type to look for
 	 * @param classValuesAsString whether to convert class references to String
@@ -148,6 +158,43 @@ public interface AnnotatedTypeMetadata {
 				.map(MergedAnnotation::withNonMergedAttributes)
 				.collect(MergedAnnotationCollectors.toMultiValueMap(
 						map -> (map.isEmpty() ? null : map), adaptations));
+	}
+
+	/**
+	 * Retrieve all <em>repeatable annotations</em> of the given type within the
+	 * annotation hierarchy <em>above</em> the underlying element (as direct
+	 * annotation or meta-annotation); and for each annotation found, merge that
+	 * annotation's attributes with <em>matching</em> attributes from annotations
+	 * in lower levels of the annotation hierarchy and store the results in an
+	 * instance of {@link AnnotationAttributes}.
+	 * <p>{@link org.springframework.core.annotation.AliasFor @AliasFor} semantics
+	 * are fully supported, both within a single annotation and within annotation
+	 * hierarchies.
+	 * @param annotationType the annotation type to find
+	 * @param containerType the type of the container that holds the annotations
+	 * @param classValuesAsString whether to convert class references to {@code String}
+	 * class names for exposure as values in the returned {@code AnnotationAttributes},
+	 * instead of {@code Class} references which might potentially have to be loaded
+	 * first
+	 * @return the set of all merged repeatable {@code AnnotationAttributes} found,
+	 * or an empty set if none were found
+	 * @since 6.1
+	 */
+	default Set<AnnotationAttributes> getMergedRepeatableAnnotationAttributes(
+			Class<? extends Annotation> annotationType, Class<? extends Annotation> containerType,
+			boolean classValuesAsString) {
+
+		Adapt[] adaptations = Adapt.values(classValuesAsString, true);
+		return getAnnotations().stream()
+				.filter(MergedAnnotationPredicates.typeIn(containerType, annotationType))
+				.map(annotation -> annotation.asAnnotationAttributes(adaptations))
+				.flatMap(attributes -> {
+					if (containerType.equals(attributes.annotationType())) {
+						return Stream.of(attributes.getAnnotationArray(MergedAnnotation.VALUE));
+					}
+					return Stream.of(attributes);
+				})
+				.collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 
 }
