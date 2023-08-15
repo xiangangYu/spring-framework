@@ -53,6 +53,7 @@ import org.springframework.util.function.ThrowingConsumer;
  */
 public final class AutowiredFieldValueResolver extends AutowiredElementResolver {
 
+	// 成员变量也是有空格分割的
 	private final String fieldName;
 
 	private final boolean required;
@@ -61,6 +62,7 @@ public final class AutowiredFieldValueResolver extends AutowiredElementResolver 
 	private final String shortcut;
 
 
+	// 构造函数通过全部的属性进行构造
 	private AutowiredFieldValueResolver(String fieldName, boolean required,
 			@Nullable String shortcut) {
 
@@ -197,11 +199,14 @@ public final class AutowiredFieldValueResolver extends AutowiredElementResolver 
 	}
 
 	private Field getField(RegisteredBean registeredBean) {
+		// 通过反射工具获取指定的field名字的Field对象
 		Field field = ReflectionUtils.findField(registeredBean.getBeanClass(),
 				this.fieldName);
 		Assert.notNull(field, () -> "No field '" + this.fieldName + "' found on "
 				+ registeredBean.getBeanClass().getName());
 		return field;
 	}
+
+	// read for mark
 
 }
