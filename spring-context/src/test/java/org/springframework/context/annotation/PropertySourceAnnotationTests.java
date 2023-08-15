@@ -235,6 +235,14 @@ class PropertySourceAnnotationTests {
 	}
 
 	@Test
+	void multipleResourcesFromPropertySourcePattern() {  // gh-21325
+		ConfigurableApplicationContext ctx = new AnnotationConfigApplicationContext(ResourcePatternConfig.class);
+		ctx.getBean(ResourcePatternConfig.class);
+		assertEnvironmentContainsProperties(ctx, "from.p1", "from.p2", "from.p3", "from.p4", "from.p5");
+		ctx.close();
+	}
+
+	@Test
 	void withNamedPropertySources() {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(ConfigWithNamedPropertySources.class);
 		assertEnvironmentContainsProperties(ctx, "from.p1", "from.p2");
@@ -277,15 +285,15 @@ class PropertySourceAnnotationTests {
 	}
 
 	@Test
-	void orderingWithAndWithoutNameAndFourResourceLocations() {
+	void orderingWithFourResourceLocations() {
 		// SPR-12198: p4 should 'win' as it was registered last
-		AnnotationConfigApplicationContext ctxWithoutName = new AnnotationConfigApplicationContext(ConfigWithFourResourceLocations.class);
-		assertEnvironmentProperty(ctxWithoutName, "testbean.name", "p4TestBean");
-		ctxWithoutName.close();
+		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(ConfigWithFourResourceLocations.class);
+		assertEnvironmentProperty(ctx, "testbean.name", "p4TestBean");
+		ctx.close();
 	}
 
 	@Test
-	void orderingDoesntReplaceExisting() throws Exception {
+	void orderingDoesntReplaceExisting() {
 		// SPR-12198: mySource should 'win' as it was registered manually
 		AnnotationConfigApplicationContext ctxWithoutName = new AnnotationConfigApplicationContext();
 		MapPropertySource mySource = new MapPropertySource("mine", Map.of("testbean.name", "myTestBean"));
@@ -299,12 +307,12 @@ class PropertySourceAnnotationTests {
 
 	private static void assertEnvironmentContainsProperties(ApplicationContext ctx, String... names) {
 		for (String name : names) {
-			assertThat(ctx.getEnvironment().containsProperty(name)).as("environment contains property " + name).isTrue();
+			assertThat(ctx.getEnvironment().containsProperty(name)).as("environment contains property '%s'", name).isTrue();
 		}
 	}
 
 	private static void assertEnvironmentProperty(ApplicationContext ctx, String name, Object value) {
-		assertThat(ctx.getEnvironment().getProperty(name)).isEqualTo(value);
+		assertThat(ctx.getEnvironment().getProperty(name)).as("environment property '%s'", name).isEqualTo(value);
 	}
 
 
@@ -521,6 +529,12 @@ class PropertySourceAnnotationTests {
 	@PropertySource("classpath:org/springframework/context/annotation/p5.properties")
 	static class MultipleComposedAnnotationsConfig {
 	}
+
+
+	@PropertySource("classpath*:org/springframework/context/annotation/p?.properties")
+	static class ResourcePatternConfig {
+	}
+
 
 	@Configuration
 	@PropertySources({
