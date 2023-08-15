@@ -64,6 +64,7 @@ class BeanDefinitionMethodGenerator {
 	private final List<BeanRegistrationAotContribution> aotContributions;
 
 
+	// 下面的注释说明了，注释是可以超过代码分界线的
 	/**
 	 * Create a new {@link BeanDefinitionMethodGenerator} instance.
 	 * @param methodGeneratorFactory the method generator factory
@@ -115,7 +116,7 @@ class BeanDefinitionMethodGenerator {
 	}
 
 	/**
-	 * Specify if the {@link ClassName} belongs to a writable package.
+	 * Specify(指定) if the {@link ClassName} belongs to a writable package.
 	 * @param target the target to check
 	 * @return {@code true} if generated code in that package is allowed
 	 */
@@ -134,6 +135,10 @@ class BeanDefinitionMethodGenerator {
 	 */
 	private static GeneratedClass lookupGeneratedClass(GenerationContext generationContext, ClassName target) {
 		ClassName topLevelClassName = target.topLevelClassName();
+		/** getOrAddForFeatureComponent(String featureName, ClassName targetComponent, Consumer<TypeSpec.Builder> type)
+		 *  上面的Consumer是一个函数式接口，represents an operation that accepts a single input argument and returns no result.
+		 *  Unlike most other functional interfaces, Consumer is expected to operate via side-effects
+		 */
 		GeneratedClass generatedClass = generationContext.getGeneratedClasses()
 				.getOrAddForFeatureComponent("BeanDefinitions", topLevelClassName, type -> {
 					type.addJavadoc("Bean definitions for {@link $T}.", topLevelClassName);
@@ -219,6 +224,7 @@ class BeanDefinitionMethodGenerator {
 	}
 
 	private void registerRuntimeHintsIfNecessary(RuntimeHints runtimeHints) {
+		// 下面的DefaultListableBeanFactory dlbf的缩写方式可以借鉴下
 		if (this.registeredBean.getBeanFactory() instanceof DefaultListableBeanFactory dlbf) {
 			ProxyRuntimeHintsRegistrar registrar = new ProxyRuntimeHintsRegistrar(dlbf.getAutowireCandidateResolver());
 			if (this.constructorOrFactoryMethod instanceof Method method) {
@@ -251,6 +257,7 @@ class BeanDefinitionMethodGenerator {
 		public void registerRuntimeHints(RuntimeHints runtimeHints, Constructor<?> constructor) {
 			Class<?>[] parameterTypes = constructor.getParameterTypes();
 			for (int i = 0; i < parameterTypes.length; i++) {
+				// MethodParameter: Helper class that encapsulates the specification of a method parameter
 				MethodParameter methodParam = new MethodParameter(constructor, i);
 				DependencyDescriptor dependencyDescriptor = new DependencyDescriptor(
 						methodParam, true);
@@ -265,5 +272,7 @@ class BeanDefinitionMethodGenerator {
 			}
 		}
 	}
+
+	// read for mark
 
 }
