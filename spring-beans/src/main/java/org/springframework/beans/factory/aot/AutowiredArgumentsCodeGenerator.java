@@ -43,6 +43,27 @@ public class AutowiredArgumentsCodeGenerator {
 
 	private final Class<?> target;
 
+	/**
+	 * public abstract sealed class Executable extends AccessibleObject implements Member, GenericDeclaration permits Constructor, Method
+	 *
+	 * 密封类的作用
+	 * 在面向对象语言中，我们可以通过继承（extend）来实现类的能力复用、扩展与增强。但有的时候，有些能力我们不希望被继承了去做一些不
+	 * 可预知的扩展。所以，我们需要对继承关系有一些限制的控制手段。而密封类的作用就是限制类的继承。
+	 *
+	 * 已有的限制手段
+	 * 对于继承能力的控制，Java很早就已经有一些了，主要是这两种方式：
+	 *
+	 * final修饰类，这样类就无法被继承了
+	 * package-private类（非public类），可以控制只能被同一个包下的类继承
+	 * 但很显然，这两种限制方式的粒度都非常粗，如果有更精细化的限制需求的话，是很难实现的。
+	 *
+	 * 新特性：密封类
+	 * 为了进一步增强限制能力，Java 17中的密封类增加了几个重要关键词：
+	 *
+	 * sealed：修饰类/接口，用来描述这个类/接口为密封类/接口
+	 * non-sealed：修饰类/接口，用来描述这个类/接口为非密封类/接口
+	 * permits：用在extends和implements之后，指定可以继承或实现的类
+	 */
 	private final Executable executable;
 
 
@@ -98,5 +119,7 @@ public class AutowiredArgumentsCodeGenerator {
 	private boolean hasSameParameterCount(Executable executable) {
 		return this.executable.getParameterCount() == executable.getParameterCount();
 	}
+
+	// read for mark
 
 }
