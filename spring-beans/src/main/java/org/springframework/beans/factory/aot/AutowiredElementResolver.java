@@ -38,6 +38,7 @@ import org.springframework.core.log.LogMessage;
  */
 abstract class AutowiredElementResolver {
 
+	// 开源项目里面好多地方获取当前类的class都是使用getClass()
 	private final Log logger = LogFactory.getLog(getClass());
 
 	protected final void registerDependentBeans(ConfigurableBeanFactory beanFactory,
@@ -72,5 +73,7 @@ abstract class AutowiredElementResolver {
 			return beanFactory.getBean(this.shortcut, getDependencyType());
 		}
 	}
+
+	// read for mark
 
 }
