@@ -47,6 +47,8 @@ import org.springframework.core.io.support.DefaultPropertySourceFactory;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertySourceDescriptor;
 import org.springframework.core.io.support.PropertySourceFactory;
+import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.test.context.TestContextAnnotationUtils;
 import org.springframework.test.context.TestPropertySource;
@@ -177,7 +179,7 @@ public abstract class TestPropertySourceUtils {
 	/**
 	 * Add the {@link Properties} files from the given resource {@code locations}
 	 * to the {@link Environment} of the supplied {@code context}.
-	 * <p>This method simply delegates to
+	 * <p>This method delegates to
 	 * {@link #addPropertiesFilesToEnvironment(ConfigurableEnvironment, ResourceLoader, String...)}.
 	 * @param context the application context whose environment should be updated;
 	 * never {@code null}
@@ -202,6 +204,8 @@ public abstract class TestPropertySourceUtils {
 	 * <p>Property placeholders in resource locations (i.e., <code>${...}</code>)
 	 * will be {@linkplain Environment#resolveRequiredPlaceholders(String) resolved}
 	 * against the {@code Environment}.
+	 * <p>A {@link ResourcePatternResolver} will be used to resolve resource
+	 * location patterns into multiple resource locations.
 	 * <p>Each properties file will be converted to a
 	 * {@link org.springframework.core.io.support.ResourcePropertySource ResourcePropertySource}
 	 * that will be added to the {@link PropertySources} of the environment with
@@ -229,14 +233,8 @@ public abstract class TestPropertySourceUtils {
 	/**
 	 * Add property sources for the given {@code descriptors} to the
 	 * {@link Environment} of the supplied {@code context}.
-	 * <p>Property placeholders in resource locations (i.e., <code>${...}</code>)
-	 * will be {@linkplain Environment#resolveRequiredPlaceholders(String) resolved}
-	 * against the {@code Environment}.
-	 * <p>Each {@link PropertySource} will be created via the configured
-	 * {@link PropertySourceDescriptor#propertySourceFactory() PropertySourceFactory}
-	 * (or the {@link DefaultPropertySourceFactory} if no factory is configured)
-	 * and added to the {@link PropertySources} of the environment with the highest
-	 * precedence.
+	 * <p>This method delegates to
+	 * {@link #addPropertySourcesToEnvironment(ConfigurableEnvironment, ResourceLoader, List)}.
 	 * @param context the application context whose environment should be updated;
 	 * never {@code null}
 	 * @param descriptors the property source descriptors to process; potentially
@@ -264,13 +262,15 @@ public abstract class TestPropertySourceUtils {
 	 * <p>Property placeholders in resource locations (i.e., <code>${...}</code>)
 	 * will be {@linkplain Environment#resolveRequiredPlaceholders(String) resolved}
 	 * against the {@code Environment}.
+	 * <p>A {@link ResourcePatternResolver} will be used to resolve resource
+	 * location patterns into multiple resource locations.
 	 * <p>Each {@link PropertySource} will be created via the configured
 	 * {@link PropertySourceDescriptor#propertySourceFactory() PropertySourceFactory}
 	 * (or the {@link DefaultPropertySourceFactory} if no factory is configured)
 	 * and added to the {@link PropertySources} of the environment with the highest
 	 * precedence.
 	 * @param environment the environment to update; never {@code null}
-	 * @param resourceLoader the {@code ResourceLoader} to use to load each resource;
+	 * @param resourceLoader the {@code ResourceLoader} to use to load resources;
 	 * never {@code null}
 	 * @param descriptors the property source descriptors to process; potentially
 	 * empty but never {@code null}
@@ -288,21 +288,23 @@ public abstract class TestPropertySourceUtils {
 		Assert.notNull(environment, "'environment' must not be null");
 		Assert.notNull(resourceLoader, "'resourceLoader' must not be null");
 		Assert.notNull(descriptors, "'descriptors' must not be null");
+		ResourcePatternResolver resourcePatternResolver =
+				ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
 		MutablePropertySources propertySources = environment.getPropertySources();
 		try {
 			for (PropertySourceDescriptor descriptor : descriptors) {
 				if (!descriptor.locations().isEmpty()) {
 					Class<? extends PropertySourceFactory> factoryClass = descriptor.propertySourceFactory();
-					PropertySourceFactory factory =
-							(factoryClass != null && factoryClass != PropertySourceFactory.class ?
+					PropertySourceFactory factory = (factoryClass != null ?
 							BeanUtils.instantiateClass(factoryClass) : defaultPropertySourceFactory);
 
 					for (String location : descriptor.locations()) {
 						String resolvedLocation = environment.resolveRequiredPlaceholders(location);
-						Resource resource = resourceLoader.getResource(resolvedLocation);
-						PropertySource<?> propertySource = factory.createPropertySource(descriptor.name(),
-								new EncodedResource(resource, descriptor.encoding()));
-						propertySources.addFirst(propertySource);
+						for (Resource resource : resourcePatternResolver.getResources(resolvedLocation)) {
+							PropertySource<?> propertySource = factory.createPropertySource(descriptor.name(),
+									new EncodedResource(resource, descriptor.encoding()));
+							propertySources.addFirst(propertySource);
+						}
 					}
 				}
 			}
@@ -367,41 +369,40 @@ public abstract class TestPropertySourceUtils {
 
 	/**
 	 * Convert the supplied <em>inlined properties</em> (in the form of <em>key-value</em>
-	 * pairs) into a map keyed by property name, preserving the ordering of property names
-	 * in the returned map.
-	 * <p>Parsing of the key-value pairs is achieved by converting all pairs
-	 * into <em>virtual</em> properties files in memory and delegating to
+	 * pairs) into a map keyed by property name.
+	 * <p>Parsing of the key-value pairs is achieved by converting all supplied
+	 * strings into <em>virtual</em> properties files in memory and delegating to
 	 * {@link Properties#load(java.io.Reader)} to parse each virtual file.
+	 * <p>The ordering of property names will be preserved in the returned map,
+	 * analogous to the order in which the key-value pairs are supplied to this
+	 * method. This also applies if a single string contains multiple key-value
+	 * pairs separated by newlines &mdash; for example, when supplied by a user
+	 * via a <em>text block</em>.
 	 * <p>For a full discussion of <em>inlined properties</em>, consult the Javadoc
 	 * for {@link TestPropertySource#properties}.
 	 * @param inlinedProperties the inlined properties to convert; potentially empty
 	 * but never {@code null}
 	 * @return a new, ordered map containing the converted properties
-	 * @throws IllegalStateException if a given key-value pair cannot be parsed, or if
-	 * a given inlined property contains multiple key-value pairs
+	 * @throws IllegalStateException if a given key-value pair cannot be parsed
 	 * @since 4.1.5
 	 * @see #addInlinedPropertiesToEnvironment(ConfigurableEnvironment, String[])
 	 */
 	public static Map<String, Object> convertInlinedPropertiesToMap(String... inlinedProperties) {
 		Assert.notNull(inlinedProperties, "'inlinedProperties' must not be null");
-		Map<String, Object> map = new LinkedHashMap<>();
-		Properties props = new Properties();
 
-		for (String pair : inlinedProperties) {
-			if (!StringUtils.hasText(pair)) {
+		LinkedHashMap<String, Object> map = new LinkedHashMap<>();
+		SequencedProperties sequencedProperties = new SequencedProperties(map);
+
+		for (String input : inlinedProperties) {
+			if (!StringUtils.hasText(input)) {
 				continue;
 			}
 			try {
-				props.load(new StringReader(pair));
+				sequencedProperties.load(new StringReader(input));
 			}
 			catch (Exception ex) {
-				throw new IllegalStateException("Failed to load test environment property from [" + pair + "]", ex);
+				throw new IllegalStateException("Failed to load test environment properties from [" + input + "]", ex);
 			}
-			Assert.state(props.size() == 1, () -> "Failed to load exactly one test environment property from [" + pair + "]");
-			for (String name : props.stringPropertyNames()) {
-				map.put(name, props.getProperty(name));
-			}
-			props.clear();
 		}
 
 		return map;
@@ -449,6 +450,29 @@ public abstract class TestPropertySourceUtils {
 
 	private static <A extends Annotation> Comparator<MergedAnnotation<A>> highMetaDistancesFirst() {
 		return Comparator.<MergedAnnotation<A>> comparingInt(MergedAnnotation::getDistance).reversed();
+	}
+
+	/**
+	 * Extension of {@link Properties} that mimics a {@code SequencedMap} by
+	 * tracking all added properties in the supplied {@link LinkedHashMap}.
+	 * @since 6.1
+	 */
+	@SuppressWarnings("serial")
+	private static class SequencedProperties extends Properties {
+
+		private final LinkedHashMap<String, Object> map;
+
+		SequencedProperties(LinkedHashMap<String, Object> map) {
+			this.map = map;
+		}
+
+		@Override
+		public synchronized Object put(Object key, Object value) {
+			if (key instanceof String str) {
+				this.map.put(str, value);
+			}
+			return super.put(key, value);
+		}
 	}
 
 }
