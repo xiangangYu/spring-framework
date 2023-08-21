@@ -62,13 +62,18 @@ class BeanDefinitionPropertyValueCodeGenerator {
 
 	static final CodeBlock NULL_VALUE_CODE_BLOCK = CodeBlock.of("null");
 
+	// 关于GeneratedMethods的描述 A managed collection of generated methods.
 	private final GeneratedMethods generatedMethods;
 
+	// 关于Delegate的描述 Internal delegate used to support generation for a specific type.
 	private final List<Delegate> delegates;
 
 
 	BeanDefinitionPropertyValueCodeGenerator(GeneratedMethods generatedMethods,
 			@Nullable BiFunction<Object, ResolvableType, CodeBlock> customValueGenerator) {
+		// 关于BiFunction的描述
+		// Represents a function that accepts two arguments and produces a result. This is the two-arity specialization of Function.
+		// This is a functional interface whose functional method is apply(Object, Object).
 		this.generatedMethods = generatedMethods;
 		this.delegates = new ArrayList<>();
 		if (customValueGenerator != null) {
@@ -167,6 +172,7 @@ class BeanDefinitionPropertyValueCodeGenerator {
 		@Override
 		@Nullable
 		public CodeBlock generateCode(Object value, ResolvableType type) {
+			// CodeBlock的of对基础数据类型的转换
 			if (value instanceof Boolean || value instanceof Integer) {
 				return CodeBlock.of("$L", value);
 			}
@@ -210,6 +216,7 @@ class BeanDefinitionPropertyValueCodeGenerator {
 		@Override
 		@Nullable
 		public CodeBlock generateCode(Object value, ResolvableType type) {
+			// String字符串的使用
 			if (value instanceof String) {
 				return CodeBlock.of("$S", value);
 			}
@@ -243,6 +250,7 @@ class BeanDefinitionPropertyValueCodeGenerator {
 		@Override
 		@Nullable
 		public CodeBlock generateCode(Object value, ResolvableType type) {
+			// 枚举类型的处理
 			if (value instanceof Enum<?> enumValue) {
 				return CodeBlock.of("$T.$L", enumValue.getDeclaringClass(),
 						enumValue.name());
@@ -292,6 +300,7 @@ class BeanDefinitionPropertyValueCodeGenerator {
 		@Override
 		@Nullable
 		public CodeBlock generateCode(@Nullable Object value, ResolvableType type) {
+			// 数组的处理情况
 			if (type.isArray()) {
 				ResolvableType componentType = type.getComponentType();
 				Stream<CodeBlock> elements = Arrays.stream(ObjectUtils.toObjectArray(value)).map(component ->
@@ -325,6 +334,7 @@ class BeanDefinitionPropertyValueCodeGenerator {
 		@SuppressWarnings("unchecked")
 		@Nullable
 		public CodeBlock generateCode(Object value, ResolvableType type) {
+			// Determines if the specified Object is assignment-compatible with the object represented by this Class.
 			if (this.collectionType.isInstance(value)) {
 				T collection = (T) value;
 				if (collection.isEmpty()) {
@@ -563,4 +573,5 @@ class BeanDefinitionPropertyValueCodeGenerator {
 		}
 	}
 
+	// read for mark
 }
