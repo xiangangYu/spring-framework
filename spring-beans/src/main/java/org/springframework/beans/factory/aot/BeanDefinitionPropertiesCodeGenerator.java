@@ -42,10 +42,7 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueHolder;
-import org.springframework.beans.factory.support.AbstractBeanDefinition;
-import org.springframework.beans.factory.support.AutowireCandidateQualifier;
-import org.springframework.beans.factory.support.InstanceSupplier;
-import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.beans.factory.support.*;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.CodeBlock.Builder;
 import org.springframework.lang.Nullable;
@@ -77,14 +74,39 @@ import org.springframework.util.StringUtils;
  */
 class BeanDefinitionPropertiesCodeGenerator {
 
+	/**
+	 * 关于 RootBeanDefinition的描述
+	 * A root bean definition represents the <b>merged bean definition at runtime</b>
+	 * that backs a specific bean in a Spring BeanFactory. It might have been created
+	 * from multiple original bean definitions that inherit from each other, e.g.
+	 * {@link GenericBeanDefinition GenericBeanDefinitions} from XML declarations.
+	 * A root bean definition is essentially the 'unified' bean definition view at runtime.
+	 */
 	private static final RootBeanDefinition DEFAULT_BEAN_DEFINITION = new RootBeanDefinition();
 
+	/**
+	 * 关于BeanRegistrationCodeFragments的描述
+	 * Generate the various fragments of code needed to register a bean.
+	 */
 	private static final String BEAN_DEFINITION_VARIABLE = BeanRegistrationCodeFragments.BEAN_DEFINITION_VARIABLE;
 
+	/**
+	 * 关于RuntimeHints的描述
+	 * Gather hints that can be used to optimize the application runtime.
+	 */
 	private final RuntimeHints hints;
 
+	/**
+	 * 关于Predicate的描述
+	 * Represents a predicate (boolean-valued function) of one argument.
+	 * This is a functional interface whose functional method is test(Object).
+	 */
 	private final Predicate<String> attributeFilter;
 
+	/**
+	 * 关于BeanDefinitionPropertyValueCodeGenerator的描述
+	 *  Internal code generator used to generate code for a single value contained in a {@link BeanDefinition} property.
+	 */
 	private final BeanDefinitionPropertyValueCodeGenerator valueCodeGenerator;
 
 
@@ -148,6 +170,7 @@ class BeanDefinitionPropertiesCodeGenerator {
 			methodName = methodName.substring(indexOfDot + 1);
 			if (!beanUserClass.getName().equals(className)) {
 				try {
+					// 通过类名字及类加载器进行反射获取类
 					methodDeclaringClass = ClassUtils.forName(className, beanUserClass.getClassLoader());
 				}
 				catch (Throwable ex) {
@@ -216,6 +239,7 @@ class BeanDefinitionPropertiesCodeGenerator {
 
 	private CodeBlock generateValue(@Nullable String name, @Nullable Object value) {
 		try {
+			// 下面的PropertyNamesStack使用了本地变量来进行数据的存储
 			PropertyNamesStack.push(name);
 			return this.valueCodeGenerator.generateCode(value);
 		}
@@ -239,6 +263,7 @@ class BeanDefinitionPropertiesCodeGenerator {
 		for (PropertyDescriptor propertyDescriptor : BeanUtils.getPropertyDescriptors(clazz)) {
 			writeMethods.put(propertyDescriptor.getName(), propertyDescriptor.getWriteMethod());
 		}
+		// 很多时候在进行返回集合的时候，不希望调用者对集合内的元素进行修改，可以使用unmodifiable进行返回
 		return Collections.unmodifiableMap(writeMethods);
 	}
 
@@ -257,6 +282,7 @@ class BeanDefinitionPropertiesCodeGenerator {
 	}
 
 	private boolean hasScope(String defaultValue, String actualValue) {
+		// StringUtils的hasText方法用得比较少,StringUtils.isEmpty()这个方法已经被摒弃了
 		return StringUtils.hasText(actualValue) &&
 				!ConfigurableBeanFactory.SCOPE_SINGLETON.equals(actualValue);
 	}
@@ -270,10 +296,13 @@ class BeanDefinitionPropertiesCodeGenerator {
 	}
 
 	private CodeBlock toStringVarArgs(String[] strings) {
+		// 使用stream来处理数组
+		// 关于map的描述：Returns a stream consisting of the results of applying the given function to the elements of this stream.his is an intermediate operation
 		return Arrays.stream(strings).map(string -> CodeBlock.of("$S", string)).collect(CodeBlock.joining(","));
 	}
 
 	private Object toRole(int value) {
+		// switch的语法也变了，下面是使用lambda表达式来进行switch的处理
 		return switch (value) {
 			case BeanDefinition.ROLE_INFRASTRUCTURE ->
 				CodeBlock.builder().add("$T.ROLE_INFRASTRUCTURE", BeanDefinition.class).build();
@@ -304,6 +333,13 @@ class BeanDefinitionPropertiesCodeGenerator {
 			Function<B, T> getter, BiPredicate<T, T> filter, String format,
 			Function<T, Object> formatter) {
 
+		/**
+		 * Function描述
+		 * Represents a function that accepts one argument and produces a result.
+		 * This is a functional interface whose functional method is apply(Object).
+		 */
+		// Function<B, T> 是泛型
+		// BiPredicate<T, T> 也是泛型
 		T defaultValue = getter.apply((B) DEFAULT_BEAN_DEFINITION);
 		T actualValue = getter.apply((B) beanDefinition);
 		if (filter.test(defaultValue, actualValue)) {
@@ -311,12 +347,15 @@ class BeanDefinitionPropertiesCodeGenerator {
 		}
 	}
 
+	// 静态的内部类
 	static class PropertyNamesStack {
 
+		// 本地线程变量，好久没看到了, ThreadLocal.withInitial的参数就是本地线程变量中的值
 		private static final ThreadLocal<ArrayDeque<String>> threadLocal = ThreadLocal.withInitial(ArrayDeque::new);
 
 		static void push(@Nullable String name) {
 			String valueToSet = (name != null) ? name : "";
+			// threadLocal.get()返回的值是ArrayDeque，ArrayDeque是可变的数组，下面的额push、pop和peek都是ArrayDeque中的方法
 			threadLocal.get().push(valueToSet);
 		}
 
@@ -331,5 +370,6 @@ class BeanDefinitionPropertiesCodeGenerator {
 		}
 
 	}
+	// read for mark
 
 }

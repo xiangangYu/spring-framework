@@ -97,6 +97,7 @@ class BeanDefinitionMethodGeneratorFactory {
 			return null;
 		}
 		List<BeanRegistrationAotContribution> contributions = getAotContributions(registeredBean);
+		// 换行的时候，上面的行留下','
 		return new BeanDefinitionMethodGenerator(this, registeredBean,
 				currentPropertyName, contributions);
 	}
@@ -133,6 +134,7 @@ class BeanDefinitionMethodGeneratorFactory {
 	}
 
 	private boolean isImplicitlyExcluded(RegisteredBean registeredBean) {
+		// implicitly 隐式
 		Class<?> beanClass = registeredBean.getBeanClass();
 		if (BeanFactoryInitializationAotProcessor.class.isAssignableFrom(beanClass)) {
 			return true;
@@ -159,5 +161,6 @@ class BeanDefinitionMethodGeneratorFactory {
 		}
 		return contributions;
 	}
+	// read for mark
 
 }
