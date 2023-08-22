@@ -44,6 +44,7 @@ public interface BeanRegistrationCodeFragments {
 
 	/**
 	 * The variable name to used when creating the bean definition.
+	 * 字符串变量定义，变量名是大写的下划线分割，值是驼峰写法
 	 */
 	String INSTANCE_SUPPLIER_VARIABLE = "instanceSupplier";
 
@@ -114,5 +115,7 @@ public interface BeanRegistrationCodeFragments {
 	 */
 	CodeBlock generateReturnCode(
 			GenerationContext generationContext, BeanRegistrationCode beanRegistrationCode);
+
+	// read for mark
 
 }

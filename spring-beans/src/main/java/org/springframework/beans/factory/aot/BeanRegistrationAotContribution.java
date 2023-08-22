@@ -82,4 +82,5 @@ public interface BeanRegistrationAotContribution {
 		};
 	}
 
+	// read for mark
 }

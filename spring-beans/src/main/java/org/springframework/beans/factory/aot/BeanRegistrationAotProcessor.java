@@ -78,4 +78,6 @@ public interface BeanRegistrationAotProcessor {
 		return true;
 	}
 
+	// read for mark
+
 }
