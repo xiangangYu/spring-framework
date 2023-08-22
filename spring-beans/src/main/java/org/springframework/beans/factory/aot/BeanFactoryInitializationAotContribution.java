@@ -40,5 +40,6 @@ public interface BeanFactoryInitializationAotContribution {
 	 */
 	void applyTo(GenerationContext generationContext,
 			BeanFactoryInitializationCode beanFactoryInitializationCode);
+	// read for mark
 
 }

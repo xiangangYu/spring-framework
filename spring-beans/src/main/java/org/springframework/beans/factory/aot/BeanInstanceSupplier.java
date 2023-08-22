@@ -53,6 +53,41 @@ import org.springframework.util.function.ThrowingFunction;
 import org.springframework.util.function.ThrowingSupplier;
 
 /**
+ *
+ * 关于 Supplier的解释：Represents a supplier of results.
+ * There is no requirement that a new or distinct result be returned each time the supplier is invoked.
+ * This is a functional interface whose functional method is get().
+ *
+ * 下面是代码示例：
+ * public class TestSupplier {
+ *
+ *     private static int age;
+ *
+ *     TestSupplier() {
+ *         System.out.println(age++);
+ *     }
+ *
+ *     public static void main(String[] args) {
+ *         Supplier<TestSupplier> sup = TestSupplier::new;
+ *         System.out.println("-------------------------");
+ *         TestSupplier testSupplier = sup.get();
+ *         TestSupplier testSupplier1 = sup.get();
+ *         TestSupplier testSupplier2 = sup.get();
+ *         System.out.println(testSupplier);
+ *         System.out.println(testSupplier1);
+ *         System.out.println(testSupplier2);
+ *     }
+ * }
+ *
+ * 下面是结果：
+ * -------------------------
+ * 0
+ * 1
+ * 2
+ * com.ruoyi.callback.controller.TestSupplier@f5f2bb7
+ * com.ruoyi.callback.controller.TestSupplier@73035e27
+ * com.ruoyi.callback.controller.TestSupplier@64c64813
+ *
  * Specialized {@link InstanceSupplier} that provides the factory {@link Method}
  * used to instantiate the underlying bean instance, if any. Transparently
  * handles resolution of {@link AutowiredArguments} if necessary. Typically used
@@ -241,6 +276,7 @@ public final class BeanInstanceSupplier<T> extends AutowiredElementResolver impl
 	private AutowiredArguments resolveArguments(RegisteredBean registeredBean, Executable executable) {
 		Assert.isInstanceOf(AbstractAutowireCapableBeanFactory.class, registeredBean.getBeanFactory());
 
+		// 下面的换行还是保留了操作符在上面
 		int startIndex = (executable instanceof Constructor<?> constructor &&
 				ClassUtils.isInnerClass(constructor.getDeclaringClass())) ? 1 : 0;
 		int parameterCount = executable.getParameterCount();
@@ -351,6 +387,8 @@ public final class BeanInstanceSupplier<T> extends AutowiredElementResolver impl
 
 	private Object instantiate(ConfigurableBeanFactory beanFactory, Method method, Object[] args) throws Exception {
 		Object target = getFactoryMethodTarget(beanFactory, method);
+		// Make the given method accessible, explicitly setting it accessible if necessary. The setAccessible(true) method
+		// is only called when actually necessary, to avoid unnecessary conflicts.
 		ReflectionUtils.makeAccessible(method);
 		return method.invoke(target, args);
 	}
@@ -377,6 +415,7 @@ public final class BeanInstanceSupplier<T> extends AutowiredElementResolver impl
 
 
 	private static String toCommaSeparatedNames(Class<?>... parameterTypes) {
+		// 使用stream来处理","分隔符的字符串，这种方式值得学习
 		return Arrays.stream(parameterTypes).map(Class::getName).collect(Collectors.joining(", "));
 	}
 
@@ -386,6 +425,7 @@ public final class BeanInstanceSupplier<T> extends AutowiredElementResolver impl
 	 */
 	static abstract class ExecutableLookup {
 
+		// A shared superclass for the common functionality of Method and Constructor.
 		abstract Executable get(RegisteredBean registeredBean);
 	}
 
@@ -395,12 +435,18 @@ public final class BeanInstanceSupplier<T> extends AutowiredElementResolver impl
 	 */
 	private static class ConstructorLookup extends ExecutableLookup {
 
+		// Class<?>[] 的写法是泛型的写法，标识任意的Class类型数组
 		private final Class<?>[] parameterTypes;
 
 		ConstructorLookup(Class<?>[] parameterTypes) {
 			this.parameterTypes = parameterTypes;
 		}
 
+		// 关于RegisteredBean说明
+		// A {@code RegisteredBean} represents a bean that has been registered with a
+		// {@link BeanFactory}, but has not necessarily been instantiated. It provides
+		// access to the bean factory that contains the bean as well as the bean name.
+		// In the case of inner-beans, the bean name may have been generated.
 		@Override
 		public Executable get(RegisteredBean registeredBean) {
 			Class<?> beanClass = registeredBean.getBeanClass();
@@ -446,6 +492,9 @@ public final class BeanInstanceSupplier<T> extends AutowiredElementResolver impl
 		}
 
 		Method get() {
+			// 关于findMethod的方法说明
+			// Attempt to find a Method on the supplied class with the supplied name and parameter types. Searches all
+			// superclasses up to Object. Returns null if no Method can be found.
 			Method method = ReflectionUtils.findMethod(this.declaringClass, this.methodName, this.parameterTypes);
 			Assert.notNull(method, () -> "%s cannot be found".formatted(this));
 			return method;
@@ -459,4 +508,5 @@ public final class BeanInstanceSupplier<T> extends AutowiredElementResolver impl
 		}
 	}
 
+	// read for mark
 }

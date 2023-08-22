@@ -61,4 +61,6 @@ public interface BeanFactoryInitializationAotProcessor {
 	@Nullable
 	BeanFactoryInitializationAotContribution processAheadOfTime(ConfigurableListableBeanFactory beanFactory);
 
+	// read for mark
+
 }

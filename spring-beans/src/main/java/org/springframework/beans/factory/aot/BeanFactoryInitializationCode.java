@@ -32,8 +32,9 @@ public interface BeanFactoryInitializationCode {
 
 	/**
 	 * The recommended variable name to use to refer to the bean factory.
+	 * 在接口中定义变量,public static final这三个修饰符都是冗余的
 	 */
-	String BEAN_FACTORY_VARIABLE = "beanFactory";
+	public static final String BEAN_FACTORY_VARIABLE = "beanFactory";
 
 	/**
 	 * Get the {@link GeneratedMethods} used by the initializing code.
@@ -54,5 +55,6 @@ public interface BeanFactoryInitializationCode {
 	 * @param methodReference a reference to the initialize method to call.
 	 */
 	void addInitializer(MethodReference methodReference);
+	// read for mark
 
 }
