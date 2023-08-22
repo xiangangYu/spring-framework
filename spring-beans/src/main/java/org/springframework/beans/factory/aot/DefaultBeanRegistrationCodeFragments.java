@@ -235,5 +235,5 @@ class DefaultBeanRegistrationCodeFragments implements BeanRegistrationCodeFragme
 		code.addStatement("return $L", BEAN_DEFINITION_VARIABLE);
 		return code.build();
 	}
-
+	// read for mark
 }

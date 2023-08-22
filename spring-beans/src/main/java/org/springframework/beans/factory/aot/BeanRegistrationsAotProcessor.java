@@ -39,6 +39,7 @@ class BeanRegistrationsAotProcessor implements BeanFactoryInitializationAotProce
 	@Override
 	@Nullable
 	public BeanRegistrationsAotContribution processAheadOfTime(ConfigurableListableBeanFactory beanFactory) {
+		// 下面的定义比较长，在"=" 后面直接换行了
 		BeanDefinitionMethodGeneratorFactory beanDefinitionMethodGeneratorFactory =
 				new BeanDefinitionMethodGeneratorFactory(beanFactory);
 		Map<BeanRegistrationKey, Registration> registrations = new LinkedHashMap<>();

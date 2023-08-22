@@ -40,4 +40,6 @@ public interface BeanRegistrationsCode {
 	 */
 	GeneratedMethods getMethods();
 
+	// read for mark
+
 }

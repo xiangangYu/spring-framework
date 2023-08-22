@@ -73,10 +73,12 @@ class InstanceSupplierCodeGenerator {
 
 	private static final String ARGS_PARAMETER_NAME = "args";
 
+	// 修饰符的枚举类型
 	private static final javax.lang.model.element.Modifier[] PRIVATE_STATIC = {
 			javax.lang.model.element.Modifier.PRIVATE,
 			javax.lang.model.element.Modifier.STATIC };
 
+	// CodeBlock的代码块
 	private static final CodeBlock NO_ARGS = CodeBlock.of("");
 
 
@@ -110,12 +112,20 @@ class InstanceSupplierCodeGenerator {
 				"No suitable executor found for " + registeredBean.getBeanName());
 	}
 
+	// 为构造函数生成代码
 	private CodeBlock generateCodeForConstructor(RegisteredBean registeredBean, Constructor<?> constructor) {
 		String beanName = registeredBean.getBeanName();
 		Class<?> beanClass = registeredBean.getBeanClass();
 		Class<?> declaringClass = constructor.getDeclaringClass();
 		boolean dependsOnBean = ClassUtils.isInnerClass(declaringClass);
 
+		/**
+		 * 关于Visibility的说明
+		 *
+		 * Access visibility types as determined by the <a href=
+		 * "https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html">modifiers</a>
+		 * on a {@link Member} or {@link ResolvableType}.
+		 */
 		Visibility accessVisibility = getAccessVisibility(registeredBean, constructor);
 		if (KotlinDetector.isKotlinReflectPresent() && KotlinDelegate.hasConstructorWithOptionalParameter(beanClass)) {
 			return generateCodeForInaccessibleConstructor(beanName, beanClass, constructor,
@@ -371,5 +381,8 @@ class InstanceSupplierCodeGenerator {
 		}
 
 	}
+	// 使用CodeBlock来生成代码
+
+	// read for mark
 
 }

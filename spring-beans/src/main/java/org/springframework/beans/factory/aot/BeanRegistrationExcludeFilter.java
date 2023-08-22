@@ -37,4 +37,6 @@ public interface BeanRegistrationExcludeFilter {
 	 */
 	boolean isExcludedFromAotProcessing(RegisteredBean registeredBean);
 
+	// read for mark
+
 }

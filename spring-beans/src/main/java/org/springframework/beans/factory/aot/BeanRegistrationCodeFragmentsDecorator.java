@@ -97,4 +97,5 @@ public class BeanRegistrationCodeFragmentsDecorator implements BeanRegistrationC
 		return this.delegate.generateReturnCode(generationContext, beanRegistrationCode);
 	}
 
+	// read for mark
 }

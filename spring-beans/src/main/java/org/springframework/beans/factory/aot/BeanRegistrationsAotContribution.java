@@ -66,6 +66,7 @@ class BeanRegistrationsAotContribution
 	public void applyTo(GenerationContext generationContext,
 			BeanFactoryInitializationCode beanFactoryInitializationCode) {
 
+		// 关于GenerationContext的解释 Central interface used for code generation.
 		GeneratedClass generatedClass = generationContext.getGeneratedClasses()
 				.addForFeature("BeanFactoryRegistrations", type -> {
 					type.addJavadoc("Register bean definitions for the bean factory.");
@@ -84,6 +85,7 @@ class BeanRegistrationsAotContribution
 	private void generateRegisterBeanDefinitionsMethod(MethodSpec.Builder method,
 			GenerationContext generationContext, BeanRegistrationsCode beanRegistrationsCode) {
 
+		// 生成代码
 		method.addJavadoc("Register the bean definitions.");
 		method.addModifiers(Modifier.PUBLIC);
 		method.addParameter(DefaultListableBeanFactory.class, BEAN_FACTORY_PARAMETER_NAME);
@@ -100,6 +102,7 @@ class BeanRegistrationsAotContribution
 	}
 
 	private void generateRegisterAliasesMethod(MethodSpec.Builder method) {
+		// 生成代码
 		method.addJavadoc("Register the aliases.");
 		method.addModifiers(Modifier.PUBLIC);
 		method.addParameter(DefaultListableBeanFactory.class, BEAN_FACTORY_PARAMETER_NAME);
@@ -167,5 +170,7 @@ class BeanRegistrationsAotContribution
 		}
 
 	}
+
+	// read for mark
 
 }

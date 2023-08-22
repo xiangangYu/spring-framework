@@ -37,6 +37,9 @@ import org.springframework.util.Assert;
  */
 class BeanRegistrationCodeGenerator implements BeanRegistrationCode {
 
+	// Represents a predicate (boolean-valued function) of one argument.
+	// This is a functional interface whose functional method is test(Object).
+	// 后面的写法有点意思 attribute -> false是lambda表达式
 	private static final Predicate<String> REJECT_ALL_ATTRIBUTES_FILTER = attribute -> false;
 
 	private final ClassName className;
@@ -80,6 +83,7 @@ class BeanRegistrationCodeGenerator implements BeanRegistrationCode {
 	}
 
 	CodeBlock generateCode(GenerationContext generationContext) {
+		// 可以使用CodeBlock来生成代码
 		CodeBlock.Builder code = CodeBlock.builder();
 		code.add(this.codeFragments.generateNewBeanDefinitionCode(generationContext,
 				this.registeredBean.getBeanType(), this));
@@ -94,5 +98,7 @@ class BeanRegistrationCodeGenerator implements BeanRegistrationCode {
 		code.add(this.codeFragments.generateReturnCode(generationContext, this));
 		return code.build();
 	}
+
+	// read for mark
 
 }
