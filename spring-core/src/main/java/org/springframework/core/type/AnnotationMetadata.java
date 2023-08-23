@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2021 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.annotation.MergedAnnotations;
-import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 
 /**
  * Interface that defines abstract access to the annotations of a specific
@@ -55,8 +54,8 @@ public interface AnnotationMetadata extends ClassMetadata, AnnotatedTypeMetadata
 	/**
 	 * Get the fully qualified class names of all meta-annotation types that
 	 * are <em>present</em> on the given annotation type on the underlying class.
-	 * @param annotationName the fully qualified class name of the meta-annotation
-	 * type to look for
+	 * @param annotationName the fully qualified class name of the annotation
+	 * type to look for meta-annotations on
 	 * @return the meta-annotation type names, or an empty set if none found
 	 */
 	default Set<String> getMetaAnnotationTypes(String annotationName) {
@@ -64,7 +63,7 @@ public interface AnnotationMetadata extends ClassMetadata, AnnotatedTypeMetadata
 		if (!annotation.isPresent()) {
 			return Collections.emptySet();
 		}
-		return MergedAnnotations.from(annotation.getType(), SearchStrategy.INHERITED_ANNOTATIONS).stream()
+		return MergedAnnotations.from(annotation.getType()).stream()
 				.map(mergedAnnotation -> mergedAnnotation.getType().getName())
 				.collect(Collectors.toCollection(LinkedHashSet::new));
 	}
