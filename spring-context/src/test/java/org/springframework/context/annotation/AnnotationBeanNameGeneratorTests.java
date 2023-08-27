@@ -24,6 +24,8 @@ import java.lang.annotation.Target;
 import example.scannable.DefaultNamedComponent;
 import example.scannable.JakartaManagedBeanComponent;
 import example.scannable.JakartaNamedComponent;
+import example.scannable.JavaxManagedBeanComponent;
+import example.scannable.JavaxNamedComponent;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
@@ -36,6 +38,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
  * Unit tests for {@link AnnotationBeanNameGenerator}.
@@ -66,8 +69,32 @@ class AnnotationBeanNameGeneratorTests {
 	}
 
 	@Test
+	void generateBeanNameWithNamedComponentWhereTheNameIsBlank() {
+		assertGeneratedNameIsDefault(ComponentWithBlankName.class);
+	}
+
+	@Test
+	void generateBeanNameForComponentWithDuplicateIdenticalNames() {
+		assertGeneratedName(ComponentWithDuplicateIdenticalNames.class, "myComponent");
+	}
+
+	@Test
+	void generateBeanNameForComponentWithConflictingNames() {
+		BeanDefinition bd = annotatedBeanDef(ComponentWithMultipleConflictingNames.class);
+		assertThatIllegalStateException()
+				.isThrownBy(() -> generateBeanName(bd))
+				.withMessage("Stereotype annotations suggest inconsistent component names: '%s' versus '%s'",
+						"myComponent", "myService");
+	}
+
+	@Test
 	void generateBeanNameWithJakartaNamedComponent() {
 		assertGeneratedName(JakartaNamedComponent.class, "myJakartaNamedComponent");
+	}
+
+	@Test
+	void generateBeanNameWithJavaxNamedComponent() {
+		assertGeneratedName(JavaxNamedComponent.class, "myJavaxNamedComponent");
 	}
 
 	@Test
@@ -76,13 +103,13 @@ class AnnotationBeanNameGeneratorTests {
 	}
 
 	@Test
-	void generateBeanNameWithCustomStereotypeComponent() {
-		assertGeneratedName(DefaultNamedComponent.class, "thoreau");
+	void generateBeanNameWithJavaxManagedBeanComponent() {
+		assertGeneratedName(JavaxManagedBeanComponent.class, "myJavaxManagedBeanComponent");
 	}
 
 	@Test
-	void generateBeanNameWithNamedComponentWhereTheNameIsBlank() {
-		assertGeneratedNameIsDefault(ComponentWithBlankName.class);
+	void generateBeanNameWithCustomStereotypeComponent() {
+		assertGeneratedName(DefaultNamedComponent.class, "thoreau");
 	}
 
 	@Test
@@ -142,6 +169,16 @@ class AnnotationBeanNameGeneratorTests {
 
 	@Component(" ")
 	private static class ComponentWithBlankName {
+	}
+
+	@Component("myComponent")
+	@Service("myComponent")
+	static class ComponentWithDuplicateIdenticalNames {
+	}
+
+	@Component("myComponent")
+	@Service("myService")
+	static class ComponentWithMultipleConflictingNames {
 	}
 
 	@Component

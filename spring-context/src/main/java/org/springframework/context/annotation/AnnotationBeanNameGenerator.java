@@ -41,8 +41,10 @@ import org.springframework.util.StringUtils;
  * themselves annotated with {@code @Component}.
  *
  * <p>Also supports Jakarta EE's {@link jakarta.annotation.ManagedBean} and
- * JSR-330's {@link jakarta.inject.Named} annotations, if available. Note that
- * Spring component annotations always override such standard annotations.
+ * JSR-330's {@link jakarta.inject.Named} annotations (as well as their pre-Jakarta
+ * {@code javax.annotation.ManagedBean} and {@code javax.inject.Named} equivalents),
+ * if available. Note that Spring component annotations always override such
+ * standard annotations.
  *
  * <p>If the annotation's value doesn't indicate a bean name, an appropriate
  * name will be built based on the short name of the class (with the first
@@ -53,6 +55,7 @@ import org.springframework.util.StringUtils;
  *
  * @author Juergen Hoeller
  * @author Mark Fisher
+ * @author Sam Brannen
  * @since 2.5
  * @see org.springframework.stereotype.Component#value()
  * @see org.springframework.stereotype.Repository#value()
@@ -95,17 +98,17 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 	 */
 	@Nullable
 	protected String determineBeanNameFromAnnotation(AnnotatedBeanDefinition annotatedDef) {
-		AnnotationMetadata amd = annotatedDef.getMetadata();
-		Set<String> types = amd.getAnnotationTypes();
+		AnnotationMetadata metadata = annotatedDef.getMetadata();
+		Set<String> annotationTypes = metadata.getAnnotationTypes();
 		String beanName = null;
-		for (String type : types) {
-			AnnotationAttributes attributes = AnnotationConfigUtils.attributesFor(amd, type);
+		for (String annotationType : annotationTypes) {
+			AnnotationAttributes attributes = AnnotationConfigUtils.attributesFor(metadata, annotationType);
 			if (attributes != null) {
-				Set<String> metaTypes = this.metaAnnotationTypesCache.computeIfAbsent(type, key -> {
-					Set<String> result = amd.getMetaAnnotationTypes(key);
+				Set<String> metaAnnotationTypes = this.metaAnnotationTypesCache.computeIfAbsent(annotationType, key -> {
+					Set<String> result = metadata.getMetaAnnotationTypes(key);
 					return (result.isEmpty() ? Collections.emptySet() : result);
 				});
-				if (isStereotypeWithNameValue(type, metaTypes, attributes)) {
+				if (isStereotypeWithNameValue(annotationType, metaAnnotationTypes, attributes)) {
 					Object value = attributes.get("value");
 					if (value instanceof String currentName && !currentName.isBlank()) {
 						if (beanName != null && !currentName.equals(beanName)) {
@@ -134,7 +137,9 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 		boolean isStereotype = annotationType.equals(COMPONENT_ANNOTATION_CLASSNAME) ||
 				metaAnnotationTypes.contains(COMPONENT_ANNOTATION_CLASSNAME) ||
 				annotationType.equals("jakarta.annotation.ManagedBean") ||
-				annotationType.equals("jakarta.inject.Named");
+				annotationType.equals("javax.annotation.ManagedBean") ||
+				annotationType.equals("jakarta.inject.Named") ||
+				annotationType.equals("javax.inject.Named");
 
 		return (isStereotype && attributes != null && attributes.containsKey("value"));
 	}
