@@ -61,6 +61,7 @@ import org.springframework.lang.Nullable;
  */
 public interface AutowireCapableBeanFactory extends BeanFactory {
 
+	// 下面的变量是在接口中定义的，默认就是public static
 	/**
 	 * Constant that indicates no externally defined autowiring. Note that
 	 * BeanFactoryAware etc and annotation-driven injection will still be applied.
@@ -167,6 +168,7 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	Object configureBean(Object existingBean, String beanName) throws BeansException;
 
 
+	// 有下面的分割控制时上面一般留有两空行，下面留有一空行
 	//-------------------------------------------------------------------------
 	// Specialized methods for fine-grained control over the bean lifecycle
 	//-------------------------------------------------------------------------
@@ -401,5 +403,6 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	@Nullable
 	Object resolveDependency(DependencyDescriptor descriptor, @Nullable String requestingBeanName,
 			@Nullable Set<String> autowiredBeanNames, @Nullable TypeConverter typeConverter) throws BeansException;
+	// read for mark
 
 }
