@@ -14,26 +14,14 @@
  * limitations under the License.
  */
 
-package example.profilescan;
+package org.springframework.web.bind.annotation.scanned;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import org.springframework.context.annotation.Profile;
-import org.springframework.core.annotation.AliasFor;
-import org.springframework.stereotype.Component;
-
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-@Profile(DevComponent.PROFILE_NAME)
-@Component
-public @interface DevComponent {
-
-	String PROFILE_NAME = "dev";
-
-	@AliasFor(annotation = Component.class)
-	String value() default "";
-
+/**
+ * @author Sam Brannen
+ * @since 6.1
+ */
+@RestControllerAdvice(name = "myRestControllerAdvice", value = "org.my.pkg")
+class ScannedRestControllerAdvice {
 }
