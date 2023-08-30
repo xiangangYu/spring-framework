@@ -123,6 +123,7 @@ public class BeanDefinitionHolder implements BeanMetadataElement {
 	 * or the aliases stored in this bean definition.
 	 */
 	public boolean matchesName(@Nullable String candidateName) {
+		// 下面的boolean返回值，是用表达式来进行的，而不是用表达式计算出结果后，再用结果返回
 		return (candidateName != null && (candidateName.equals(this.beanName) ||
 				candidateName.equals(BeanFactoryUtils.transformedBeanName(this.beanName)) ||
 				ObjectUtils.containsElement(this.aliases, candidateName)));
@@ -165,6 +166,13 @@ public class BeanDefinitionHolder implements BeanMetadataElement {
 
 	@Override
 	public boolean equals(@Nullable Object other) {
+		/**
+		 * 关于ObjectUtils.nullSafeEquals
+		 * Determine if the given objects are equal, returning true if both are null or false if only one is null.
+		 * Compares arrays with Arrays.equals, performing an equality check based on the array elements rather than the array reference.
+		 *
+		 * 下面也是一个表达式返回boolean
+		 */
 		return (this == other || (other instanceof BeanDefinitionHolder that &&
 				this.beanDefinition.equals(that.beanDefinition) &&
 				this.beanName.equals(that.beanName) &&
@@ -179,4 +187,5 @@ public class BeanDefinitionHolder implements BeanMetadataElement {
 		return hashCode;
 	}
 
+	// read for mark
 }

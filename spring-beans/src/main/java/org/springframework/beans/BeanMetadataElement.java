@@ -36,4 +36,5 @@ public interface BeanMetadataElement {
 		return null;
 	}
 
+	// read for mark
 }
