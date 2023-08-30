@@ -29,7 +29,9 @@ public interface BeanDefinitionCustomizer {
 
 	/**
 	 * Customize the given bean definition.
+	 * 函数接口
 	 */
 	void customize(BeanDefinition bd);
+	// read for mark
 
 }

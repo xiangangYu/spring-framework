@@ -39,6 +39,7 @@ public final class AutowiredPropertyMarker implements Serializable {
 
 	/**
 	 * The canonical instance for the autowired marker value.
+	 * 这种在成员变量直接new一个自己的方式见得比较少
 	 */
 	public static final Object INSTANCE = new AutowiredPropertyMarker();
 
@@ -65,5 +66,7 @@ public final class AutowiredPropertyMarker implements Serializable {
 	public String toString() {
 		return "(autowired)";
 	}
+
+	// read for mark
 
 }

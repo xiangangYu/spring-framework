@@ -353,5 +353,6 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 */
 	@Nullable
 	BeanDefinition getOriginatingBeanDefinition();
+	// read for mark
 
 }
