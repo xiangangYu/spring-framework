@@ -71,6 +71,10 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	private Boolean allowCircularReferences;
 
 	/** Bean factory for this context. */
+	/**
+	 * 当写一个volatile变量时，JMM会把该线程对应的本地内存中的共享变量刷新到主内存
+	 * 当读一个volatile变量时，JMM会把该线程对应的本地内存置为无效，线程接下来将从主内存中读取共享变量。
+	 */
 	@Nullable
 	private volatile DefaultListableBeanFactory beanFactory;
 

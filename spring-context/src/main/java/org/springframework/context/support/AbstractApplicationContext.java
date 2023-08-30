@@ -173,6 +173,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	private String id = ObjectUtils.identityToString(this);
 
 	/** Display name. */
+	/**
+	 * Return a String representation of an object's overall identity.
+	 */
 	private String displayName = ObjectUtils.identityToString(this);
 
 	/** Parent context. */
@@ -190,6 +193,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	private long startupDate;
 
 	/** Flag that indicates whether this context is currently active. */
+	/**
+	 * A boolean value that may be updated atomically. See the VarHandle specification for descriptions of the properties of atomic accesses.
+	 * An AtomicBoolean is used in applications such as atomically updated flags, and cannot be used as a replacement for a Boolean.
+	 */
 	private final AtomicBoolean active = new AtomicBoolean();
 
 	/** Flag that indicates whether this context has been closed already. */
@@ -1148,6 +1155,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 
+	// 代码分割不同的业务部分
 	//---------------------------------------------------------------------
 	// Implementation of BeanFactory interface
 	//---------------------------------------------------------------------
