@@ -20,13 +20,13 @@ import org.springframework.beans.BeansException;
 import org.springframework.lang.Nullable;
 
 /**
- * Strategy interface for resolving a value by evaluating it as an expression,
+ * Strategy interface for resolving a value by evaluating(评估) it as an expression,
  * if applicable.
  *
  * <p>A raw {@link org.springframework.beans.factory.BeanFactory} does not
  * contain a default implementation of this strategy. However,
  * {@link org.springframework.context.ApplicationContext} implementations
- * will provide expression support out of the box.
+ * will provide expression support out of the box(开箱即用).
  *
  * @author Juergen Hoeller
  * @since 3.0
@@ -44,5 +44,7 @@ public interface BeanExpressionResolver {
 	 */
 	@Nullable
 	Object evaluate(@Nullable String value, BeanExpressionContext beanExpressionContext) throws BeansException;
+
+	// read for mark
 
 }

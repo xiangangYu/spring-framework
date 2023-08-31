@@ -29,8 +29,8 @@ import org.springframework.beans.BeansException;
  * out-of-the-box solutions that address such configuration needs.
  *
  * <p>A {@code BeanFactoryPostProcessor} may interact with and modify bean
- * definitions, but never bean instances. Doing so may cause premature bean
- * instantiation, violating the container and causing unintended side effects.
+ * definitions, but never bean instances. Doing so may cause premature(未成熟) bean
+ * instantiation, violating(违反) the container and causing unintended side effects.
  * If bean instance interaction is required, consider implementing
  * {@link BeanPostProcessor} instead.
  *
@@ -44,7 +44,7 @@ import org.springframework.beans.BeansException;
  * <p>{@code BeanFactoryPostProcessor} beans that are autodetected in an
  * {@code ApplicationContext} will be ordered according to
  * {@link org.springframework.core.PriorityOrdered} and
- * {@link org.springframework.core.Ordered} semantics. In contrast,
+ * {@link org.springframework.core.Ordered} semantics(语义学). In contrast,
  * {@code BeanFactoryPostProcessor} beans that are registered programmatically
  * with a {@code ConfigurableApplicationContext} will be applied in the order of
  * registration; any ordering semantics expressed through implementing the
@@ -71,5 +71,7 @@ public interface BeanFactoryPostProcessor {
 	 * @throws org.springframework.beans.BeansException in case of errors
 	 */
 	void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException;
+
+	// read for mark
 
 }
