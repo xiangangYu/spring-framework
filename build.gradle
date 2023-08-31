@@ -1,8 +1,5 @@
-// gradle的build配置文件
-
-// 配置插件
 plugins {
-	id 'io.freefair.aspectj' version '8.0.1' apply false
+	id 'io.freefair.aspectj' version '8.2.2' apply false
 	// kotlinVersion is managed in gradle.properties
 	id 'org.jetbrains.kotlin.plugin.serialization' version "${kotlinVersion}" apply false
 	id 'org.jetbrains.dokka' version '1.8.20'
@@ -18,11 +15,12 @@ plugins {
 ext {
 	// 子项目的配置
 	moduleProjects = subprojects.findAll { it.name.startsWith("spring-") }
-	javaProjects = subprojects - project(":framework-bom") - project(":framework-platform")
+	javaProjects = subprojects.findAll { !it.name.startsWith("framework-") }
 }
 
 // 对项目进行配置，下面进行了仓库和变量的配置
 configure(allprojects) { project ->
+	apply plugin: "org.springframework.build.localdev"
 	// 仓库
 	repositories {
 		// maven中心
@@ -48,6 +46,20 @@ configure(allprojects) { project ->
 			// 缓存动态版本
 			cacheDynamicVersionsFor 0, "seconds"
 		}
+	}
+}
+
+configure(allprojects - project(":framework-platform")) {
+	configurations {
+		dependencyManagement {
+			canBeConsumed = false
+			canBeResolved = false
+			visible = false
+		}
+		matching { it.name.endsWith("Classpath") }.all { it.extendsFrom(dependencyManagement) }
+	}
+	dependencies {
+		dependencyManagement(enforcedPlatform(dependencies.project(path: ":framework-platform")))
 	}
 }
 
