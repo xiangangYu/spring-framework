@@ -407,5 +407,6 @@ public interface ListableBeanFactory extends BeanFactory {
 	<A extends Annotation> Set<A> findAllAnnotationsOnBean(
 			String beanName, Class<A> annotationType, boolean allowFactoryBeanInit)
 			throws NoSuchBeanDefinitionException;
+	// read for mark
 
 }

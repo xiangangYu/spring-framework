@@ -119,6 +119,9 @@ import org.springframework.lang.Nullable;
  */
 public interface BeanFactory {
 	// the first commit for test
+	/**
+	 * BeanFactory 获取Bean,获取BeanProvider,判断是单例还是原型，bean跟指定类型是否匹配
+	 */
 
 	/**
 	 * Used to dereference a {@link FactoryBean} instance and distinguish it from
@@ -390,5 +393,7 @@ public interface BeanFactory {
 	 * @see #getBean
 	 */
 	String[] getAliases(String name);
+
+	// read for mark
 
 }

@@ -265,6 +265,7 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 
 	@Override
 	public PropertyValue[] getPropertyValues() {
+		// List 转Array后面传入了一个数组类型
 		return this.propertyValueList.toArray(new PropertyValue[0]);
 	}
 

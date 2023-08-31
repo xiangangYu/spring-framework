@@ -42,4 +42,6 @@ public interface StringValueResolver {
 	@Nullable
 	String resolveStringValue(String strVal);
 
+	// read for mark
+
 }

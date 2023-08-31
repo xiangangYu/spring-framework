@@ -30,7 +30,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringValueResolver;
 
 /**
- * Visitor class for traversing {@link BeanDefinition} objects, in particular
+ * Visitor class for traversing(遍历) {@link BeanDefinition} objects, in particular
  * the property values and constructor argument values contained in them,
  * resolving bean metadata values.
  *
@@ -52,6 +52,7 @@ public class BeanDefinitionVisitor {
 
 
 	/**
+	 * 在构造方法中传入变量参数，这种方式进行参数的初始化是不错的
 	 * Create a new BeanDefinitionVisitor, applying the specified
 	 * value resolver to all bean metadata values.
 	 * @param valueResolver the StringValueResolver to apply
@@ -72,6 +73,7 @@ public class BeanDefinitionVisitor {
 	/**
 	 * Traverse the given BeanDefinition object and the MutablePropertyValues
 	 * and ConstructorArgumentValues contained in them.
+	 * 方法体与方法名之间没有空格，看下面的情况
 	 * @param beanDefinition the BeanDefinition object to traverse
 	 * @see #resolveStringValue(String)
 	 */
@@ -290,9 +292,12 @@ public class BeanDefinitionVisitor {
 			throw new IllegalStateException("No StringValueResolver specified - pass a resolver " +
 					"object into the constructor or override the 'resolveStringValue' method");
 		}
+		// 这里valueResolver是一个接口，下面的方式是面向接口编程
 		String resolvedValue = this.valueResolver.resolveStringValue(strVal);
 		// Return original String if not modified.
 		return (strVal.equals(resolvedValue) ? strVal : resolvedValue);
 	}
+
+	// read for mark
 
 }
