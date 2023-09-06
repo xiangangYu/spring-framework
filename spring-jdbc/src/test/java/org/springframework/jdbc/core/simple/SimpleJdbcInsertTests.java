@@ -138,4 +138,42 @@ class SimpleJdbcInsertTests {
 		verify(tableResultSet).close();
 	}
 
+	@Test
+	void usingColumns() {
+		SimpleJdbcInsert insert = new SimpleJdbcInsert(dataSource)
+				.withTableName("my_table")
+				.usingColumns("col1", "col2");
+
+		insert.compile();
+
+		assertThat(insert.getInsertString()).isEqualTo("INSERT INTO my_table (col1, col2) VALUES(?, ?)");
+	}
+
+	@Test  //  gh-24013
+	void usingColumnsAndQuotedIdentifiers() throws Exception {
+		SimpleJdbcInsert insert = new SimpleJdbcInsert(dataSource)
+				.withTableName("my_table")
+				.usingColumns("col1", "col2")
+				.usingQuotedIdentifiers();
+
+		given(databaseMetaData.getIdentifierQuoteString()).willReturn("`");
+
+		insert.compile();
+		assertThat(insert.getInsertString()).isEqualTo("INSERT INTO `my_table` (`col1`, `col2`) VALUES(?, ?)");
+	}
+
+	@Test  //  gh-24013
+	void usingColumnsAndQuotedIdentifiersWithSchemaName() throws Exception {
+		SimpleJdbcInsert insert = new SimpleJdbcInsert(dataSource)
+				.withSchemaName("my_schema")
+				.withTableName("my_table")
+				.usingColumns("col1", "col2")
+				.usingQuotedIdentifiers();
+
+		given(databaseMetaData.getIdentifierQuoteString()).willReturn("`");
+
+		insert.compile();
+		assertThat(insert.getInsertString()).isEqualTo("INSERT INTO `my_schema`.`my_table` (`col1`, `col2`) VALUES(?, ?)");
+	}
+
 }
