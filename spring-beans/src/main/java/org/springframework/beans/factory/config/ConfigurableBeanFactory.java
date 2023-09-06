@@ -306,7 +306,7 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	 * <p>Typically invoked during factory configuration, but can also be
 	 * used for runtime registration of aliases. Therefore, a factory
 	 * implementation should synchronize alias access.
-	 * @param beanName the canonical name of the target bean
+	 * @param beanName the canonical(规范) name of the target bean
 	 * @param alias the alias to be registered for the bean
 	 * @throws BeanDefinitionStoreException if the alias is already in use
 	 */
@@ -340,6 +340,8 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	 * ({@code false} means the bean exists but is not a FactoryBean)
 	 * @throws NoSuchBeanDefinitionException if there is no bean with the given name
 	 * @since 2.5
+	 * boolean值判断一般使用is开头来进行标记
+	 *
 	 */
 	boolean isFactoryBean(String name) throws NoSuchBeanDefinitionException;
 
@@ -389,8 +391,8 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	/**
 	 * Destroy the given bean instance (usually a prototype instance
 	 * obtained from this factory) according to its bean definition.
-	 * <p>Any exception that arises during destruction should be caught
-	 * and logged instead of propagated to the caller of this method.
+	 * <p>Any exception that arises during destruction(破坏) should be caught
+	 * and logged instead of propagated(传播) to the caller of this method.
 	 * @param beanName the name of the bean definition
 	 * @param beanInstance the bean instance to destroy
 	 */
@@ -406,10 +408,12 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 
 	/**
 	 * Destroy all singleton beans in this factory, including inner beans that have
-	 * been registered as disposable. To be called on shutdown of a factory.
+	 * been registered as disposable(一次性). To be called on shutdown of a factory.
 	 * <p>Any exception that arises during destruction should be caught
 	 * and logged instead of propagated to the caller of this method.
 	 */
 	void destroySingletons();
+
+	// read for mark
 
 }

@@ -50,4 +50,6 @@ public interface HierarchicalBeanFactory extends BeanFactory {
 	 */
 	boolean containsLocalBean(String name);
 
+	// read for mark
+
 }

@@ -30,6 +30,7 @@ public interface ApplicationStartup {
 	/**
 	 * Default "no op" {@code ApplicationStartup} implementation.
 	 * <p>This variant is designed for minimal overhead and does not record data.
+	 * 在接口中定义变量，并初始化是public static的，在接口中定义的变量是一个具体的默认实现
 	 */
 	ApplicationStartup DEFAULT = new DefaultApplicationStartup();
 
@@ -41,5 +42,7 @@ public interface ApplicationStartup {
 	 * @param name the step name
 	 */
 	StartupStep start(String name);
+
+	// read for mark
 
 }

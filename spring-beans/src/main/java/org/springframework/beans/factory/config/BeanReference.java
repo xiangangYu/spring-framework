@@ -37,4 +37,6 @@ public interface BeanReference extends BeanMetadataElement {
 	 */
 	String getBeanName();
 
+	// read for mark
+
 }
