@@ -55,6 +55,20 @@ class SimpleJdbcInsertIntegrationTests {
 			insertJaneSmith(insert);
 		}
 
+		@Test  //  gh-24013
+		void retrieveColumnNamesFromMetadataAndUsingQuotedIdentifiers() throws Exception {
+			SimpleJdbcInsert insert = new SimpleJdbcInsert(embeddedDatabase)
+					.withTableName("users")
+					.usingGeneratedKeyColumns("id")
+					.usingQuotedIdentifiers();
+
+			insert.compile();
+			// NOTE: quoted identifiers in H2/HSQL will be UPPERCASE!
+			assertThat(insert.getInsertString()).isEqualTo("INSERT INTO \"USERS\" (\"FIRST_NAME\", \"LAST_NAME\") VALUES(?, ?)");
+
+			insertJaneSmith(insert);
+		}
+
 		@Test
 		void usingColumns() {
 			SimpleJdbcInsert insert = new SimpleJdbcInsert(embeddedDatabase)
@@ -140,34 +154,25 @@ class SimpleJdbcInsertIntegrationTests {
 
 		protected EmbeddedDatabase embeddedDatabase;
 
-
-		protected abstract String getSchemaScript();
-
-		protected abstract String getUsersTableName();
-
-		protected EmbeddedDatabase createEmbeddedDatabase() {
-			return new EmbeddedDatabaseBuilder(new ClassRelativeResourceLoader(DatabasePopulator.class))
+		@BeforeEach
+		void createDatabase() {
+			this.embeddedDatabase = new EmbeddedDatabaseBuilder(new ClassRelativeResourceLoader(DatabasePopulator.class))
 					.setType(EmbeddedDatabaseType.H2)
 					.addScript(getSchemaScript())
 					.addScript("users-data.sql")
 					.build();
-		}
 
-
-		@BeforeEach
-		void checkDatabaseSetup() {
-			this.embeddedDatabase = createEmbeddedDatabase();
 			assertNumUsers(1);
 		}
 
 		@AfterEach
-		void shutdown() {
+		void shutdownDatabase() {
 			this.embeddedDatabase.shutdown();
 		}
 
 		protected void assertNumUsers(long count) {
 			JdbcClient jdbcClient = JdbcClient.create(this.embeddedDatabase);
-			long numUsers = jdbcClient.sql("select count(*) from " + getUsersTableName()).query().singleValue();
+			long numUsers = jdbcClient.sql("select count(*) from " + getUsersTableName()).query(Long.class).single();
 			assertThat(numUsers).isEqualTo(count);
 		}
 
@@ -175,6 +180,10 @@ class SimpleJdbcInsertIntegrationTests {
 			insert.execute(Map.of("first_name", "Jane", "last_name", "Smith"));
 			assertNumUsers(2);
 		}
+
+		protected abstract String getSchemaScript();
+
+		protected abstract String getUsersTableName();
 
 	}
 

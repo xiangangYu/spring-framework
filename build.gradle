@@ -1,5 +1,5 @@
 plugins {
-	id 'io.freefair.aspectj' version '8.2.2' apply false
+	id 'io.freefair.aspectj' version '8.3' apply false
 	// kotlinVersion is managed in gradle.properties
 	id 'org.jetbrains.kotlin.plugin.serialization' version "${kotlinVersion}" apply false
 	id 'org.jetbrains.dokka' version '1.8.20'
@@ -21,6 +21,7 @@ ext {
 // 对项目进行配置，下面进行了仓库和变量的配置
 configure(allprojects) { project ->
 	apply plugin: "org.springframework.build.localdev"
+	group = "org.springframework"
 	// 仓库
 	repositories {
 		// maven中心
