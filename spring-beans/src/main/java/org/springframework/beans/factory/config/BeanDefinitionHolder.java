@@ -181,8 +181,7 @@ public class BeanDefinitionHolder implements BeanMetadataElement {
 
 	@Override
 	public int hashCode() {
-		return ObjectUtils.nullSafeHash(this.beanDefinition, this.beanName,
-				this.aliases);
+		return ObjectUtils.nullSafeHash(this.beanDefinition, this.beanName, this.aliases);
 	}
 
 	// read for mark
