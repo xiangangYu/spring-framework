@@ -66,15 +66,17 @@ public class ConstructorArgumentValues {
 	/**
 	 * Copy all given argument values into this object, using separate holder
 	 * instances to keep the values independent of the original object.
-	 * <p>Note: Identical ValueHolder instances will only be registered once,
+	 * <p>Note: Identical(相同的) ValueHolder instances will only be registered once,
 	 * to allow for merging and re-merging of argument value definitions. Distinct
 	 * ValueHolder instances carrying the same content are of course allowed.
 	 */
 	public void addArgumentValues(@Nullable ConstructorArgumentValues other) {
+		// 不等于null判断也可以使用 "!="
 		if (other != null) {
 			other.indexedArgumentValues.forEach(
 				(index, argValue) -> addOrMergeIndexedArgumentValue(index, argValue.copy())
 			);
+			// stream 流的filter过滤器和forEach迭代
 			other.genericArgumentValues.stream()
 					.filter(valueHolder -> !this.genericArgumentValues.contains(valueHolder))
 					.forEach(valueHolder -> addOrMergeGenericArgumentValue(valueHolder.copy()));
@@ -226,6 +228,7 @@ public class ConstructorArgumentValues {
 	 */
 	private void addOrMergeGenericArgumentValue(ValueHolder newValue) {
 		if (newValue.getName() != null) {
+			// for 里面进行迭代器的迭代每一个元素，下面的是List，使用迭代器后可以改变这个集合
 			for (Iterator<ValueHolder> it = this.genericArgumentValues.iterator(); it.hasNext();) {
 				ValueHolder currentValue = it.next();
 				if (newValue.getName().equals(currentValue.getName())) {
@@ -335,7 +338,7 @@ public class ConstructorArgumentValues {
 	}
 
 	/**
-	 * Look for an argument value that either corresponds to the given index
+	 * Look for an argument value that either corresponds to(对应于) the given index
 	 * in the constructor argument list or generically matches by type.
 	 * @param index the index in the constructor argument list
 	 * @param requiredType the parameter type to match (can be {@code null}
@@ -437,6 +440,7 @@ public class ConstructorArgumentValues {
 
 	@Override
 	public int hashCode() {
+		// 下面出现了7,31,29这样的硬编码
 		int hashCode = 7;
 		for (ValueHolder valueHolder : this.genericArgumentValues) {
 			hashCode = 31 * hashCode + valueHolder.contentHashCode();
@@ -452,6 +456,8 @@ public class ConstructorArgumentValues {
 	/**
 	 * Holder for a constructor argument value, with an optional type
 	 * attribute indicating the target type of the actual constructor argument.
+	 *
+	 * 内部类的使用还是比较少
 	 */
 	public static class ValueHolder implements BeanMetadataElement {
 
@@ -497,6 +503,7 @@ public class ConstructorArgumentValues {
 		 * @param name the name of the constructor argument
 		 */
 		public ValueHolder(@Nullable Object value, @Nullable String type, @Nullable String name) {
+			// 构造函数的参数赋值方式
 			this.value = value;
 			this.type = type;
 			this.name = name;
@@ -595,6 +602,7 @@ public class ConstructorArgumentValues {
 		 * same content to reside in the same Set.
 		 */
 		private boolean contentEquals(ValueHolder other) {
+			// 判断对象相等也可以使用"=="，ObjectUtils中有null安全的相当判断
 			return (this == other ||
 					(ObjectUtils.nullSafeEquals(this.value, other.value) && ObjectUtils.nullSafeEquals(this.type, other.type)));
 		}
@@ -610,7 +618,7 @@ public class ConstructorArgumentValues {
 		}
 
 		/**
-		 * Create a copy of this ValueHolder: that is, an independent
+		 * Create a copy of this ValueHolder: that is, an independent(独立的)
 		 * ValueHolder instance with the same contents.
 		 */
 		public ValueHolder copy() {
@@ -619,5 +627,5 @@ public class ConstructorArgumentValues {
 			return copy;
 		}
 	}
-
+	// read for mark
 }
