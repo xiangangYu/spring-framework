@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2018 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package test.mixin;
+package org.springframework.aot.hint.support;
 
+import org.springframework.aot.hint.RuntimeHints;
+import org.springframework.aot.hint.RuntimeHintsRegistrar;
 
 /**
- * Simple interface to use for mixins
+ * {@link RuntimeHintsRegistrar} to register hints for {@link org.springframework.core.SpringProperties}.
  *
- * @author Rod Johnson
- *
+ * @author Brian Clozel
+ * @since 6.1
  */
-public interface Lockable {
+class SpringPropertiesRuntimeHints implements RuntimeHintsRegistrar {
 
-	void lock();
-
-	void unlock();
-
-	boolean locked();
+		@Override
+		public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
+			hints.resources().registerPattern("spring.properties");
+		}
 }

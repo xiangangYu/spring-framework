@@ -1,22 +1,7 @@
-// 文件描述：settings.gradle是模块Module配置文件，主要是用于配置子模块，根目录下的setting.gradle脚本文件是针对module的全局配置
-
-// 插件管理
-pluginManagement {
-	// 仓库
-	repositories {
-		// 仓库中心
-		mavenCentral()
-		// gradle 插件门户
-		gradlePluginPortal()
-		// maven 仓库
-		maven { url "https://repo.spring.io/release" }
-	}
-}
-
-// 插件
 plugins {
-	id "com.gradle.enterprise" version "3.12.6"
+	id "com.gradle.enterprise" version "3.14"
 	id "io.spring.ge.conventions" version "0.0.13"
+	id "org.gradle.toolchains.foojay-resolver-convention" version "0.7.0"
 }
 
 // 引入的子项目
