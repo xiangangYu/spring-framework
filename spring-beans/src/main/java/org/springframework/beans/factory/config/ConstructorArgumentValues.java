@@ -43,6 +43,9 @@ import org.springframework.util.ObjectUtils;
  */
 public class ConstructorArgumentValues {
 
+	/**
+	 * LinkedHashMap与HashMap的区别主要是前者是有序的，而后者hash不能保证插入的顺序
+	 */
 	private final Map<Integer, ValueHolder> indexedArgumentValues = new LinkedHashMap<>();
 
 	private final List<ValueHolder> genericArgumentValues = new ArrayList<>();
@@ -512,6 +515,9 @@ public class ConstructorArgumentValues {
 		/**
 		 * Return the value for the constructor argument.
 		 */
+		// 关于 @Nullable可以用来修改变量，表明在某些条件下可以可以为null
+		//  Should be used at parameter, return value, and field level. Methods override should
+		// repeat parent {@code @Nullable} annotations unless they behave differently.
 		@Nullable
 		public Object getValue() {
 			return this.value;
@@ -614,10 +620,61 @@ public class ConstructorArgumentValues {
 		 * ValueHolder instance with the same contents.
 		 */
 		public ValueHolder copy() {
+			// 这个copy是重新new了一个对象，所以是深copy
 			ValueHolder copy = new ValueHolder(this.value, this.type, this.name);
 			copy.setSource(this.source);
 			return copy;
 		}
 	}
 
+//	/**
+//	 * 我们知道HashMap的变量顺序是不可预测的，这意味着便利的输出顺序并不一定和HashMap的插入顺序是一致的。
+//	 * 这个特性通常会对我们的工作造成一定的困扰。为了实现这个功能，我们可以使用LinkedHashMap
+//	 * @param args
+//	 */
+//	public static void main(String[] args) {
+//		/**
+//		 *
+//		 * 我们知道HashMap的变量顺序是不可预测的，这意味着便利的输出顺序并不一定和HashMap的插入顺序是一致的。
+//		 * 这个特性通常会对我们的工作造成一定的困扰。为了实现这个功能，我们可以使用LinkedHashMap。
+//		 * 这个Entry继承自HashMap.Node，多了一个before，after来实现Node之间的连接。
+//		 * 通过这个新创建的Entry，就可以保证遍历的顺序和插入的顺序一致。
+//		 */
+//		LinkedHashMap<String, String> map = new LinkedHashMap<>();
+//		map.put("add", "desk");
+//		map.put("aaa", "ask");
+//		map.put("ccc", "check");
+//		map.keySet().forEach(System.out::println);
+//		/**
+//		 * ddd
+//		 * aaa
+//		 * ccc
+//		 */
+//		/**
+//		 * 当accessOrder设置成为true的时候，就开启了 access-order
+//		 */
+//	}
+
+//	public void accessOrder(){
+//		LinkedHashMap<String, String> map = new LinkedHashMap<>(16, .75f, true);
+//		map.put("ddd","desk");
+//		map.put("aaa","ask");
+//		map.put("ccc","check");
+//		map.keySet().forEach(System.out::println);
+//		map.get("aaa");
+//		map.keySet().forEach(System.out::println);
+//		/**
+//		 * ddd
+//		 * aaa
+//		 * ccc
+//		 * ddd
+//		 * ccc
+//		 * aaa
+//		 */
+//		/**
+//		 * 我们看到，因为访问了一次“aaa“，从而导致遍历的时候排到了最后。
+//		 */
+//	}
+
+	// read for mark
 }
