@@ -95,6 +95,7 @@ import org.springframework.util.ClassUtils;
  */
 public class CustomEditorConfigurer implements BeanFactoryPostProcessor, Ordered {
 
+	// logger 的修饰符不一定都是private static final,下面的这个就是protected final修改的
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	private int order = Ordered.LOWEST_PRECEDENCE;  // default: same as non-Ordered
@@ -151,5 +152,7 @@ public class CustomEditorConfigurer implements BeanFactoryPostProcessor, Ordered
 			this.customEditors.forEach(beanFactory::registerCustomEditor);
 		}
 	}
+
+	// read for mark
 
 }
