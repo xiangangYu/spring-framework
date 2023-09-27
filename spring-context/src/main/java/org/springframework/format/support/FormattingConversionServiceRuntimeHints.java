@@ -14,17 +14,22 @@
  * limitations under the License.
  */
 
-package test.aspect;
+package org.springframework.format.support;
 
-import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.aot.hint.RuntimeHints;
+import org.springframework.aot.hint.RuntimeHintsRegistrar;
+import org.springframework.aot.hint.TypeReference;
 
 /**
- * @author Sam Brannen
- * @since 6.0.6
+ * {@link RuntimeHintsRegistrar} to register hints for {@link DefaultFormattingConversionService}.
+ *
+ * @author Brian Clozel
+ * @since 6.1
  */
-public class CommonPointcuts {
+class FormattingConversionServiceRuntimeHints implements RuntimeHintsRegistrar {
 
-	@Pointcut("execution(* getAge())")
-	public void getAgeExecution() {}
-
+	@Override
+	public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
+		hints.reflection().registerType(TypeReference.of("javax.money.MonetaryAmount"));
+	}
 }

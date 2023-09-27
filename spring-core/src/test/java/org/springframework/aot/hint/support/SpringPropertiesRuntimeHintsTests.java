@@ -14,52 +14,39 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.annotation;
+package org.springframework.aot.hint.support;
 
 
-import jakarta.inject.Inject;
-import jakarta.inject.Provider;
-import jakarta.inject.Qualifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.aot.hint.predicate.RuntimeHintsPredicates;
-import org.springframework.beans.factory.aot.AotServices;
+import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for {@link JakartaAnnotationsRuntimeHints}.
- *
+ * Tests for {@link SpringPropertiesRuntimeHints}.
  * @author Brian Clozel
  */
-class JakartaAnnotationsRuntimeHintsTests {
+class SpringPropertiesRuntimeHintsTests {
 
-	private final RuntimeHints hints = new RuntimeHints();
+	private RuntimeHints hints;
 
 	@BeforeEach
 	void setup() {
-		AotServices.factories().load(RuntimeHintsRegistrar.class)
-				.forEach(registrar -> registrar.registerHints(this.hints,
-						ClassUtils.getDefaultClassLoader()));
+		this.hints = new RuntimeHints();
+		SpringFactoriesLoader.forResourceLocation("META-INF/spring/aot.factories")
+				.load(RuntimeHintsRegistrar.class).forEach(registrar -> registrar
+						.registerHints(this.hints, ClassUtils.getDefaultClassLoader()));
 	}
 
 	@Test
-	void jakartaInjectAnnotationHasHints() {
-		assertThat(RuntimeHintsPredicates.reflection().onType(Inject.class)).accepts(this.hints);
-	}
-
-	@Test
-	void jakartaProviderAnnotationHasHints() {
-		assertThat(RuntimeHintsPredicates.reflection().onType(Provider.class)).accepts(this.hints);
-	}
-
-	@Test
-	void jakartaQualifierAnnotationHasHints() {
-		assertThat(RuntimeHintsPredicates.reflection().onType(Qualifier.class)).accepts(this.hints);
+	void springPropertiesResourceHasHints() {
+		assertThat(RuntimeHintsPredicates.resource().forResource("spring.properties")).accepts(this.hints);
 	}
 
 }

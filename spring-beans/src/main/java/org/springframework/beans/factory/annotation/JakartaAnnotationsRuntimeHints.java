@@ -20,12 +20,11 @@ import java.util.stream.Stream;
 
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
+import org.springframework.aot.hint.TypeReference;
 import org.springframework.lang.Nullable;
-import org.springframework.util.ClassUtils;
 
 /**
  * {@link RuntimeHintsRegistrar} for Jakarta annotations.
- * <p>Hints are only registered if Jakarta inject is on the classpath.
  *
  * @author Brian Clozel
  */
@@ -38,6 +37,8 @@ class JakartaAnnotationsRuntimeHints implements RuntimeHintsRegistrar {
 					hints.reflection().registerType(ClassUtils.resolveClassName(annotationType, classLoader)));
 			//resolveClassName方法Resolve the given class name into a Class instance
 		}
+		Stream.of("jakarta.inject.Inject", "jakarta.inject.Provider", "jakarta.inject.Qualifier").forEach(typeName ->
+				hints.reflection().registerType(TypeReference.of(typeName)));
 	}
 
 	// read for mark
