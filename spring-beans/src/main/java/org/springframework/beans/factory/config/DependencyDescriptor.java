@@ -65,6 +65,7 @@ public class DependencyDescriptor extends InjectionPoint implements Serializable
 
 	private final boolean required;
 
+	// eager 渴望、急切
 	private final boolean eager;
 
 	private int nestingLevel = 1;
@@ -142,7 +143,7 @@ public class DependencyDescriptor extends InjectionPoint implements Serializable
 	 */
 	public DependencyDescriptor(DependencyDescriptor original) {
 		super(original);
-
+		// 构造函数参数赋值
 		this.declaringClass = original.declaringClass;
 		this.methodName = original.methodName;
 		this.parameterTypes = original.parameterTypes;
@@ -197,6 +198,7 @@ public class DependencyDescriptor extends InjectionPoint implements Serializable
 	 * eagerly resolving potential target beans for type matching.
 	 */
 	public boolean isEager() {
+		// 表示是否立即依赖注入
 		return this.eager;
 	}
 
@@ -441,5 +443,7 @@ public class DependencyDescriptor extends InjectionPoint implements Serializable
 			return (property != null && property.getReturnType().isMarkedNullable());
 		}
 	}
+
+	// read for mark
 
 }

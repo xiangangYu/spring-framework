@@ -73,6 +73,7 @@ public class CustomScopeConfigurer implements BeanFactoryPostProcessor, BeanClas
 	 */
 	public void addScope(String scopeName, Scope scope) {
 		if (this.scopes == null) {
+			// new 一个hash 后面为什么要增加一个初始化1
 			this.scopes = new LinkedHashMap<>(1);
 		}
 		this.scopes.put(scopeName, scope);
@@ -97,6 +98,7 @@ public class CustomScopeConfigurer implements BeanFactoryPostProcessor, BeanClas
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
 		if (this.scopes != null) {
+			// forEach 后面接的是lambda表达式
 			this.scopes.forEach((scopeKey, value) -> {
 				if (value instanceof Scope scope) {
 					beanFactory.registerScope(scopeKey, scope);
@@ -118,5 +120,6 @@ public class CustomScopeConfigurer implements BeanFactoryPostProcessor, BeanClas
 			});
 		}
 	}
+	// read for mark
 
 }

@@ -49,4 +49,6 @@ public interface BeanClassLoaderAware extends Aware {
 	 */
 	void setBeanClassLoader(ClassLoader classLoader);
 
+	// read for mark
+
 }

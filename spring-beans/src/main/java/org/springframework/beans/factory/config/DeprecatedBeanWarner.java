@@ -34,6 +34,7 @@ public class DeprecatedBeanWarner implements BeanFactoryPostProcessor {
 
 	/**
 	 * Logger available to subclasses.
+	 * java 的transient关键字为我们提供了便利，你只需要实现Serilizable接口，将不需要序列化的属性前添加关键字transient
 	 */
 	protected transient Log logger = LogFactory.getLog(getClass());
 
@@ -110,5 +111,7 @@ public class DeprecatedBeanWarner implements BeanFactoryPostProcessor {
 	protected boolean isLogEnabled() {
 		return logger.isWarnEnabled();
 	}
+
+	// read for mark
 
 }

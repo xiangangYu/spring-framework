@@ -124,6 +124,7 @@ public class InjectionPoint {
 		if (this.field != null) {
 			Annotation[] fieldAnnotations = this.fieldAnnotations;
 			if (fieldAnnotations == null) {
+				// 对field获取注解
 				fieldAnnotations = this.field.getAnnotations();
 				this.fieldAnnotations = fieldAnnotations;
 			}
@@ -151,6 +152,7 @@ public class InjectionPoint {
 	 * indicating the injection type.
 	 */
 	public Class<?> getDeclaredType() {
+		// 三级表达式直接返回
 		return (this.field != null ? this.field.getType() : obtainMethodParameter().getParameterType());
 	}
 
@@ -159,6 +161,7 @@ public class InjectionPoint {
 	 * @return the Field / Method / Constructor as Member
 	 */
 	public Member getMember() {
+		// 三级表达式直接返回
 		return (this.field != null ? this.field : obtainMethodParameter().getMember());
 	}
 
