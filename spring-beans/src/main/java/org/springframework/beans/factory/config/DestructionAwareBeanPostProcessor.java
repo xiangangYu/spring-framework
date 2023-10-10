@@ -48,7 +48,7 @@ public interface DestructionAwareBeanPostProcessor extends BeanPostProcessor {
 	 * post-processor.
 	 * <p>The default implementation returns {@code true}. If a pre-5 implementation
 	 * of {@code DestructionAwareBeanPostProcessor} does not provide a concrete
-	 * implementation of this method, Spring silently assumes {@code true} as well.
+	 * implementation of this method, Spring silently(默默) assumes {@code true} as well.
 	 * @param bean the bean instance to check
 	 * @return {@code true} if {@link #postProcessBeforeDestruction} is supposed to
 	 * be called for this bean instance eventually, or {@code false} if not needed
@@ -57,5 +57,7 @@ public interface DestructionAwareBeanPostProcessor extends BeanPostProcessor {
 	default boolean requiresDestruction(Object bean) {
 		return true;
 	}
+
+	// read for mark
 
 }

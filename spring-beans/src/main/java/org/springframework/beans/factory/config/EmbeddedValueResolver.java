@@ -24,7 +24,7 @@ import org.springframework.util.StringValueResolver;
  * expressions against a {@link ConfigurableBeanFactory}.
  *
  * <p>Note that this adapter resolves expressions as well, in contrast
- * to the {@link ConfigurableBeanFactory#resolveEmbeddedValue} method.
+ * to(相比之下) the {@link ConfigurableBeanFactory#resolveEmbeddedValue} method.
  * The {@link BeanExpressionContext} used is for the plain bean factory,
  * with no scope specified for any contextual objects to access.
  *
@@ -38,6 +38,7 @@ public class EmbeddedValueResolver implements StringValueResolver {
 
 	private final BeanExpressionContext exprContext;
 
+	// 下面的Nullable表示属性可以为空
 	@Nullable
 	private final BeanExpressionResolver exprResolver;
 
@@ -58,5 +59,7 @@ public class EmbeddedValueResolver implements StringValueResolver {
 		}
 		return value;
 	}
+
+	// read for mark
 
 }
