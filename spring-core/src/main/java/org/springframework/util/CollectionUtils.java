@@ -90,7 +90,7 @@ public abstract class CollectionUtils {
 
 	/**
 	 * Instantiate a new {@link LinkedHashMap} with an initial capacity
-	 * that can accommodate the specified number of elements without
+	 * that can accommodate(容纳) the specified number of elements without
 	 * any immediate resize/rehash operations to be expected.
 	 * <p>This differs from the regular {@link LinkedHashMap} constructor
 	 * which takes an initial capacity relative to a load factor but is

@@ -59,6 +59,7 @@ public class ListFactoryBean extends AbstractFactoryBean<List<Object>> {
 	@SuppressWarnings("rawtypes")
 	public void setTargetListClass(@Nullable Class<? extends List> targetListClass) {
 		if (targetListClass == null) {
+			// 在很多地方抛出了Exception，这种在不满足条件的情况下直接抛出在框架中见的还是比较多
 			throw new IllegalArgumentException("'targetListClass' must not be null");
 		}
 		if (!List.class.isAssignableFrom(targetListClass)) {
@@ -102,5 +103,7 @@ public class ListFactoryBean extends AbstractFactoryBean<List<Object>> {
 		}
 		return result;
 	}
+
+	// read for mark
 
 }

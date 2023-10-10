@@ -25,7 +25,7 @@ import org.springframework.lang.Nullable;
  * and a callback after instantiation but before explicit properties are set or
  * autowiring occurs.
  *
- * <p>Typically used to suppress default instantiation for specific target beans,
+ * <p>Typically used to suppress(抑制) default instantiation for specific target beans,
  * for example to create proxies with special TargetSources (pooling targets,
  * lazily initializing targets, etc), or to implement additional injection strategies
  * such as field injection.
@@ -55,7 +55,7 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 	 * will be passed in here.
 	 * <p>Post-processors may implement the extended
 	 * {@link SmartInstantiationAwareBeanPostProcessor} interface in order
-	 * to predict the type of the bean object that they are going to return here.
+	 * to predict(预测) the type of the bean object that they are going to return here.
 	 * <p>The default implementation returns {@code null}.
 	 * @param beanClass the class of the bean to be instantiated
 	 * @param beanName the name of the bean
@@ -66,6 +66,8 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 	 * @see org.springframework.beans.factory.support.AbstractBeanDefinition#getBeanClass()
 	 * @see org.springframework.beans.factory.support.AbstractBeanDefinition#getFactoryMethodName()
 	 */
+	// 在java8以后，接口中可以添加使用default或者static修饰的方法，default修饰方法只能在接口中使用，
+	// 在接口种被default标记的方法为普通方法，可以直接写方法体。实现类会继承接口中的default方法如果接口A中有default方法：
 	@Nullable
 	default Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
 		return null;
@@ -108,5 +110,7 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 
 		return pvs;
 	}
+
+	// read for mark
 
 }
