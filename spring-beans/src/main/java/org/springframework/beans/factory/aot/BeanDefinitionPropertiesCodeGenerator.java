@@ -196,7 +196,7 @@ class BeanDefinitionPropertiesCodeGenerator {
 					Method writeMethod = writeMethods.get(propertyValue.getName());
 					if (writeMethod != null) {
 						this.hints.reflection().registerMethod(writeMethod, ExecutableMode.INVOKE);
-						// ReflectionUtils#findField searches recursively in the type hierarchy
+						// ReflectionUtils#findField searches recursively(递归) in the type hierarchy
 						Class<?> searchType = beanDefinition.getTargetType();
 						while (searchType != null && searchType != writeMethod.getDeclaringClass()) {
 							this.hints.reflection().registerType(searchType, MemberCategory.DECLARED_FIELDS);

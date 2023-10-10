@@ -31,7 +31,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * {@link FactoryBean} which retrieves a static or non-static field value.
+ * {@link FactoryBean} which retrieves(撷取) a static or non-static field value.
  *
  * <p>Typically used for retrieving public static final constants. Usage example:
  *
@@ -58,8 +58,10 @@ import org.springframework.util.StringUtils;
 public class FieldRetrievingFactoryBean
 		implements FactoryBean<Object>, BeanNameAware, BeanClassLoaderAware, InitializingBean {
 
+	// 上面的换行是在类后面的implements前直接换行了，代码看上去比较简洁
+
 	@Nullable
-	private Class<?> targetClass;
+	private Class<?> targetClass; // 很多地方看到Class<?> 表示任意的类
 
 	@Nullable
 	private Object targetObject;
@@ -214,6 +216,7 @@ public class FieldRetrievingFactoryBean
 		if (this.fieldObject == null) {
 			throw new FactoryBeanNotInitializedException();
 		}
+		// makeAccessible设置属性可访问
 		ReflectionUtils.makeAccessible(this.fieldObject);
 		if (this.targetObject != null) {
 			// instance field

@@ -39,7 +39,7 @@ public enum MemberCategory {
 
 	/**
 	 * A category that represents {@linkplain Class#getDeclaredFields() declared
-	 * fields}: all fields defined by the class but not inherited fields.
+	 * fields}: all fields defined by the class but not inherited(继承) fields.
 	 * @see Class#getDeclaredFields()
 	 */
 	DECLARED_FIELDS,
