@@ -133,6 +133,7 @@ public class ObjectFactoryCreatingFactoryBean extends AbstractFactoryBean<Object
 	}
 
 
+	// 内部类、好久没看到了
 	/**
 	 * Independent inner class - for serialization purposes.
 	 */
@@ -153,5 +154,7 @@ public class ObjectFactoryCreatingFactoryBean extends AbstractFactoryBean<Object
 			return this.beanFactory.getBean(this.targetBeanName);
 		}
 	}
+
+	// read for mark
 
 }
