@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-package org.springframework.test.context.env;
-
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.aot.DisabledInAotMode;
+package a;
 
 /**
- * Integration tests for {@link TestPropertySource @TestPropertySource}
- * support with an explicitly named properties file in the classpath.
+ * Test class for {@code org.springframework.util.ClassUtilsTests}.
  *
- * @author Sam Brannen
- * @since 4.1
+ * @author Johnny Lim
  */
-@TestPropertySource("explicit.properties")
-// Since ExplicitPropertiesFileTestPropertySourceTests is disabled in AOT mode, this class must be also.
-@DisabledInAotMode
-public class ExplicitPropertiesFileInClasspathTestPropertySourceTests extends AbstractExplicitPropertiesFileTests {
+public class ClassHavingNestedClass {
+
+	public static class NestedClass {
+	}
+
 }
