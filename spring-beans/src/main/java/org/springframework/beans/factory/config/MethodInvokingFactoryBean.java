@@ -149,4 +149,6 @@ public class MethodInvokingFactoryBean extends MethodInvokingBean implements Fac
 		return this.singleton;
 	}
 
+	// read for mark
+
 }

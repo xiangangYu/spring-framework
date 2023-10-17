@@ -59,4 +59,5 @@ import org.junit.jupiter.api.condition.DisabledIf;
 @DisabledIf(value = "org.springframework.aot.AotDetector#useGeneratedArtifacts",
 		disabledReason = "Disabled in Spring AOT mode")
 public @interface DisabledInAotMode {
+	// read for mark
 }
