@@ -449,7 +449,7 @@ public final class BeanInstanceSupplier<T> extends AutowiredElementResolver impl
 	/**
 	 * Performs lookup of the {@link Executable}.
 	 */
-	static abstract class ExecutableLookup {
+	abstract static class ExecutableLookup {
 
 		// A shared superclass for the common functionality of Method and Constructor.
 		abstract Executable get(RegisteredBean registeredBean);
