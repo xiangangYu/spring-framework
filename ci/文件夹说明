@@ -1,0 +1,7 @@
+Concourse简介Concourse是为执行敏捷开发并需要处理复杂交付排列的团队重新设计的CI工具，由Pivotal公司赞助开源，目前在市场上已经普遍使用。
+Concourse以pipeline机制运行集成任务。pipeline将Task、Resource、Job三者有机地结合起来，pipeline采用YAML文件配置，该配置可通过版本控制，
+方便移植和恢复。其Build构建在容器中运行，隔离各个环境、避免不同环境之间相互污染情况发生。
+相对于现在广泛应用的CI/CD工具Jenkins，Concourse的主要优点在于：
+ 1 为pipeline提供第一级的支持
+ 2 在容器中运行相互隔离的构建工作、可避免使用雪花型构建服务器
+ 3 能够方便地访问构建日志

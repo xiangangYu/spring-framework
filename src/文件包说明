@@ -1,0 +1,7 @@
+在spring中的src目录下，这个包是用来做什么的呢？
+
+checkstyle:代码检查
+eclipse:eclipse配置
+idea：spring-framework.xml 代码风格配置文件
+nohttp:类似于hutu进行http请求的
+
