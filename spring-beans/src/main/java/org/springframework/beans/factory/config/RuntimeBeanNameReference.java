@@ -82,4 +82,6 @@ public class RuntimeBeanNameReference implements BeanReference {
 		return '<' + getBeanName() + '>';
 	}
 
+	// read for mark
+
 }

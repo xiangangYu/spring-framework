@@ -105,4 +105,6 @@ public class PropertiesFactoryBean extends PropertiesLoaderSupport
 		return mergeProperties();
 	}
 
+	// read for mark
+
 }

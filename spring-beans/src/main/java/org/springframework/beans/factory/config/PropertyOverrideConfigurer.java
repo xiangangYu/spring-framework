@@ -64,6 +64,7 @@ import org.springframework.beans.factory.BeanInitializationException;
  */
 public class PropertyOverrideConfigurer extends PropertyResourceConfigurer {
 
+	// 下面的常量和变量，是先定义了常量再定义变量，为什么不直接定义变量为常量的值呢？这个值得留意
 	/**
 	 * The default bean name separator.
 	 */
@@ -74,6 +75,7 @@ public class PropertyOverrideConfigurer extends PropertyResourceConfigurer {
 
 	private boolean ignoreInvalidKeys = false;
 
+	// 下面的Set定义为什么这么写呢？
 	/**
 	 * Contains names of beans that have overrides.
 	 */
@@ -103,12 +105,14 @@ public class PropertyOverrideConfigurer extends PropertyResourceConfigurer {
 	protected void processProperties(ConfigurableListableBeanFactory beanFactory, Properties props)
 			throws BeansException {
 
+		// 下面的for循环，第三个参数没有，这个用的还是比较少
 		for (Enumeration<?> names = props.propertyNames(); names.hasMoreElements();) {
 			String key = (String) names.nextElement();
 			try {
 				processKey(beanFactory, key, props.getProperty(key));
 			}
 			catch (BeansException ex) {
+				// 一般在业务处理中很少直接抛出异常，但是看框架项目很多地方就直接抛出了
 				String msg = "Could not process key '" + key + "' in PropertyOverrideConfigurer";
 				if (!this.ignoreInvalidKeys) {
 					throw new BeanInitializationException(msg, ex);
@@ -165,7 +169,9 @@ public class PropertyOverrideConfigurer extends PropertyResourceConfigurer {
 	 * @return whether there were property overrides for the named bean
 	 */
 	public boolean hasPropertyOverridesFor(String beanName) {
+		// 下面的方法没有先定义一个变量，再进行返回，而是直接返回了
 		return this.beanNames.contains(beanName);
 	}
 
+	// read for mark
 }

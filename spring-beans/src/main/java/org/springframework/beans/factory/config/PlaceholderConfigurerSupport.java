@@ -90,6 +90,7 @@ import org.springframework.util.StringValueResolver;
  */
 public abstract class PlaceholderConfigurerSupport extends PropertyResourceConfigurer
 		implements BeanNameAware, BeanFactoryAware {
+	// 在对常量属性进行注释时，可以在一行使用/** */，属性常量是FFF_GGG_TTT大写下划线大写的模式
 
 	/** Default placeholder prefix: {@value}. */
 	public static final String DEFAULT_PLACEHOLDER_PREFIX = "${";
@@ -101,6 +102,7 @@ public abstract class PlaceholderConfigurerSupport extends PropertyResourceConfi
 	public static final String DEFAULT_VALUE_SEPARATOR = ":";
 
 
+	// 下面的是变量定义，而不是常量定义
 	/** Defaults to {@value #DEFAULT_PLACEHOLDER_PREFIX}. */
 	protected String placeholderPrefix = DEFAULT_PLACEHOLDER_PREFIX;
 
@@ -113,6 +115,7 @@ public abstract class PlaceholderConfigurerSupport extends PropertyResourceConfi
 
 	protected boolean trimValues = false;
 
+	// 属性值是可以赋值或者不赋值的
 	@Nullable
 	protected String nullValue;
 
@@ -153,7 +156,7 @@ public abstract class PlaceholderConfigurerSupport extends PropertyResourceConfi
 
 	/**
 	 * Specify whether to trim resolved values before applying them,
-	 * removing superfluous whitespace from the beginning and end.
+	 * removing superfluous(多余) whitespace from the beginning and end.
 	 * <p>Default is {@code false}.
 	 * @since 4.3
 	 */
@@ -165,7 +168,7 @@ public abstract class PlaceholderConfigurerSupport extends PropertyResourceConfi
 	 * Set a value that should be treated as {@code null} when resolved
 	 * as a placeholder value: e.g. "" (empty String) or "null".
 	 * <p>Note that this will only apply to full property values,
-	 * not to parts of concatenated values.
+	 * not to parts of concatenated(串联) values.
 	 * <p>By default, no such null value is defined. This means that
 	 * there is no way to express {@code null} as a property value
 	 * unless you explicitly map a corresponding value here.
@@ -177,7 +180,7 @@ public abstract class PlaceholderConfigurerSupport extends PropertyResourceConfi
 	/**
 	 * Set whether to ignore unresolvable placeholders.
 	 * <p>Default is "false": An exception will be thrown if a placeholder fails
-	 * to resolve. Switch this flag to "true" in order to preserve the placeholder
+	 * to resolve. Switch this flag to "true" in order to preserve(保留) the placeholder
 	 * String as-is in such a case, leaving it up to other placeholder configurers
 	 * to resolve it.
 	 */
@@ -188,7 +191,7 @@ public abstract class PlaceholderConfigurerSupport extends PropertyResourceConfi
 	/**
 	 * Only necessary to check that we're not parsing our own bean definition,
 	 * to avoid failing on unresolvable placeholders in properties file locations.
-	 * The latter case can happen with placeholders for system properties in
+	 * The latter(后者) case can happen with placeholders for system properties in
 	 * resource locations.
 	 * @see #setLocations
 	 * @see org.springframework.core.io.ResourceEditor
@@ -238,5 +241,7 @@ public abstract class PlaceholderConfigurerSupport extends PropertyResourceConfi
 		// Resolve placeholders in embedded values such as annotation attributes.
 		beanFactoryToProcess.addEmbeddedValueResolver(valueResolver);
 	}
+
+	// read for mark
 
 }

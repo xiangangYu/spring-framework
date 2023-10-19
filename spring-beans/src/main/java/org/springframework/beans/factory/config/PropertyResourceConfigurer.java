@@ -100,6 +100,7 @@ public abstract class PropertyResourceConfigurer extends PropertiesLoaderSupport
 	 */
 	protected void convertProperties(Properties props) {
 		Enumeration<?> propertyNames = props.propertyNames();
+		// 枚举迭代跟Iterator迭代器迭代
 		while (propertyNames.hasMoreElements()) {
 			String propertyName = (String) propertyNames.nextElement();
 			String propertyValue = props.getProperty(propertyName);
@@ -150,5 +151,7 @@ public abstract class PropertyResourceConfigurer extends PropertiesLoaderSupport
 	 */
 	protected abstract void processProperties(ConfigurableListableBeanFactory beanFactory, Properties props)
 			throws BeansException;
+
+	// read for mark
 
 }
