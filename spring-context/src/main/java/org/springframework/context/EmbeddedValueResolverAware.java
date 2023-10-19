@@ -21,7 +21,7 @@ import org.springframework.util.StringValueResolver;
 
 /**
  * Interface to be implemented by any object that wishes to be notified of a
- * {@code StringValueResolver} for the resolution of embedded definition values.
+ * {@code StringValueResolver} for the resolution(解决方案、分辨率) of embedded definition values.
  *
  * <p>This is an alternative to a full ConfigurableBeanFactory dependency via the
  * {@code ApplicationContextAware}/{@code BeanFactoryAware} interfaces.
