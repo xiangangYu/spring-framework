@@ -23,7 +23,7 @@ import org.springframework.lang.Nullable;
 
 /**
  * Extension of the {@link InstantiationAwareBeanPostProcessor} interface,
- * adding a callback for predicting the eventual type of a processed bean.
+ * adding a callback for predicting(预测) the eventual(最终) type of a processed bean.
  *
  * <p><b>NOTE:</b> This interface is a special purpose interface, mainly for
  * internal use within the framework. In general, application-provided
@@ -106,5 +106,7 @@ public interface SmartInstantiationAwareBeanPostProcessor extends InstantiationA
 	default Object getEarlyBeanReference(Object bean, String beanName) throws BeansException {
 		return bean;
 	}
+
+	// read for mark
 
 }

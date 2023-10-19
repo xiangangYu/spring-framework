@@ -49,6 +49,7 @@ public abstract class AbstractBeanFactoryPointcutAdvisor extends AbstractPointcu
 	@Nullable
 	private BeanFactory beanFactory;
 
+	// transient 表示不序列化，volatile表示属性值要拉取共享内存数据，保证数据一致性
 	@Nullable
 	private transient volatile Advice advice;
 

@@ -237,4 +237,6 @@ public class TypedStringValue implements BeanMetadataElement, Comparable<TypedSt
 		return "TypedStringValue: value [" + this.value + "], target type [" + this.targetType + "]";
 	}
 
+	// read for mark
+
 }

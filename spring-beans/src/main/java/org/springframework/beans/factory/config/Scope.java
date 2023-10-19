@@ -151,4 +151,6 @@ public interface Scope {
 	@Nullable
 	String getConversationId();
 
+	// read for mark
+
 }

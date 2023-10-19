@@ -230,6 +230,7 @@ public class ServiceLocatorFactoryBean implements FactoryBean<Object>, BeanFacto
 	 * @see #createServiceLocatorException
 	 */
 	public void setServiceLocatorExceptionClass(Class<? extends Exception> serviceLocatorExceptionClass) {
+		// 下面的换行是从 “=” 号后面进行的
 		this.serviceLocatorExceptionConstructor =
 				determineServiceLocatorExceptionConstructor(serviceLocatorExceptionClass);
 	}
@@ -315,6 +316,7 @@ public class ServiceLocatorFactoryBean implements FactoryBean<Object>, BeanFacto
 	 */
 	protected Exception createServiceLocatorException(Constructor<Exception> exceptionConstructor, BeansException cause) {
 		Class<?>[] paramTypes = exceptionConstructor.getParameterTypes();
+		// 数组对象、好久没看到了
 		Object[] args = new Object[paramTypes.length];
 		for (int i = 0; i < paramTypes.length; i++) {
 			if (String.class == paramTypes[i]) {
@@ -423,5 +425,7 @@ public class ServiceLocatorFactoryBean implements FactoryBean<Object>, BeanFacto
 			return serviceLocatorReturnType;
 		}
 	}
+
+	// read for mark
 
 }
