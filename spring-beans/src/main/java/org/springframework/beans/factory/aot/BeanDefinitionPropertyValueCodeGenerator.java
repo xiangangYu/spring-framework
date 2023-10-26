@@ -150,7 +150,6 @@ class BeanDefinitionPropertyValueCodeGenerator {
 
 		@Nullable
 		CodeBlock generateCode(Object value, ResolvableType type);
-
 	}
 
 
@@ -169,7 +168,6 @@ class BeanDefinitionPropertyValueCodeGenerator {
 				'\'', "\\'",
 				'\\', "\\\\"
 		);
-
 
 		@Override
 		@Nullable
@@ -238,7 +236,6 @@ class BeanDefinitionPropertyValueCodeGenerator {
 			}
 			return null;
 		}
-
 	}
 
 
@@ -328,8 +325,8 @@ class BeanDefinitionPropertyValueCodeGenerator {
 			this.emptyResult = emptyResult;
 		}
 
-		@Override
 		@SuppressWarnings("unchecked")
+		@Override
 		@Nullable
 		public CodeBlock generateCode(Object value, ResolvableType type) {
 			if (this.collectionType.isInstance(value)) {
@@ -576,6 +573,7 @@ class BeanDefinitionPropertyValueCodeGenerator {
 		}
 	}
 
+
 	/**
 	 * {@link Delegate} for {@link TypedStringValue} types.
 	 */
@@ -603,5 +601,4 @@ class BeanDefinitionPropertyValueCodeGenerator {
 		}
 	}
 
-	// read for mark
 }
