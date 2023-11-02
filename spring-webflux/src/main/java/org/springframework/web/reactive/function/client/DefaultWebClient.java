@@ -515,10 +515,9 @@ final class DefaultWebClient implements WebClient {
 
 	private static class DefaultResponseSpec implements ResponseSpec {
 
-		private static final Predicate<HttpStatusCode> STATUS_CODE_ERROR = HttpStatusCode::isError;
-
 		private static final StatusHandler DEFAULT_STATUS_HANDLER =
-				new StatusHandler(STATUS_CODE_ERROR, ClientResponse::createException);
+				new StatusHandler(code -> code.value() >= 400, ClientResponse::createException);
+
 
 		private final HttpMethod httpMethod;
 
