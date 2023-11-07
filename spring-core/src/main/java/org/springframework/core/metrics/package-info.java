@@ -1,5 +1,5 @@
 /**
- * Support package for recording metrics during application startup.
+ * Support package for recording metrics(指标) during application startup.
  */
 @NonNullApi
 @NonNullFields

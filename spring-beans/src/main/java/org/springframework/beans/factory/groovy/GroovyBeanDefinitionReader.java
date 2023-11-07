@@ -246,7 +246,7 @@ public class GroovyBeanDefinitionReader extends AbstractBeanDefinitionReader imp
 		if (logger.isTraceEnabled()) {
 			logger.trace("Loading Groovy bean definitions from " + encodedResource);
 		}
-
+		// 在方法里面增加@SuppressWarnings是几个意思
 		@SuppressWarnings("serial")
 		Closure<Object> beans = new Closure<>(this) {
 			@Override
@@ -856,5 +856,7 @@ public class GroovyBeanDefinitionReader extends AbstractBeanDefinitionReader imp
 			}
 		}
 	}
+
+	// read for mark
 
 }

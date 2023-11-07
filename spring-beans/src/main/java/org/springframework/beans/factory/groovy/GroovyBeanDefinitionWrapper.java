@@ -237,4 +237,6 @@ class GroovyBeanDefinitionWrapper extends GroovyObjectSupport {
 		}
 	}
 
+	// read for mark
+
 }

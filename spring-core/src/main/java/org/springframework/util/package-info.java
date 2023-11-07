@@ -1,5 +1,5 @@
 /**
- * Miscellaneous utility classes, such as utilities for working with strings,
+ * Miscellaneous(杂项) utility classes, such as utilities for working with strings,
  * classes, collections, reflection, etc.
  */
 @NonNullApi
