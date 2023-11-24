@@ -19,6 +19,8 @@ ext {
 }
 
 // 对项目进行配置，下面进行了仓库和变量的配置
+description = "Spring Framework"
+
 configure(allprojects) { project ->
 	apply plugin: "org.springframework.build.localdev"
 	group = "org.springframework"
