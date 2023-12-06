@@ -24,7 +24,7 @@ import org.springframework.lang.Nullable;
  *
  * <p>The similarity between this class and the {@link NestedCheckedException}
  * class is unavoidable, as Java forces these two classes to have different
- * superclasses (ah, the inflexibility of concrete inheritance!).
+ * superclasses (ah, the inflexibility(不灵活) of concrete inheritance!).
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
