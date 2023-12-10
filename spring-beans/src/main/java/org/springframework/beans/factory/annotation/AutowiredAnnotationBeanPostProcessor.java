@@ -160,6 +160,9 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 		MergedBeanDefinitionPostProcessor, BeanRegistrationAotProcessor, PriorityOrdered, BeanFactoryAware {
 
 	// 大部分地方使用的是private static final Log, 这个要根据具体的业务来进行处理
+	private static final Constructor<?>[] EMPTY_CONSTRUCTOR_ARRAY = new Constructor<?>[0];
+
+
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	// 获取自动装配的注解类型，这里的Set使用了泛型，这里值得注意后面的初始化大小的值
@@ -182,7 +185,6 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 
 	private final Map<Class<?>, Constructor<?>[]> candidateConstructorsCache = new ConcurrentHashMap<>(256);
 
-	// 为什么这几个ConcurrentHashMap的初始化容量都是256？
 	private final Map<String, InjectionMetadata> injectionMetadataCache = new ConcurrentHashMap<>(256);
 
 
@@ -290,7 +292,25 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 
 	@Override
 	public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class<?> beanType, String beanName) {
+		// Register externally managed config members on bean definition.
 		findInjectionMetadata(beanName, beanType, beanDefinition);
+
+		// Use opportunity to clear caches which are not needed after singleton instantiation.
+		// The injectionMetadataCache itself is left intact since it cannot be reliably
+		// reconstructed in terms of externally managed config members otherwise.
+		if (beanDefinition.isSingleton()) {
+			this.candidateConstructorsCache.remove(beanType);
+			// With actual lookup overrides, keep it intact along with bean definition.
+			if (!beanDefinition.hasMethodOverrides()) {
+				this.lookupMethodsChecked.remove(beanName);
+			}
+		}
+	}
+
+	@Override
+	public void resetBeanDefinition(String beanName) {
+		this.lookupMethodsChecked.remove(beanName);
+		this.injectionMetadataCache.remove(beanName);
 	}
 
 	@Override
@@ -433,7 +453,7 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 										"default constructor to fall back to: " + candidates.get(0));
 							}
 						}
-						candidateConstructors = candidates.toArray(new Constructor<?>[0]);
+						candidateConstructors = candidates.toArray(EMPTY_CONSTRUCTOR_ARRAY);
 					}
 					else if (rawCandidates.length == 1 && rawCandidates[0].getParameterCount() > 0) {
 						candidateConstructors = new Constructor<?>[] {rawCandidates[0]};
@@ -446,7 +466,7 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 						candidateConstructors = new Constructor<?>[] {primaryConstructor};
 					}
 					else {
-						candidateConstructors = new Constructor<?>[0];
+						candidateConstructors = EMPTY_CONSTRUCTOR_ARRAY;
 					}
 					this.candidateConstructorsCache.put(beanClass, candidateConstructors);
 				}
@@ -556,7 +576,6 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 		final List<InjectionMetadata.InjectedElement> elements = new ArrayList<>();
 		Class<?> targetClass = clazz;
 
-		// do while 循环很少见到了
 		do {
 			final List<InjectionMetadata.InjectedElement> fieldElements = new ArrayList<>();
 			ReflectionUtils.doWithLocalFields(targetClass, field -> {
@@ -1091,7 +1110,5 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 		}
 
 	}
-
-	// read for mark
 
 }
