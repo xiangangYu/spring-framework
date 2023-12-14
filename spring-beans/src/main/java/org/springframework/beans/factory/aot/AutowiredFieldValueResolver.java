@@ -193,12 +193,14 @@ public final class AutowiredFieldValueResolver extends AutowiredElementResolver 
 			return value;
 		}
 		catch (BeansException ex) {
-			throw new UnsatisfiedDependencyException(null, beanName,
-					new InjectionPoint(field), ex);
+			throw new UnsatisfiedDependencyException(null, beanName, new InjectionPoint(field), ex);
 		}
 	}
 
 	private Field getField(RegisteredBean registeredBean) {
+		Field field = ReflectionUtils.findField(registeredBean.getBeanClass(), this.fieldName);
+		Assert.notNull(field, () -> "No field '" + this.fieldName + "' found on " +
+				registeredBean.getBeanClass().getName());
 		// 通过反射工具获取指定的field名字的Field对象
 		Field field = ReflectionUtils.findField(registeredBean.getBeanClass(),
 				this.fieldName);
