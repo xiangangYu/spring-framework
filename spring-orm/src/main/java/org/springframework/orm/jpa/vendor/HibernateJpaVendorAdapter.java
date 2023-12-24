@@ -34,7 +34,9 @@ import org.hibernate.dialect.HANAColumnStoreDialect;
 import org.hibernate.dialect.HSQLDialect;
 import org.hibernate.dialect.Informix10Dialect;
 import org.hibernate.dialect.MySQL57Dialect;
+import org.hibernate.dialect.MySQLDialect;
 import org.hibernate.dialect.Oracle12cDialect;
+import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgreSQL95Dialect;
 import org.hibernate.dialect.SQLServer2012Dialect;
 import org.hibernate.dialect.SybaseDialect;
@@ -193,15 +195,15 @@ public class HibernateJpaVendorAdapter extends AbstractJpaVendorAdapter {
 				default -> null;
 			};
 		}
-		else {  // Hibernate 6.2 aligned
+		else {  // Hibernate 6.2+ aligned
 			return switch (database) {
 				case DB2 -> DB2Dialect.class;
 				case DERBY -> org.hibernate.dialect.DerbyDialect.class;
 				case H2 -> H2Dialect.class;
 				case HANA -> HANAColumnStoreDialect.class;
 				case HSQL -> HSQLDialect.class;
-				case MYSQL -> MySQL57Dialect.class;
-				case ORACLE -> Oracle12cDialect.class;
+				case MYSQL -> MySQLDialect.class;
+				case ORACLE -> OracleDialect.class;
 				case POSTGRESQL -> org.hibernate.dialect.PostgreSQLDialect.class;
 				case SQL_SERVER -> SQLServer2012Dialect.class;
 				case SYBASE -> SybaseDialect.class;

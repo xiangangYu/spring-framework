@@ -118,7 +118,7 @@ public abstract class CoroutinesUtils {
 					for (KParameter parameter : function.getParameters()) {
 						switch (parameter.getKind()) {
 							case INSTANCE -> argMap.put(parameter, target);
-							case VALUE -> {
+							case VALUE, EXTENSION_RECEIVER -> {
 								if (!parameter.isOptional() || args[index] != null) {
 									if (parameter.getType().getClassifier() instanceof KClass<?> kClass && kClass.isValue()) {
 										Class<?> javaClass = JvmClassMappingKt.getJavaClass(kClass);
