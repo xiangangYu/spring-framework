@@ -82,6 +82,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
+ * Tests for {@link AutowiredAnnotationBeanPostProcessor}.
+ *
  * @author Juergen Hoeller
  * @author Mark Fisher
  * @author Sam Brannen
@@ -116,6 +118,20 @@ class AutowiredAnnotationBeanPostProcessorTests {
 		assertThatExceptionOfType(BeanCreationException.class)
 				.isThrownBy(() -> bf.getBean("testBean"))
 				.withRootCauseInstanceOf(IllegalStateException.class);
+	}
+
+	@Test
+	void processInjection() {
+		ResourceInjectionBean bean = new ResourceInjectionBean();
+		assertThat(bean.getTestBean()).isNull();
+		assertThat(bean.getTestBean2()).isNull();
+
+		TestBean tb = new TestBean();
+		bf.registerSingleton("testBean", tb);
+		bpp.processInjection(bean);
+
+		assertThat(bean.getTestBean()).isSameAs(tb);
+		assertThat(bean.getTestBean2()).isSameAs(tb);
 	}
 
 	@Test
