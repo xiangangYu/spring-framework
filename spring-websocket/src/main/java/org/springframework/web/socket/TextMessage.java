@@ -23,6 +23,8 @@ import org.springframework.lang.Nullable;
 /**
  * A text WebSocket message.
  *
+ * 文本ws消息
+ *
  * @author Rossen Stoyanchev
  * @since 4.0
  */

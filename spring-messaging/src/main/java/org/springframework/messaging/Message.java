@@ -27,6 +27,7 @@ package org.springframework.messaging;
  */
 public interface Message<T> {
 
+	// 好多地方看到T作为泛型类型
 	/**
 	 * Return the message payload.
 	 */

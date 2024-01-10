@@ -19,6 +19,8 @@ package org.springframework.web.socket;
 /**
  * A message that can be handled or sent on a WebSocket connection.
  *
+ * ws消息顶级接口，T是泛型
+ *
  * @author Rossen Stoyanchev
  * @since 4.0
  * @param <T> the payload type

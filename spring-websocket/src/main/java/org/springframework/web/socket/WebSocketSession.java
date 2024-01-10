@@ -73,12 +73,17 @@ public interface WebSocketSession extends Closeable {
 
 	/**
 	 * Return the address on which the request was received.
+	 *
+	 * 本地地址：服务端接收请求的地址
+	 *
 	 */
 	@Nullable
 	InetSocketAddress getLocalAddress();
 
 	/**
 	 * Return the address of the remote client.
+	 *
+	 * 远程地址：远程客户端地址
 	 */
 	@Nullable
 	InetSocketAddress getRemoteAddress();
@@ -126,6 +131,8 @@ public interface WebSocketSession extends Closeable {
 	 * {@link org.springframework.web.socket.handler.ConcurrentWebSocketSessionDecorator
 	 * ConcurrentWebSocketSessionDecorator}.
 	 * @see org.springframework.web.socket.handler.ConcurrentWebSocketSessionDecorator
+	 *
+	 * 发送消息：两种类型，text消息，二进制消息
 	 */
 	void sendMessage(WebSocketMessage<?> message) throws IOException;
 

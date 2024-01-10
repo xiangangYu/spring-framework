@@ -1,4 +1,5 @@
 plugins {
+	// gradle插件配置
 	id 'io.freefair.aspectj' version '8.4' apply false
 	// kotlinVersion is managed in gradle.properties
 	id 'org.jetbrains.kotlin.plugin.serialization' version "${kotlinVersion}" apply false
