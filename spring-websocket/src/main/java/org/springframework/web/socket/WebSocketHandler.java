@@ -77,4 +77,6 @@ public interface WebSocketHandler {
 	 */
 	boolean supportsPartialMessages();
 
+	// read for mark
+
 }

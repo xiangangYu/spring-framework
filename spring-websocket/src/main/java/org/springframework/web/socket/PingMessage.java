@@ -21,6 +21,8 @@ import java.nio.ByteBuffer;
 /**
  * A WebSocket ping message.
  *
+ * 用于客户端和服务端保持长连接的ping消息和pong消息
+ *
  * @author Rossen Stoyanchev
  * @since 4.0
  */
@@ -51,5 +53,7 @@ public final class PingMessage extends AbstractWebSocketMessage<ByteBuffer> {
 	protected String toStringPayload() {
 		return getPayload().toString();
 	}
+
+	// read for mark
 
 }

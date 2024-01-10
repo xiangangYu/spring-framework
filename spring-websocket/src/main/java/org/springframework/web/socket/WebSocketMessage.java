@@ -46,4 +46,6 @@ public interface WebSocketMessage<T> {
 	 */
 	boolean isLast();
 
+	// read for mark
+
 }

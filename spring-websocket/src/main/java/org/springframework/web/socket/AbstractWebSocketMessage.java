@@ -29,8 +29,10 @@ import org.springframework.util.ObjectUtils;
  */
 public abstract class AbstractWebSocketMessage<T> implements WebSocketMessage<T> {
 
+	// 消息的负载即消息的内容
 	private final T payload;
 
+	// 是否是最后的消息，针对一个消息分成多个片段的情况
 	private final boolean last;
 
 
@@ -76,12 +78,14 @@ public abstract class AbstractWebSocketMessage<T> implements WebSocketMessage<T>
 
 	@Override
 	public boolean equals(@Nullable Object other) {
+		// 重写Object的equals
 		return (this == other || (other instanceof AbstractWebSocketMessage<?> that &&
 				ObjectUtils.nullSafeEquals(this.payload, that.payload)));
 	}
 
 	@Override
 	public int hashCode() {
+		// 重写Object的hashCode
 		return ObjectUtils.nullSafeHashCode(this.payload);
 	}
 
@@ -92,5 +96,7 @@ public abstract class AbstractWebSocketMessage<T> implements WebSocketMessage<T>
 	}
 
 	protected abstract String toStringPayload();
+
+	// read for mark
 
 }

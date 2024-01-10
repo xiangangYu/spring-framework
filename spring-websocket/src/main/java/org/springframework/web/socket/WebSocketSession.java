@@ -155,4 +155,6 @@ public interface WebSocketSession extends Closeable {
 	 */
 	void close(CloseStatus status) throws IOException;
 
+	// read for mark
+
 }

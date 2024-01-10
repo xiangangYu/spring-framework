@@ -21,6 +21,8 @@ import java.nio.ByteBuffer;
 /**
  * A WebSocket pong message.
  *
+ * ws保持长连接的消息，ping消息和pong消息
+ *
  * @author Rossen Stoyanchev
  * @since 4.0
  */
@@ -51,5 +53,7 @@ public final class PongMessage extends AbstractWebSocketMessage<ByteBuffer> {
 	protected String toStringPayload() {
 		return getPayload().toString();
 	}
+
+	// read for mark
 
 }

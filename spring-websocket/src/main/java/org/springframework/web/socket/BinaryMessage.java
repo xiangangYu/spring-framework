@@ -21,6 +21,8 @@ import java.nio.ByteBuffer;
 /**
  * A binary WebSocket message.
  *
+ * websocket消息有两种类型，一种是二级制的消息(BinaryMessage)另一种是文本消息(TextMessage)
+ *
  * @author Rossen Stoyanchev
  * @since 4.0
  */
@@ -90,5 +92,7 @@ public final class BinaryMessage extends AbstractWebSocketMessage<ByteBuffer> {
 	protected String toStringPayload() {
 		return getPayload().toString();
 	}
+
+	// read for mark
 
 }

@@ -72,8 +72,10 @@ public class WebSocketExtension {
 		Assert.hasLength(name, "Extension name must not be empty");
 		this.name = name;
 		if (!CollectionUtils.isEmpty(parameters)) {
+			// LinkedCaseInsensitiveMap针对key大小写不敏感的map
 			Map<String, String> map = new LinkedCaseInsensitiveMap<>(parameters.size(), Locale.ENGLISH);
 			map.putAll(parameters);
+			// unmodifiableMap返回不可修改的map
 			this.parameters = Collections.unmodifiableMap(map);
 		}
 		else {
@@ -132,6 +134,7 @@ public class WebSocketExtension {
 	 */
 	public static List<WebSocketExtension> parseExtensions(String extensions) {
 		if (StringUtils.hasText(extensions)) {
+			// 把字符串转换为字符串数组
 			String[] tokens = StringUtils.tokenizeToStringArray(extensions, ",");
 			List<WebSocketExtension> result = new ArrayList<>(tokens.length);
 			for (String token : tokens) {
@@ -168,4 +171,5 @@ public class WebSocketExtension {
 		return new WebSocketExtension(name, parameters);
 	}
 
+	// read for mark
 }

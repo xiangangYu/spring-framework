@@ -82,4 +82,6 @@ public final class TextMessage extends AbstractWebSocketMessage<String> {
 		return (payload.length() > 10 ? payload.substring(0, 10) + ".." : payload);
 	}
 
+	// read for mark
+
 }

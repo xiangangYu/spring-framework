@@ -39,7 +39,7 @@ public final class CloseStatus implements Serializable {
 
 
 	/**
-	 * "1000 indicates a normal closure, meaning that the purpose for which the connection
+	 * "1000 indicates a normal closure(关闭), meaning that the purpose for which the connection
 	 * was established has been fulfilled."
 	 */
 	public static final CloseStatus NORMAL = new CloseStatus(1000);
@@ -221,5 +221,7 @@ public final class CloseStatus implements Serializable {
 	public String toString() {
 		return "CloseStatus[code=" + this.code + ", reason=" + this.reason + "]";
 	}
+
+	// read for mark
 
 }
