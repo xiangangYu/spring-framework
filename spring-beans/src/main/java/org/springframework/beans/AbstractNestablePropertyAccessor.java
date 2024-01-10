@@ -51,7 +51,7 @@ import org.springframework.util.StringUtils;
  * <p>This accessor will convert collection and array values to the corresponding
  * target collections or arrays, if necessary. Custom property editors that deal
  * with collections or arrays can either be written via PropertyEditor's
- * {@code setValue}, or against a comma-delimited String via {@code setAsText},
+ * {@code setValue}, or against a comma-delimited(分割) String via {@code setAsText},
  * as String arrays are converted in such a format if the array itself is not
  * assignable.
  *
@@ -73,6 +73,7 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 
 	/**
 	 * We'll create a lot of these objects, so we don't want a new logger every time.
+	 * private static final 修饰这个logger，多个对象引用的是一个logger
 	 */
 	private static final Log logger = LogFactory.getLog(AbstractNestablePropertyAccessor.class);
 
@@ -103,7 +104,7 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 	/**
 	 * Create a new empty accessor. Wrapped instance needs to be set afterwards.
 	 * @param registerDefaultEditors whether to register default editors
-	 * (can be suppressed if the accessor won't need any type conversion)
+	 * (can be suppressed if the accessor won't need any type conversion(转换))
 	 * @see #setWrappedInstance
 	 */
 	protected AbstractNestablePropertyAccessor(boolean registerDefaultEditors) {
