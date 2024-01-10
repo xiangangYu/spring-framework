@@ -36,6 +36,8 @@ import java.beans.PropertyDescriptor;
  * is "false", to avoid side effects caused by getter method invocations.
  * Turn this to "true" to expose present property values to custom editors.
  *
+ * 对Java Bean进行封装的一个接口，用于获取Bean的属性，对象等信息
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @since 13 April 2001
@@ -87,5 +89,7 @@ public interface BeanWrapper extends ConfigurablePropertyAccessor {
 	 * @throws InvalidPropertyException if there is no such property
 	 */
 	PropertyDescriptor getPropertyDescriptor(String propertyName) throws InvalidPropertyException;
+
+	// read for mark
 
 }

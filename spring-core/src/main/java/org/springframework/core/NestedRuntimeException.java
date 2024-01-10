@@ -19,7 +19,7 @@ package org.springframework.core;
 import org.springframework.lang.Nullable;
 
 /**
- * Handy class for wrapping runtime {@code Exceptions} with a root cause.
+ * Handy(方便) class for wrapping runtime {@code Exceptions} with a root cause.
  * This class is {@code abstract} to force the programmer to extend the class.
  *
  * <p>The similarity between this class and the {@link NestedCheckedException}
@@ -113,5 +113,7 @@ public abstract class NestedRuntimeException extends RuntimeException {
 			return false;
 		}
 	}
+
+	// read for mark
 
 }

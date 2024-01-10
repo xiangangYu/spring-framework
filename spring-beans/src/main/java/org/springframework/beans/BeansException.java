@@ -24,7 +24,7 @@ import org.springframework.lang.Nullable;
  * and subpackages.
  *
  * <p>Note that this is a runtime (unchecked) exception. Beans exceptions
- * are usually fatal; there is no reason for them to be checked.
+ * are usually fatal(致命); there is no reason for them to be checked.
  *
  * @author Rod Johnson
  * @author Juergen Hoeller

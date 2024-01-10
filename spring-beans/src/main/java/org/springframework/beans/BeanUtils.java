@@ -64,6 +64,8 @@ import org.springframework.util.StringUtils;
  * <a href="https://github.com/ExpediaGroup/bull">BULL - Bean Utils Light Library</a>,
  * or similar third-party frameworks for more comprehensive bean utilities.
  *
+ * 这个类在项目中用得最多的是copy属性
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @author Rob Harrop
