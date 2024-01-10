@@ -19,7 +19,7 @@ package org.springframework.web.socket.server;
 import org.springframework.core.NestedRuntimeException;
 
 /**
- * Thrown when handshake processing failed to complete due to an internal, unrecoverable
+ * Thrown when handshake processing failed to complete due to an internal, unrecoverable(不可恢复)
  * error. This implies a server error (HTTP status code 500) as opposed to a failure in
  * the handshake negotiation.
  *
@@ -41,5 +41,7 @@ public class HandshakeFailureException extends NestedRuntimeException {
 	public HandshakeFailureException(String message, Throwable cause) {
 		super(message, cause);
 	}
+
+	// read for mark
 
 }

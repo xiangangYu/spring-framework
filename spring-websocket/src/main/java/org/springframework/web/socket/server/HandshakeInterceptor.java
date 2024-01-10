@@ -24,7 +24,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.socket.WebSocketHandler;
 
 /**
- * Interceptor for WebSocket handshake requests. Can be used to inspect the
+ * Interceptor(拦截器) for WebSocket handshake requests. Can be used to inspect the
  * handshake request and response as well as to pass attributes to the target
  * {@link WebSocketHandler}.
  *
@@ -57,5 +57,7 @@ public interface HandshakeInterceptor {
 	 */
 	void afterHandshake(ServerHttpRequest request, ServerHttpResponse response,
 			WebSocketHandler wsHandler, @Nullable Exception exception);
+
+	// read for mark
 
 }

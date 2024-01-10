@@ -67,4 +67,6 @@ public interface RequestUpgradeStrategy {
 			@Nullable Principal user, WebSocketHandler wsHandler, Map<String, Object> attributes)
 			throws HandshakeFailureException;
 
+	// read for mark
+
 }
