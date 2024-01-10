@@ -1,4 +1,4 @@
 # sdk管理配置文件，下面的java=17.0.7-librca就是配置java的sdk
 # Enable auto-env through the sdkman_auto_env config
 # Add key=value pairs of SDKs to use below
-java=17.0.8.1-librca
+java=17.0.9-librca
