@@ -37,6 +37,7 @@ import org.springframework.util.CollectionUtils;
  */
 public class WebSocketHttpHeaders extends HttpHeaders {
 
+	// websocket增加的header字段
 	public static final String SEC_WEBSOCKET_ACCEPT = "Sec-WebSocket-Accept";
 
 	public static final String SEC_WEBSOCKET_EXTENSIONS = "Sec-WebSocket-Extensions";
@@ -322,5 +323,7 @@ public class WebSocketHttpHeaders extends HttpHeaders {
 	public String toString() {
 		return this.headers.toString();
 	}
+
+	// read for mark
 
 }

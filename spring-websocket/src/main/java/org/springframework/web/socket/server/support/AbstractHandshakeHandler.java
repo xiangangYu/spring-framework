@@ -55,14 +55,14 @@ import org.springframework.web.socket.server.standard.WebLogicRequestUpgradeStra
 import org.springframework.web.socket.server.standard.WebSphereRequestUpgradeStrategy;
 
 /**
- * A base class for {@link HandshakeHandler} implementations, independent of the Servlet API.
+ * A base class for {@link HandshakeHandler} implementations, independent(独立) of the Servlet API.
  *
  * <p>Performs initial validation of the WebSocket handshake request - possibly rejecting it
  * through the appropriate HTTP status code - while also allowing its subclasses to override
- * various parts of the negotiation process (e.g. origin validation, sub-protocol negotiation,
+ * various parts of the negotiation(谈判、协商) process (e.g. origin validation, sub-protocol negotiation,
  * extensions negotiation, etc).
  *
- * <p>If the negotiation succeeds, the actual upgrade is delegated to a server-specific
+ * <p>If the negotiation succeeds, the actual upgrade(升级) is delegated to a server-specific
  * {@link org.springframework.web.socket.server.RequestUpgradeStrategy}, which will update
  * the response as necessary and initialize the WebSocket.
  *
@@ -76,6 +76,7 @@ import org.springframework.web.socket.server.standard.WebSphereRequestUpgradeStr
  */
 public abstract class AbstractHandshakeHandler implements HandshakeHandler, Lifecycle {
 
+	// 下面是不同的websocket实现的判断
 	private static final boolean tomcatWsPresent;
 
 	private static final boolean jettyWsPresent;
@@ -88,6 +89,7 @@ public abstract class AbstractHandshakeHandler implements HandshakeHandler, Life
 
 	private static final boolean websphereWsPresent;
 
+	// 根据类是否存在判断引用的是哪个websocket实现
 	static {
 		ClassLoader classLoader = AbstractHandshakeHandler.class.getClassLoader();
 		tomcatWsPresent = ClassUtils.isPresent(
@@ -147,7 +149,7 @@ public abstract class AbstractHandshakeHandler implements HandshakeHandler, Life
 	 * {@literal Sec-WebSocket-Protocol} header.
 	 * <p>Note that if the WebSocketHandler passed in at runtime is an instance of
 	 * {@link SubProtocolCapable} then there is no need to explicitly configure
-	 * this property. That is certainly the case with the built-in STOMP over
+	 * this property. That is certainly(当然) the case with the built-in STOMP over
 	 * WebSocket support. Therefore, this property should be configured explicitly
 	 * only if the WebSocketHandler does not implement {@code SubProtocolCapable}.
 	 */
@@ -199,7 +201,7 @@ public abstract class AbstractHandshakeHandler implements HandshakeHandler, Life
 		return this.running;
 	}
 
-
+	// 客户端与服务端握手处理
 	@Override
 	public final boolean doHandshake(ServerHttpRequest request, ServerHttpResponse response,
 			WebSocketHandler wsHandler, Map<String, Object> attributes) throws HandshakeFailureException {
@@ -209,6 +211,7 @@ public abstract class AbstractHandshakeHandler implements HandshakeHandler, Life
 			logger.trace("Processing request " + request.getURI() + " with headers=" + headers);
 		}
 		try {
+			// websocket走的Get方法，
 			if (HttpMethod.GET != request.getMethod()) {
 				response.setStatusCode(HttpStatus.METHOD_NOT_ALLOWED);
 				response.getHeaders().setAllow(Collections.singleton(HttpMethod.GET));
@@ -217,10 +220,12 @@ public abstract class AbstractHandshakeHandler implements HandshakeHandler, Life
 				}
 				return false;
 			}
+			// 判断内容使用了常量在前面的方式
 			if (!"WebSocket".equalsIgnoreCase(headers.getUpgrade())) {
 				handleInvalidUpgradeHeader(request, response);
 				return false;
 			}
+			// 请求头header的Connection必须为upgrade
 			if (!headers.getConnection().contains("Upgrade") && !headers.getConnection().contains("upgrade")) {
 				handleInvalidConnectHeader(request, response);
 				return false;
@@ -260,6 +265,7 @@ public abstract class AbstractHandshakeHandler implements HandshakeHandler, Life
 		return true;
 	}
 
+	// 请求头header的Upgrade必须为websocket
 	protected void handleInvalidUpgradeHeader(ServerHttpRequest request, ServerHttpResponse response) throws IOException {
 		if (logger.isErrorEnabled()) {
 			logger.error(LogFormatUtils.formatValue(
@@ -269,6 +275,7 @@ public abstract class AbstractHandshakeHandler implements HandshakeHandler, Life
 		response.getBody().write("Can \"Upgrade\" only to \"WebSocket\".".getBytes(StandardCharsets.UTF_8));
 	}
 
+	// 请求的头header的Connection必须为upgrade
 	protected void handleInvalidConnectHeader(ServerHttpRequest request, ServerHttpResponse response) throws IOException {
 		if (logger.isErrorEnabled()) {
 			logger.error(LogFormatUtils.formatValue(
@@ -278,6 +285,7 @@ public abstract class AbstractHandshakeHandler implements HandshakeHandler, Life
 		response.getBody().write("\"Connection\" must be \"upgrade\".".getBytes(StandardCharsets.UTF_8));
 	}
 
+	// 判断是否是支持的版本
 	protected boolean isWebSocketVersionSupported(WebSocketHttpHeaders httpHeaders) {
 		String version = httpHeaders.getSecWebSocketVersion();
 		String[] supportedVersions = getSupportedVersions();
@@ -293,6 +301,7 @@ public abstract class AbstractHandshakeHandler implements HandshakeHandler, Life
 		return this.requestUpgradeStrategy.getSupportedVersions();
 	}
 
+	// 判断不支持处理
 	protected void handleWebSocketVersionNotSupported(ServerHttpRequest request, ServerHttpResponse response) {
 		if (logger.isErrorEnabled()) {
 			String version = request.getHeaders().getFirst("Sec-WebSocket-Version");
@@ -395,6 +404,7 @@ public abstract class AbstractHandshakeHandler implements HandshakeHandler, Life
 
 
 	private static RequestUpgradeStrategy initRequestUpgradeStrategy() {
+		// 判断相应的类是否存在，返回不同的策略，这个是策略模式
 		if (tomcatWsPresent) {
 			return new TomcatRequestUpgradeStrategy();
 		}
@@ -421,7 +431,7 @@ public abstract class AbstractHandshakeHandler implements HandshakeHandler, Life
 
 
 	/**
-	 * Inner class to avoid a reachable dependency on Tyrus API.
+	 * Inner class to avoid a reachable(可到达) dependency on Tyrus API.
 	 */
 	private static class TyrusStrategyDelegate {
 
@@ -433,5 +443,7 @@ public abstract class AbstractHandshakeHandler implements HandshakeHandler, Life
 			return new WebLogicRequestUpgradeStrategy();
 		}
 	}
+
+	// read for mark
 
 }

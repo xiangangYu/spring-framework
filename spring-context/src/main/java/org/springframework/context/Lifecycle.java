@@ -37,7 +37,7 @@ package org.springframework.context;
  * <p>Note that the present {@code Lifecycle} interface is only supported on
  * <b>top-level singleton beans</b>. On any other component, the {@code Lifecycle}
  * interface will remain undetected and hence ignored. Also, note that the extended
- * {@link SmartLifecycle} interface provides sophisticated integration with the
+ * {@link SmartLifecycle} interface provides sophisticated(复杂) integration with the
  * application context's startup and shutdown phases.
  *
  * @author Juergen Hoeller
@@ -66,7 +66,7 @@ public interface Lifecycle {
 	 * On regular shutdown, {@code Lifecycle} beans will first receive a stop notification
 	 * before the general destruction callbacks are being propagated; however, on hot
 	 * refresh during a context's lifetime or on aborted refresh attempts, a given bean's
-	 * destroy method will be called without any consideration of stop signals upfront.
+	 * destroy method will be called without any consideration of stop signals upfront(前期).
 	 * <p>Should not throw an exception if the component is not running (not started yet).
 	 * <p>In the case of a container, this will propagate the stop signal to all components
 	 * that apply.
@@ -82,5 +82,7 @@ public interface Lifecycle {
 	 * @return whether the component is currently running
 	 */
 	boolean isRunning();
+
+	// read for mark
 
 }
