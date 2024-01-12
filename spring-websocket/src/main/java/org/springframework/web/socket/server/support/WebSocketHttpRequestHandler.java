@@ -185,6 +185,7 @@ public class WebSocketHttpRequestHandler implements HttpRequestHandler, Lifecycl
 					"Uncaught failure for request " + request.getURI() + " - " + ex.getMessage(), ex);
 		}
 		finally {
+			// 最后关闭资源
 			if (failure != null) {
 				chain.applyAfterHandshake(request, response, failure);
 				response.close();
@@ -193,5 +194,7 @@ public class WebSocketHttpRequestHandler implements HttpRequestHandler, Lifecycl
 			response.close();
 		}
 	}
+
+	// read for mark
 
 }

@@ -17,10 +17,10 @@
 package org.springframework.aot.hint;
 
 /**
- * Gather hints that can be used to optimize the application runtime.
+ * Gather hints(提示) that can be used to optimize the application runtime.
  *
  * <p>Use of reflection can be recorded for individual members of a type, as
- * well as broader {@linkplain MemberCategory member categories}. Access to
+ * well as broader(广泛、广阔) {@linkplain MemberCategory member categories}. Access to
  * resources can be specified using patterns or the base name of a resource
  * bundle.
  *

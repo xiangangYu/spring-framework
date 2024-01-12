@@ -87,4 +87,7 @@ class HandshakeHandlerRuntimeHints implements RuntimeHintsRegistrar {
 		reflectionHints.registerType(TypeReference.of(className),
 				builder -> builder.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS));
 	}
+
+	// read for mark
+
 }

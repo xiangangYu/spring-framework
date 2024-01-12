@@ -126,4 +126,6 @@ public enum MemberCategory {
 	 */
 	DECLARED_CLASSES
 
+	// read for mark
+
 }

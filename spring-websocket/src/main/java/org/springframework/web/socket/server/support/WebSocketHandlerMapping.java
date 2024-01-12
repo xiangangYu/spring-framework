@@ -47,7 +47,7 @@ public class WebSocketHandlerMapping extends SimpleUrlHandlerMapping implements 
 	 * When this is set, if the matched handler is
 	 * {@link WebSocketHttpRequestHandler}, ensure the request is a WebSocket
 	 * handshake, i.e. HTTP GET with the header {@code "Upgrade:websocket"},
-	 * or otherwise suppress the match and return {@code null} allowing another
+	 * or otherwise suppress(抑制) the match and return {@code null} allowing another
 	 * {@link org.springframework.web.servlet.HandlerMapping} to match for the
 	 * same URL path.
 	 * @param match whether to enable matching on {@code "Upgrade: websocket"}
@@ -94,6 +94,7 @@ public class WebSocketHandlerMapping extends SimpleUrlHandlerMapping implements 
 
 	@Override
 	public boolean isRunning() {
+		// 整个变量的值使用方法进行返回，这种方式是很好的封装
 		return this.running;
 	}
 
@@ -101,11 +102,13 @@ public class WebSocketHandlerMapping extends SimpleUrlHandlerMapping implements 
 	@Override
 	@Nullable
 	protected Object getHandlerInternal(HttpServletRequest request) throws Exception {
+		// handler模式是很好的回调处理，模板模式
 		Object handler = super.getHandlerInternal(request);
 		return (matchWebSocketUpgrade(handler, request) ? handler : null);
 	}
 
 	private boolean matchWebSocketUpgrade(@Nullable Object handler, HttpServletRequest request) {
+		// 这种通过instanceof进行判断的方式是新的
 		handler = (handler instanceof HandlerExecutionChain chain ? chain.getHandler() : handler);
 		if (this.webSocketUpgradeMatch && handler instanceof WebSocketHttpRequestHandler) {
 			String header = request.getHeader(HttpHeaders.UPGRADE);
@@ -114,5 +117,7 @@ public class WebSocketHandlerMapping extends SimpleUrlHandlerMapping implements 
 		}
 		return true;
 	}
+
+	// read for mark
 
 }

@@ -39,6 +39,7 @@ public class HandshakeInterceptorChain {
 
 	private static final Log logger = LogFactory.getLog(HandshakeInterceptorChain.class);
 
+	// 下面有些变量有初始化值，有些没有初始化值
 	private final List<HandshakeInterceptor> interceptors;
 
 	private final WebSocketHandler wsHandler;
@@ -47,6 +48,7 @@ public class HandshakeInterceptorChain {
 
 
 	public HandshakeInterceptorChain(@Nullable List<HandshakeInterceptor> interceptors, WebSocketHandler wsHandler) {
+		// 下面的null判断，对于列表直接使用interceptors != null,而不是CollectionUtils.isEmpty
 		this.interceptors = (interceptors != null ? interceptors : Collections.emptyList());
 		this.wsHandler = wsHandler;
 	}
@@ -84,5 +86,7 @@ public class HandshakeInterceptorChain {
 			}
 		}
 	}
+
+	// read for mark
 
 }

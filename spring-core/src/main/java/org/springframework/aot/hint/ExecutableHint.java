@@ -43,6 +43,7 @@ public final class ExecutableHint extends MemberHint implements Comparable<Execu
 
 	private ExecutableHint(Builder builder) {
 		super(builder.name);
+		// List.copyOf返回不可修改的集合
 		this.parameterTypes = List.copyOf(builder.parameterTypes);
 		this.mode = (builder.mode != null ? builder.mode : ExecutableMode.INVOKE);
 	}
@@ -104,6 +105,7 @@ public final class ExecutableHint extends MemberHint implements Comparable<Execu
 				}).compare(this, other);
 	}
 
+	// 内部类
 	/**
 	 * Builder for {@link ExecutableHint}.
 	 */
@@ -144,5 +146,7 @@ public final class ExecutableHint extends MemberHint implements Comparable<Execu
 		}
 
 	}
+
+	// read for mark
 
 }

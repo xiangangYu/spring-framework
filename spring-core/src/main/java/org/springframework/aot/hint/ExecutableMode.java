@@ -29,7 +29,7 @@ import org.springframework.lang.Nullable;
 public enum ExecutableMode {
 
 	/**
-	 * Only retrieving the {@link Executable} and its metadata is required.
+	 * Only retrieving(撷取) the {@link Executable} and its metadata is required.
 	 */
 	INTROSPECT,
 
@@ -47,5 +47,7 @@ public enum ExecutableMode {
 	boolean includes(@Nullable ExecutableMode other) {
 		return (other == null || this.ordinal() >= other.ordinal());
 	}
+
+	// read for mark
 
 }

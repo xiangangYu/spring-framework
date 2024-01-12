@@ -19,7 +19,7 @@ package org.springframework.aot.hint;
 import org.springframework.lang.Nullable;
 
 /**
- * Contract for registering {@link RuntimeHints} based on the {@link ClassLoader}
+ * Contract(合同、契约) for registering {@link RuntimeHints} based on the {@link ClassLoader}
  * of the deployment unit. Implementations should, if possible, use the specified
  * {@link ClassLoader} to determine if hints have to be contributed.
  *
@@ -41,5 +41,7 @@ public interface RuntimeHintsRegistrar {
 	 * @param classLoader the classloader, or {@code null} if even the system ClassLoader isn't accessible
 	 */
 	void registerHints(RuntimeHints hints, @Nullable ClassLoader classLoader);
+
+	// read for mark
 
 }

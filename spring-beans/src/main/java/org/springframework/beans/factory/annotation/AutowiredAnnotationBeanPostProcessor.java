@@ -349,12 +349,6 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 	}
 
 	@Override
-	public void resetBeanDefinition(String beanName) {
-		this.lookupMethodsChecked.remove(beanName);
-		this.injectionMetadataCache.remove(beanName);
-	}
-
-	@Override
 	public Class<?> determineBeanType(Class<?> beanClass, String beanName) throws BeanCreationException {
 		checkLookupMethods(beanClass, beanName);
 

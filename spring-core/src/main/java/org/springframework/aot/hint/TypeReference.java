@@ -32,13 +32,13 @@ import org.springframework.lang.Nullable;
 public interface TypeReference extends Comparable<TypeReference> {
 
 	/**
-	 * Return the fully qualified name of this type reference.
+	 * Return the fully qualified name of this type reference(参考、引用).
 	 * @return the reflection target name
 	 */
 	String getName();
 
 	/**
-	 * Return the {@linkplain Class#getCanonicalName() canonical name} of this
+	 * Return the {@linkplain Class#getCanonicalName() canonical(规范) name} of this
 	 * type reference.
 	 * @return the canonical name
 	 */
@@ -59,7 +59,7 @@ public interface TypeReference extends Comparable<TypeReference> {
 
 	/**
 	 * Return the enclosing type reference, or {@code null} if this type reference
-	 * does not have an enclosing type.
+	 * does not have an enclosing(封闭、包围) type.
 	 * @return the enclosing type, if any
 	 */
 	@Nullable
@@ -95,5 +95,7 @@ public interface TypeReference extends Comparable<TypeReference> {
 	static List<TypeReference> listOf(Class<?>... types) {
 		return Arrays.stream(types).map(TypeReference::of).toList();
 	}
+
+	// read for mark
 
 }

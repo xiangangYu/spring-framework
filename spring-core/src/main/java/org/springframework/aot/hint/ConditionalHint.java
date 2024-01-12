@@ -29,7 +29,7 @@ import org.springframework.util.ClassUtils;
 public interface ConditionalHint {
 
 	/**
-	 * Return the type that should be reachable for this hint to apply, or
+	 * Return the type that should be reachable(到达) for this hint to apply, or
 	 * {@code null} if this hint should always been applied.
 	 * @return the reachable type, if any
 	 */
@@ -40,8 +40,8 @@ public interface ConditionalHint {
 	 * Whether the condition described for this hint is met. If it is not,
 	 * the hint does not apply.
 	 * <p>Instead of checking for actual reachability of a type in the
-	 * application, the classpath is checked for the presence of this
-	 * type as a simple heuristic.
+	 * application, the classpath is checked for the presence(存在) of this
+	 * type as a simple heuristic(启发式).
 	 * @param classLoader the current classloader
 	 * @return whether the condition is met and the hint applies
 	 */
@@ -52,5 +52,7 @@ public interface ConditionalHint {
 		}
 		return true;
 	}
+
+	// read for mark
 
 }

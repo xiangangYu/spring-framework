@@ -89,7 +89,7 @@ public abstract class AbstractHandshakeHandler implements HandshakeHandler, Life
 
 	private static final boolean websphereWsPresent;
 
-	// 根据类是否存在判断引用的是哪个websocket实现
+	// 根据类是否存在判断引用的是哪个websocket实现，这种在静态代码块中进行变量的初始化方式很不错
 	static {
 		ClassLoader classLoader = AbstractHandshakeHandler.class.getClassLoader();
 		tomcatWsPresent = ClassUtils.isPresent(
@@ -106,13 +106,14 @@ public abstract class AbstractHandshakeHandler implements HandshakeHandler, Life
 				"com.ibm.websphere.wsoc.WsWsocServerContainer", classLoader);
 	}
 
-
+   // 下面的变量，为什么有些有初始化值，有些没有呢
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	private final RequestUpgradeStrategy requestUpgradeStrategy;
 
 	private final List<String> supportedProtocols = new ArrayList<>();
 
+	// 下面的volatile变量修饰变量，针对本地线程的局部变量会把其同步到共享内存，然后再进行数据拉取同步，保证所有线程对这个变量值一样
 	private volatile boolean running;
 
 
@@ -309,6 +310,7 @@ public abstract class AbstractHandshakeHandler implements HandshakeHandler, Life
 					"Handshake failed due to unsupported WebSocket version: " + version +
 							". Supported versions: " + Arrays.toString(getSupportedVersions()), -1, true));
 		}
+		// 常量的定义
 		response.setStatusCode(HttpStatus.UPGRADE_REQUIRED);
 		response.getHeaders().set(WebSocketHttpHeaders.SEC_WEBSOCKET_VERSION,
 				StringUtils.arrayToCommaDelimitedString(getSupportedVersions()));

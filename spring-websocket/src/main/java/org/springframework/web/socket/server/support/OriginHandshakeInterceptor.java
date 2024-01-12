@@ -41,6 +41,8 @@ import org.springframework.web.util.WebUtils;
  * An interceptor to check request {@code Origin} header value against a
  * collection of allowed origins.
  *
+ * ws请求中，请求头Origin参数拦截器，这个Origin是请求的地址
+ *
  * @author Sebastien Deleuze
  * @since 4.1.2
  */
@@ -48,6 +50,7 @@ public class OriginHandshakeInterceptor implements HandshakeInterceptor {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
+	// CorsConfiguration跨域配置
 	private final CorsConfiguration corsConfiguration = new CorsConfiguration();
 
 
@@ -76,7 +79,7 @@ public class OriginHandshakeInterceptor implements HandshakeInterceptor {
 	 *
 	 * <p>By default, no origins are allowed. When
 	 * {@link #setAllowedOriginPatterns(Collection) allowedOriginPatterns} is also
-	 * set, then that takes precedence over this property.
+	 * set, then that takes precedence(优先) over this property.
 	 *
 	 * <p>Note when SockJS is enabled and origins are restricted, transport types
 	 * that do not allow to check request origin (Iframe based transports) are
@@ -95,6 +98,7 @@ public class OriginHandshakeInterceptor implements HandshakeInterceptor {
 	 * @since 4.1.5
 	 */
 	public Collection<String> getAllowedOrigins() {
+		// 好多地方使用了Collections.unmodifiableSet来返回不可修改的集合
 		List<String> allowedOrigins = this.corsConfiguration.getAllowedOrigins();
 		return (CollectionUtils.isEmpty(allowedOrigins) ? Collections.emptySet() :
 				Collections.unmodifiableSet(new LinkedHashSet<>(allowedOrigins)));
@@ -128,7 +132,8 @@ public class OriginHandshakeInterceptor implements HandshakeInterceptor {
 	@Override
 	public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response,
 			WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
-
+		// 针对ws请求header中Origin字段进行判断处理
+		// corsConfiguration根据配置的允许的Origin来进行判断
 		if (!WebUtils.isSameOrigin(request) &&
 				this.corsConfiguration.checkOrigin(request.getHeaders().getOrigin()) == null) {
 			response.setStatusCode(HttpStatus.FORBIDDEN);
@@ -145,5 +150,7 @@ public class OriginHandshakeInterceptor implements HandshakeInterceptor {
 	public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response,
 			WebSocketHandler wsHandler, @Nullable Exception exception) {
 	}
+
+	// read for mark
 
 }

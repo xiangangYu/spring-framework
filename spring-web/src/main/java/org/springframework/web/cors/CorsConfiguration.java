@@ -38,7 +38,7 @@ import org.springframework.util.StringUtils;
  *
  * <p>By default a newly created {@code CorsConfiguration} does not permit any
  * cross-origin requests and must be configured explicitly to indicate what
- * should be allowed. Use {@link #applyPermitDefaultValues()} to flip the
+ * should be allowed. Use {@link #applyPermitDefaultValues()} to flip(翻转) the
  * initialization model to start with open defaults that permit all cross-origin
  * requests for GET, HEAD, and POST requests.
  *
