@@ -44,4 +44,6 @@ public interface ServletContextAware extends Aware {
 	 */
 	void setServletContext(ServletContext servletContext);
 
+	// read for mark
+
 }

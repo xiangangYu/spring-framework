@@ -355,6 +355,7 @@ public abstract class AbstractHandshakeHandler implements HandshakeHandler, Life
 	 * @return a list of supported protocols, or an empty list if none available
 	 */
 	protected final List<String> determineHandlerSupportedProtocols(WebSocketHandler handler) {
+		// unwrap 解封装
 		WebSocketHandler handlerToCheck = WebSocketHandlerDecorator.unwrap(handler);
 		List<String> subProtocols = null;
 		if (handlerToCheck instanceof SubProtocolCapable subProtocolCapable) {
@@ -366,7 +367,7 @@ public abstract class AbstractHandshakeHandler implements HandshakeHandler, Life
 	/**
 	 * Filter the list of requested WebSocket extensions.
 	 * <p>As of 4.1, the default implementation of this method filters the list to
-	 * leave only extensions that are both requested and supported.
+	 * leave(遗留) only extensions that are both requested and supported.
 	 * @param request the current request
 	 * @param requestedExtensions the list of extensions requested by the client
 	 * @param supportedExtensions the list of extensions supported by the server
@@ -389,7 +390,7 @@ public abstract class AbstractHandshakeHandler implements HandshakeHandler, Life
 	 * in the process of being established. The default implementation calls
 	 * {@link ServerHttpRequest#getPrincipal()}
 	 * <p>Subclasses can provide custom logic for associating a user with a session,
-	 * for example for assigning a name to anonymous users (i.e. not fully authenticated).
+	 * for example for assigning a name to anonymous(匿名) users (i.e. not fully authenticated).
 	 * @param request the handshake request
 	 * @param wsHandler the WebSocket handler that will handle messages
 	 * @param attributes handshake attributes to pass to the WebSocket session

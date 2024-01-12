@@ -134,9 +134,12 @@ public abstract class AbstractTyrusRequestUpgradeStrategy extends AbstractStanda
 		HttpServletRequest servletRequest = getHttpServletRequest(request);
 		HttpServletResponse servletResponse = getHttpServletResponse(response);
 
+		// 获取服务容器
 		TyrusServerContainer serverContainer = (TyrusServerContainer) getContainer(servletRequest);
+		// 获取ws引擎
 		TyrusWebSocketEngine engine = (TyrusWebSocketEngine) serverContainer.getWebSocketEngine();
 		Object tyrusEndpoint = null;
+		// 为什么下面的这个变量没有赋初始值呢？
 		boolean success;
 
 		try {

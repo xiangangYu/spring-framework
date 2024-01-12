@@ -26,7 +26,7 @@ import org.springframework.web.socket.WebSocketSession;
  * Wraps another {@link org.springframework.web.socket.WebSocketHandler}
  * instance and delegates to it.
  *
- * <p>Also provides a {@link #getDelegate()} method to return the decorated
+ * <p>Also provides a {@link #getDelegate()} method to return the decorated(装饰)
  * handler as well as a {@link #getLastHandler()} method to go through all nested
  * delegates and return the "last" handler.
  *

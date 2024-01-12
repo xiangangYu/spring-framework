@@ -125,7 +125,9 @@ public abstract class AbstractStandardUpgradeStrategy implements RequestUpgradeS
 			// Ignore
 		}
 
+		// 创建会话
 		StandardWebSocketSession session = new StandardWebSocketSession(headers, attrs, localAddr, remoteAddr, user);
+		// 创建适配器
 		StandardWebSocketHandlerAdapter endpoint = new StandardWebSocketHandlerAdapter(wsHandler, session);
 
 		List<Extension> extensions = new ArrayList<>();
@@ -139,5 +141,7 @@ public abstract class AbstractStandardUpgradeStrategy implements RequestUpgradeS
 	protected abstract void upgradeInternal(ServerHttpRequest request, ServerHttpResponse response,
 			@Nullable String selectedProtocol, List<Extension> selectedExtensions, Endpoint endpoint)
 			throws HandshakeFailureException;
+
+	// read for mark
 
 }
