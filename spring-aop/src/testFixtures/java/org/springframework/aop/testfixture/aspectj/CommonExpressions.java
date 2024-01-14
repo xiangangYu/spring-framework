@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package org.springframework.web.servlet.view;
+package org.springframework.aop.testfixture.aspectj;
 
 /**
- * @author Rod Johnson
+ * Common expressions that are used in tests.
+ *
+ * @author Stephane Nicoll
  */
-class ResourceBundleViewResolverNoCacheTests extends ResourceBundleViewResolverTests {
+public class CommonExpressions {
 
-	@Override
-	protected boolean getCache() {
-		return false;
-	}
+	/**
+	 * An expression pointcut that matches all methods
+	 */
+	public static final String MATCH_ALL_METHODS = "execution(* *(..))";
 
 }
