@@ -14,27 +14,24 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aspectj;
-
-import org.junit.jupiter.api.Test;
-
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import static org.assertj.core.api.Assertions.assertThat;
+package org.springframework.orm.jpa.persistenceunit;
 
 /**
- * @author Chris Beams
+ * Strategy interface to filter the list of persistent managed types to include
+ * in the persistence unit. Only class names that match the filter are managed.
+ *
+ * @author Stephane Nicoll
+ * @since 6.1.4
+ * @see DefaultPersistenceUnitManager#setManagedClassNameFilter
  */
-class XmlBeanConfigurerTests {
+@FunctionalInterface
+public interface ManagedClassNameFilter {
 
-	@Test
-	void injection() {
-		try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
-				"org/springframework/beans/factory/aspectj/beanConfigurerTests.xml")) {
-
-			ShouldBeConfiguredBySpring myObject = new ShouldBeConfiguredBySpring();
-			assertThat(myObject.getName()).isEqualTo("Rod");
-		}
-	}
+	/**
+	 * Test if the given class name matches the filter.
+	 * @param className the fully qualified class name of the persistent type to test
+	 * @return {@code true} if the class name matches
+	 */
+	boolean matches(String className);
 
 }

@@ -40,7 +40,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,6 +48,7 @@ import org.springframework.web.context.support.StaticWebApplicationContext;
 import org.springframework.web.method.HandlerTypePredicate;
 import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.annotation.PostExchange;
+import org.springframework.web.service.annotation.PutExchange;
 import org.springframework.web.servlet.handler.PathPatternsParameterizedTest;
 import org.springframework.web.servlet.mvc.condition.ConsumesRequestCondition;
 import org.springframework.web.servlet.mvc.condition.MediaTypeExpression;
@@ -59,6 +59,7 @@ import org.springframework.web.util.pattern.PathPattern;
 import org.springframework.web.util.pattern.PathPatternParser;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -72,11 +73,11 @@ class RequestMappingHandlerMappingTests {
 
 	@SuppressWarnings("unused")
 	static Stream<Arguments> pathPatternsArguments() {
-		RequestMappingHandlerMapping mapping1 = new RequestMappingHandlerMapping();
 		StaticWebApplicationContext wac1 = new StaticWebApplicationContext();
-		mapping1.setApplicationContext(wac1);
-
 		StaticWebApplicationContext wac2 = new StaticWebApplicationContext();
+
+		RequestMappingHandlerMapping mapping1 = new RequestMappingHandlerMapping();
+		mapping1.setApplicationContext(wac1);
 
 		RequestMappingHandlerMapping mapping2 = new RequestMappingHandlerMapping();
 		mapping2.setPatternParser(null);
@@ -87,8 +88,7 @@ class RequestMappingHandlerMappingTests {
 
 	@Test
 	void builderConfiguration() {
-		RequestMappingHandlerMapping mapping = new RequestMappingHandlerMapping();
-		mapping.setApplicationContext(new StaticWebApplicationContext());
+		RequestMappingHandlerMapping mapping = createMapping();
 
 		RequestMappingInfo.BuilderConfiguration config = mapping.getBuilderConfiguration();
 		assertThat(config).isNotNull();
@@ -100,22 +100,20 @@ class RequestMappingHandlerMappingTests {
 	@Test
 	@SuppressWarnings("deprecation")
 	void useRegisteredSuffixPatternMatch() {
-
-		RequestMappingHandlerMapping handlerMapping = new RequestMappingHandlerMapping();
-		handlerMapping.setApplicationContext(new StaticWebApplicationContext());
+		RequestMappingHandlerMapping mapping = createMapping();
 
 		Map<String, MediaType> fileExtensions = Collections.singletonMap("json", MediaType.APPLICATION_JSON);
 		org.springframework.web.accept.PathExtensionContentNegotiationStrategy strategy =
 				new org.springframework.web.accept.PathExtensionContentNegotiationStrategy(fileExtensions);
 		ContentNegotiationManager manager = new ContentNegotiationManager(strategy);
 
-		handlerMapping.setContentNegotiationManager(manager);
-		handlerMapping.setUseRegisteredSuffixPatternMatch(true);
-		handlerMapping.afterPropertiesSet();
+		mapping.setContentNegotiationManager(manager);
+		mapping.setUseRegisteredSuffixPatternMatch(true);
+		mapping.afterPropertiesSet();
 
-		assertThat(handlerMapping.useSuffixPatternMatch()).isTrue();
-		assertThat(handlerMapping.useRegisteredSuffixPatternMatch()).isTrue();
-		assertThat(handlerMapping.getFileExtensions()).isEqualTo(Collections.singletonList("json"));
+		assertThat(mapping.useSuffixPatternMatch()).isTrue();
+		assertThat(mapping.useRegisteredSuffixPatternMatch()).isTrue();
+		assertThat(mapping.getFileExtensions()).isEqualTo(Collections.singletonList("json"));
 	}
 
 	@Test
@@ -151,25 +149,24 @@ class RequestMappingHandlerMappingTests {
 	@Test
 	@SuppressWarnings("deprecation")
 	void suffixPatternMatchSettings() {
-		RequestMappingHandlerMapping handlerMapping = new RequestMappingHandlerMapping();
+		RequestMappingHandlerMapping mapping = createMapping();
 
-		assertThat(handlerMapping.useSuffixPatternMatch()).isFalse();
-		assertThat(handlerMapping.useRegisteredSuffixPatternMatch()).isFalse();
+		assertThat(mapping.useSuffixPatternMatch()).isFalse();
+		assertThat(mapping.useRegisteredSuffixPatternMatch()).isFalse();
 
-		handlerMapping.setUseRegisteredSuffixPatternMatch(false);
-		assertThat(handlerMapping.useSuffixPatternMatch())
+		mapping.setUseRegisteredSuffixPatternMatch(false);
+		assertThat(mapping.useSuffixPatternMatch())
 				.as("'false' registeredSuffixPatternMatch shouldn't impact suffixPatternMatch")
 				.isFalse();
 
-		handlerMapping.setUseRegisteredSuffixPatternMatch(true);
-		assertThat(handlerMapping.useSuffixPatternMatch())
+		mapping.setUseRegisteredSuffixPatternMatch(true);
+		assertThat(mapping.useSuffixPatternMatch())
 				.as("'true' registeredSuffixPatternMatch should enable suffixPatternMatch")
 				.isTrue();
 	}
 
 	@PathPatternsParameterizedTest
 	void resolveEmbeddedValuesInPatterns(RequestMappingHandlerMapping mapping) {
-
 		mapping.setEmbeddedValueResolver(
 				value -> "/${pattern}/bar".equals(value) ? "/foo/bar" : value
 		);
@@ -182,7 +179,6 @@ class RequestMappingHandlerMappingTests {
 
 	@PathPatternsParameterizedTest
 	void pathPrefix(RequestMappingHandlerMapping mapping) throws Exception {
-
 		mapping.setEmbeddedValueResolver(value -> "/${prefix}".equals(value) ? "/api" : value);
 		mapping.setPathPrefixes(Collections.singletonMap(
 				"/${prefix}", HandlerTypePredicate.forAnnotation(RestController.class)));
@@ -227,7 +223,6 @@ class RequestMappingHandlerMappingTests {
 
 	@PathPatternsParameterizedTest
 	void resolveRequestMappingViaComposedAnnotation(RequestMappingHandlerMapping mapping) {
-
 		RequestMappingInfo info = assertComposedAnnotationMapping(
 				mapping, "postJson", "/postJson", RequestMethod.POST);
 
@@ -283,12 +278,76 @@ class RequestMappingHandlerMappingTests {
 		assertComposedAnnotationMapping(RequestMethod.PATCH);
 	}
 
+	@Test  // gh-32049
+	void httpExchangeWithMultipleAnnotationsAtClassLevel() throws NoSuchMethodException {
+		RequestMappingHandlerMapping mapping = createMapping();
+
+		Class<?> controllerClass = MultipleClassLevelAnnotationsHttpExchangeController.class;
+		Method method = controllerClass.getDeclaredMethod("post");
+
+		assertThatIllegalStateException()
+				.isThrownBy(() -> mapping.getMappingForMethod(method, controllerClass))
+				.withMessageContainingAll(
+					"Multiple @HttpExchange annotations found on " + controllerClass,
+					"@" + HttpExchange.class.getName(),
+					"@" + ExtraHttpExchange.class.getName()
+				);
+	}
+
+	@Test  // gh-32049
+	void httpExchangeWithMultipleAnnotationsAtMethodLevel() throws NoSuchMethodException {
+		RequestMappingHandlerMapping mapping = createMapping();
+
+		Class<?> controllerClass = MultipleMethodLevelAnnotationsHttpExchangeController.class;
+		Method method = controllerClass.getDeclaredMethod("post");
+
+		assertThatIllegalStateException()
+				.isThrownBy(() -> mapping.getMappingForMethod(method, controllerClass))
+				.withMessageContainingAll(
+					"Multiple @HttpExchange annotations found on " + method,
+					"@" + PostExchange.class.getName(),
+					"@" + PutExchange.class.getName()
+				);
+	}
+
+	@Test  // gh-32065
+	void httpExchangeWithMixedAnnotationsAtClassLevel() throws NoSuchMethodException {
+		RequestMappingHandlerMapping mapping = createMapping();
+
+		Class<?> controllerClass = MixedClassLevelAnnotationsController.class;
+		Method method = controllerClass.getDeclaredMethod("post");
+
+		assertThatIllegalStateException()
+				.isThrownBy(() -> mapping.getMappingForMethod(method, controllerClass))
+				.withMessageContainingAll(
+					controllerClass.getName(),
+					"is annotated with @RequestMapping and @HttpExchange annotations, but only one is allowed:",
+					"@" + RequestMapping.class.getName(),
+					"@" + HttpExchange.class.getName()
+				);
+	}
+
+	@Test  // gh-32065
+	void httpExchangeWithMixedAnnotationsAtMethodLevel() throws NoSuchMethodException {
+		RequestMappingHandlerMapping mapping = createMapping();
+
+		Class<?> controllerClass = MixedMethodLevelAnnotationsController.class;
+		Method method = controllerClass.getDeclaredMethod("post");
+
+		assertThatIllegalStateException()
+				.isThrownBy(() -> mapping.getMappingForMethod(method, controllerClass))
+				.withMessageContainingAll(
+					method.toString(),
+					"is annotated with @RequestMapping and @HttpExchange annotations, but only one is allowed:",
+					"@" + PostMapping.class.getName(),
+					"@" + PostExchange.class.getName()
+				);
+	}
+
 	@SuppressWarnings("DataFlowIssue")
 	@Test
 	void httpExchangeWithDefaultValues() throws NoSuchMethodException {
-		RequestMappingHandlerMapping mapping = new RequestMappingHandlerMapping();
-		mapping.setApplicationContext(new StaticWebApplicationContext());
-		mapping.afterPropertiesSet();
+		RequestMappingHandlerMapping mapping = createMapping();
 
 		RequestMappingInfo mappingInfo = mapping.getMappingForMethod(
 				HttpExchangeController.class.getMethod("defaultValuesExchange"),
@@ -308,9 +367,7 @@ class RequestMappingHandlerMappingTests {
 	@SuppressWarnings("DataFlowIssue")
 	@Test
 	void httpExchangeWithCustomValues() throws Exception {
-		RequestMappingHandlerMapping mapping = new RequestMappingHandlerMapping();
-		mapping.setApplicationContext(new StaticWebApplicationContext());
-		mapping.afterPropertiesSet();
+		RequestMappingHandlerMapping mapping = createMapping();
 
 		RequestMappingInfo mappingInfo = mapping.getMappingForMethod(
 				HttpExchangeController.class.getMethod("customValuesExchange"),
@@ -333,9 +390,15 @@ class RequestMappingHandlerMappingTests {
 				.containsOnly(MediaType.valueOf("text/plain;charset=UTF-8"));
 	}
 
-	private RequestMappingInfo assertComposedAnnotationMapping(RequestMethod requestMethod) {
+	private static RequestMappingHandlerMapping createMapping() {
 		RequestMappingHandlerMapping mapping = new RequestMappingHandlerMapping();
 		mapping.setApplicationContext(new StaticWebApplicationContext());
+		mapping.afterPropertiesSet();
+		return mapping;
+	}
+
+	private static RequestMappingInfo assertComposedAnnotationMapping(RequestMethod requestMethod) {
+		RequestMappingHandlerMapping mapping = createMapping();
 
 		String methodName = requestMethod.name().toLowerCase();
 		String path = "/" + methodName;
@@ -343,7 +406,7 @@ class RequestMappingHandlerMappingTests {
 		return assertComposedAnnotationMapping(mapping, methodName, path, requestMethod);
 	}
 
-	private RequestMappingInfo assertComposedAnnotationMapping(
+	private static RequestMappingInfo assertComposedAnnotationMapping(
 			RequestMappingHandlerMapping mapping, String methodName, String path, RequestMethod requestMethod) {
 
 		Class<?> clazz = ComposedAnnotationController.class;
@@ -363,7 +426,9 @@ class RequestMappingHandlerMappingTests {
 
 
 	@Controller
+	// gh-31962: The presence of multiple @RequestMappings is intentional.
 	@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+	@ExtraRequestMapping
 	static class ComposedAnnotationController {
 
 		@RequestMapping
@@ -382,7 +447,10 @@ class RequestMappingHandlerMappingTests {
 		public void post(@RequestBody(required = false) Foo foo) {
 		}
 
-		@PutMapping("/put")
+		// gh-31962: The presence of multiple @RequestMappings is intentional.
+		@PatchMapping("/put")
+		@RequestMapping(path = "/put", method = RequestMethod.PUT) // local @RequestMapping overrides meta-annotations
+		@PostMapping("/put")
 		public void put() {
 		}
 
@@ -396,6 +464,11 @@ class RequestMappingHandlerMappingTests {
 
 	}
 
+	@RequestMapping
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface ExtraRequestMapping {
+	}
 
 	@RequestMapping(method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_VALUE,
@@ -429,6 +502,50 @@ class RequestMappingHandlerMappingTests {
 
 		@PostExchange(url = "/custom", contentType = "application/json", accept = "text/plain;charset=UTF-8")
 		public void customValuesExchange(){}
+	}
+
+
+	@HttpExchange("/exchange")
+	@ExtraHttpExchange
+	static class MultipleClassLevelAnnotationsHttpExchangeController {
+
+		@PostExchange("/post")
+		void post() {}
+	}
+
+
+	static class MultipleMethodLevelAnnotationsHttpExchangeController {
+
+		@PostExchange("/post")
+		@PutExchange("/post")
+		void post() {}
+	}
+
+
+	@Controller
+	@RequestMapping("/api")
+	@HttpExchange("/api")
+	static class MixedClassLevelAnnotationsController {
+
+		@PostExchange("/post")
+		void post() {}
+	}
+
+
+	@Controller
+	@RequestMapping("/api")
+	static class MixedMethodLevelAnnotationsController {
+
+		@PostMapping("/post")
+		@PostExchange("/post")
+		void post() {}
+	}
+
+
+	@HttpExchange
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface ExtraHttpExchange {
 	}
 
 
