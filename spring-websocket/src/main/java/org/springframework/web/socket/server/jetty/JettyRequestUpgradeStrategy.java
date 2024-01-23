@@ -52,9 +52,11 @@ import org.springframework.web.socket.server.RequestUpgradeStrategy;
  */
 public class JettyRequestUpgradeStrategy implements RequestUpgradeStrategy, ServletContextAware {
 
+	// 常量的定义使用下划线的方式
 	private static final String[] SUPPORTED_VERSIONS = new String[] {"13"};
 
 
+	// 这种对象属性也是没有进行初始化
 	@Nullable
 	private Consumer<Configurable> webSocketConfigurer;
 
@@ -124,5 +126,6 @@ public class JettyRequestUpgradeStrategy implements RequestUpgradeStrategy, Serv
 		}
 	}
 
+	// read for mark
 
 }

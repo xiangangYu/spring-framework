@@ -48,6 +48,7 @@ public class GlassFishRequestUpgradeStrategy extends AbstractTyrusRequestUpgrade
 			ClassLoader classLoader = GlassFishRequestUpgradeStrategy.class.getClassLoader();
 			Class<?> type = classLoader.loadClass("org.glassfish.tyrus.servlet.TyrusServletWriter");
 			constructor = type.getDeclaredConstructor(TyrusHttpUpgradeHandler.class);
+			// 是构造函数可以访问
 			ReflectionUtils.makeAccessible(constructor);
 		}
 		catch (Exception ex) {
@@ -77,5 +78,7 @@ public class GlassFishRequestUpgradeStrategy extends AbstractTyrusRequestUpgrade
 			throw new HandshakeFailureException("Failed to instantiate TyrusServletWriter", ex);
 		}
 	}
+
+	// read for mark
 
 }

@@ -69,17 +69,19 @@ public abstract class AbstractTyrusRequestUpgradeStrategy extends AbstractStanda
 	private static final String[] SUPPORTED_VERSIONS =
 			StringUtils.tokenizeToStringArray(Version.getSupportedWireProtocolVersions(), ",");
 
-
 	private static final Random random = new Random();
 
+	// 构造函数
 	private static final Constructor<?> constructor;
 
 	private static final boolean constructorWithBooleanArgument;
 
+	// 方法
 	private static final Method registerMethod;
 
 	private static final Method unRegisterMethod;
 
+	// 静态的代码块
 	static {
 		try {
 			constructor = getEndpointConstructor();
@@ -88,8 +90,10 @@ public abstract class AbstractTyrusRequestUpgradeStrategy extends AbstractStanda
 			if (!constructorWithBooleanArgument && parameterCount != 9) {
 				throw new IllegalStateException("Expected TyrusEndpointWrapper constructor with 9 or 10 arguments");
 			}
+			// 通过放射获取方法
 			registerMethod = TyrusWebSocketEngine.class.getDeclaredMethod("register", TyrusEndpointWrapper.class);
 			unRegisterMethod = TyrusWebSocketEngine.class.getDeclaredMethod("unregister", TyrusEndpointWrapper.class);
+			// 设置方法可以调用
 			ReflectionUtils.makeAccessible(registerMethod);
 		}
 		catch (Exception ex) {
@@ -228,6 +232,7 @@ public abstract class AbstractTyrusRequestUpgradeStrategy extends AbstractStanda
 
 	private void register(TyrusWebSocketEngine engine, Object endpoint) {
 		try {
+			// 方法调用
 			registerMethod.invoke(engine, endpoint);
 		}
 		catch (Exception ex) {
@@ -247,5 +252,7 @@ public abstract class AbstractTyrusRequestUpgradeStrategy extends AbstractStanda
 
 	protected abstract void handleSuccess(HttpServletRequest request, HttpServletResponse response,
 			UpgradeInfo upgradeInfo, TyrusUpgradeResponse upgradeResponse) throws IOException, ServletException;
+
+	// read for mark
 
 }
