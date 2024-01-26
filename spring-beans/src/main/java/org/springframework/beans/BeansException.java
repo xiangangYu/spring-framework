@@ -50,4 +50,6 @@ public abstract class BeansException extends NestedRuntimeException {
 		super(msg, cause);
 	}
 
+	// read for mark
+
 }

@@ -41,8 +41,8 @@ public interface ApplicationEventPublisher {
 	 * <p>Such an event publication step is effectively a hand-off to the
 	 * multicaster and does not imply synchronous/asynchronous execution
 	 * or even immediate execution at all. Event listeners are encouraged
-	 * to be as efficient as possible, individually using asynchronous
-	 * execution for longer-running and potentially blocking operations.
+	 * to be as efficient as possible, individually(单独地) using asynchronous
+	 * execution for longer-running and potentially(潜在) blocking operations.
 	 * <p>For usage in a reactive call stack, include event publication
 	 * as a simple hand-off:
 	 * {@code Mono.fromRunnable(() -> eventPublisher.publishEvent(...))}.
@@ -76,7 +76,7 @@ public interface ApplicationEventPublisher {
 	 * to be as efficient as possible, individually using asynchronous
 	 * execution for longer-running and potentially blocking operations.
 	 * <p>For the convenient inclusion of the current transaction context
-	 * in a reactive hand-off, consider using
+	 * in a reactive(反应性的) hand-off(接力), consider using
 	 * {@link org.springframework.transaction.reactive.TransactionalEventPublisher#publishEvent(Object)}.
 	 * For thread-bound transactions, this is not necessary since the
 	 * state will be implicitly available through thread-local storage.
@@ -86,5 +86,7 @@ public interface ApplicationEventPublisher {
 	 * @see PayloadApplicationEvent
 	 */
 	void publishEvent(Object event);
+
+	// read for mark
 
 }

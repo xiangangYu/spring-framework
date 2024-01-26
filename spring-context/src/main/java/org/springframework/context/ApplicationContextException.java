@@ -45,4 +45,6 @@ public class ApplicationContextException extends FatalBeanException {
 		super(msg, cause);
 	}
 
+	// read for mark
+
 }

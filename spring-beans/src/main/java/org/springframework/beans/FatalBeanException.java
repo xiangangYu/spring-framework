@@ -45,4 +45,6 @@ public class FatalBeanException extends BeansException {
 		super(msg, cause);
 	}
 
+	// read for mark
+
 }

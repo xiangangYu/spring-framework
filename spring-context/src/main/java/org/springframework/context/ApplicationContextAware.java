@@ -24,8 +24,8 @@ import org.springframework.beans.factory.Aware;
  * of the {@link ApplicationContext} that it runs in.
  *
  * <p>Implementing this interface makes sense for example when an object
- * requires access to a set of collaborating beans. Note that configuration
- * via bean references is preferable to implementing this interface just
+ * requires access to a set of collaborating(协作) beans. Note that configuration
+ * via bean references(引用) is preferable to implementing this interface just
  * for bean lookup purposes.
  *
  * <p>This interface can also be implemented if an object needs access to file
@@ -72,5 +72,7 @@ public interface ApplicationContextAware extends Aware {
 	 * @see org.springframework.beans.factory.BeanInitializationException
 	 */
 	void setApplicationContext(ApplicationContext applicationContext) throws BeansException;
+
+	// read for mark
 
 }
