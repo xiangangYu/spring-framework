@@ -27,7 +27,7 @@ import java.util.concurrent.Executor;
  *
  * <p>Equivalent to Java's {@link java.util.concurrent.Executor} interface,
  * so that clients may declare a dependency on an {@code Executor} and receive
- * any {@code TaskExecutor} implementation. This interface remains separate from
+ * any {@code TaskExecutor} implementation. This interface remains(仍然) separate from
  * the standard {@code Executor} interface primarily for backwards compatibility
  * with older APIs that depend on the {@code TaskExecutor} interface.
  *
@@ -48,5 +48,7 @@ public interface TaskExecutor extends Executor {
 	 */
 	@Override
 	void execute(Runnable task);
+
+	// read  for mark
 
 }
