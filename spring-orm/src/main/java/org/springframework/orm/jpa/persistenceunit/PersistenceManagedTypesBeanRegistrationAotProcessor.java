@@ -67,6 +67,7 @@ import org.springframework.util.ReflectionUtils;
 @SuppressWarnings("unchecked")
 class PersistenceManagedTypesBeanRegistrationAotProcessor implements BeanRegistrationAotProcessor {
 
+	// 判断某个类是否存在并可被加载
 	private static final boolean jpaPresent = ClassUtils.isPresent("jakarta.persistence.Entity",
 			PersistenceManagedTypesBeanRegistrationAotProcessor.class.getClassLoader());
 
