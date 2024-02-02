@@ -21,7 +21,7 @@ import java.util.Collection;
 import org.springframework.lang.Nullable;
 
 /**
- * Spring's central cache manager SPI.
+ * Spring's central cache manager SPI(Service Provider Interface).
  *
  * <p>Allows for retrieving named {@link Cache} regions.
  *
