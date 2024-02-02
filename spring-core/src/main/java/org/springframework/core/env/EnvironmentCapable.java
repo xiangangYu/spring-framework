@@ -28,7 +28,7 @@ package org.springframework.core.env;
  * extends EnvironmentCapable, and thus exposes a {@link #getEnvironment()} method; however,
  * {@link org.springframework.context.ConfigurableApplicationContext ConfigurableApplicationContext}
  * redefines {@link org.springframework.context.ConfigurableApplicationContext#getEnvironment
- * getEnvironment()} and narrows the signature to return a {@link ConfigurableEnvironment}.
+ * getEnvironment()} and narrows(使狭窄) the signature to return a {@link ConfigurableEnvironment}.
  * The effect is that an Environment object is 'read-only' until it is being accessed from
  * a ConfigurableApplicationContext, at which point it too may be configured.
  *
@@ -44,5 +44,7 @@ public interface EnvironmentCapable {
 	 * Return the {@link Environment} associated with this component.
 	 */
 	Environment getEnvironment();
+
+	// read for mark
 
 }

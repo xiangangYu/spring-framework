@@ -52,7 +52,7 @@ package org.springframework.core.env;
  * <p>Configuration of the {@code Environment} object must be done through the
  * {@code ConfigurableEnvironment} interface, returned from all
  * {@code AbstractApplicationContext} subclass {@code getEnvironment()} methods. See
- * {@link ConfigurableEnvironment} Javadoc for usage examples demonstrating manipulation
+ * {@link ConfigurableEnvironment} Javadoc for usage examples demonstrating(展示) manipulation
  * of property sources prior to application context {@code refresh()}.
  *
  * @author Chris Beams
@@ -72,9 +72,11 @@ package org.springframework.core.env;
 public interface Environment extends PropertyResolver {
 
 	/**
+	 * profile是用于创建逻辑分组，这个逻辑分组是关于有条件的注册bean定义
+	 *
 	 * Return the set of profiles explicitly made active for this environment. Profiles
 	 * are used for creating logical groupings of bean definitions to be registered
-	 * conditionally, for example based on deployment environment. Profiles can be
+	 * conditionally(条件), for example based on deployment environment. Profiles can be
 	 * activated by setting {@linkplain AbstractEnvironment#ACTIVE_PROFILES_PROPERTY_NAME
 	 * "spring.profiles.active"} as a system property or by calling
 	 * {@link ConfigurableEnvironment#setActiveProfiles(String...)}.
@@ -119,7 +121,7 @@ public interface Environment extends PropertyResolver {
 	 * in the case of no explicit {@linkplain #getActiveProfiles() active profiles},
 	 * whether one or more of the given profiles is included in the set of
 	 * {@linkplain #getDefaultProfiles() default profiles}.
-	 * <p>If a profile begins with '!' the logic is inverted, meaning this method
+	 * <p>If a profile begins with '!' the logic is inverted(倒置), meaning this method
 	 * will return {@code true} if the given profile is <em>not</em> active. For
 	 * example, {@code env.acceptsProfiles("p1", "!p2")} will return {@code true}
 	 * if profile 'p1' is active or 'p2' is not active.
@@ -148,5 +150,7 @@ public interface Environment extends PropertyResolver {
 	 * @see Profiles#of(String...)
 	 */
 	boolean acceptsProfiles(Profiles profiles);
+
+	// read for mark
 
 }

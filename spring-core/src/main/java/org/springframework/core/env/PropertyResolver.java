@@ -30,7 +30,7 @@ import org.springframework.lang.Nullable;
 public interface PropertyResolver {
 
 	/**
-	 * Return whether the given property key is available for resolution,
+	 * Return whether the given property key is available for resolution(解析),
 	 * i.e. if the value for the given key is not {@code null}.
 	 */
 	boolean containsProperty(String key);
@@ -110,5 +110,7 @@ public interface PropertyResolver {
 	 * or if any placeholders are unresolvable
 	 */
 	String resolveRequiredPlaceholders(String text) throws IllegalArgumentException;
+
+	// read for mark
 
 }

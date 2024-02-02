@@ -19,7 +19,7 @@ package org.springframework.core.env;
 import java.util.function.Predicate;
 
 /**
- * Profile predicate that may be {@linkplain Environment#acceptsProfiles(Profiles)
+ * Profile predicate(断言) that may be {@linkplain Environment#acceptsProfiles(Profiles)
  * accepted} by an {@link Environment}.
  *
  * <p>May be implemented directly or, more usually, created using the
@@ -72,5 +72,7 @@ public interface Profiles {
 	static Profiles of(String... profileExpressions) {
 		return ProfilesParser.parse(profileExpressions);
 	}
+
+	// read for mark
 
 }
