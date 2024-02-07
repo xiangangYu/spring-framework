@@ -429,6 +429,9 @@ class SpelDocumentationTests extends AbstractExpressionTests {
 			int maxInt = parser.parseExpression("(2^31) - 1").getValue(int.class);  // Integer.MAX_VALUE
 			assertThat(maxInt).isEqualTo(Integer.MAX_VALUE);
 
+			int minInt = parser.parseExpression("-2^31").getValue(int.class);  // Integer.MIN_VALUE
+			assertThat(minInt).isEqualTo(Integer.MIN_VALUE);
+
 			// -- Operator precedence --
 
 			int minusTwentyOne = parser.parseExpression("1+2-3*8").getValue(int.class);  // -21
@@ -457,7 +460,7 @@ class SpelDocumentationTests extends AbstractExpressionTests {
 			context.setOperatorOverloader(new ListConcatenation());
 
 			// evaluates to [1, 2, 3, 4, 5]
-			List list = parser.parseExpression("{1, 2, 3} + {4, 5}").getValue(context, List.class);
+			List list = parser.parseExpression("{1, 2, 3} + {2 + 2, 5}").getValue(context, List.class);
 			assertThat(list).containsExactly(1, 2, 3, 4, 5);
 		}
 
@@ -706,7 +709,7 @@ class SpelDocumentationTests extends AbstractExpressionTests {
 			}
 			throw new UnsupportedOperationException(
 				"No overload for operation %s and operands [%s] and [%s]"
-					.formatted(operation.name(), left, right));
+					.formatted(operation, left, right));
 		}
 	}
 
