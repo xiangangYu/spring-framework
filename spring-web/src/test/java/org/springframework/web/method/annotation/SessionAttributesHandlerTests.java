@@ -33,6 +33,7 @@ import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * 注释与签名之间加一个空格
  * Test fixture with {@link SessionAttributesHandler}.
  *
  * @author Rossen Stoyanchev

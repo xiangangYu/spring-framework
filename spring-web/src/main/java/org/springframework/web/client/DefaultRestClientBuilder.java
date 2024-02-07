@@ -217,6 +217,7 @@ final class DefaultRestClientBuilder implements RestClient.Builder {
 	 */
 	private static boolean hasRestTemplateDefaults(DefaultUriBuilderFactory factory) {
 		// see RestTemplate::initUriTemplateHandler
+		// 下面的代码多个判断以&&结尾换行
 		return (!factory.hasBaseUri() &&
 				factory.getEncodingMode() == DefaultUriBuilderFactory.EncodingMode.URI_COMPONENT &&
 				CollectionUtils.isEmpty(factory.getDefaultUriVariables()) &&

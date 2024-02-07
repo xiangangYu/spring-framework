@@ -89,6 +89,7 @@ public class DefaultUriBuilderFactory implements UriBuilderFactory {
 	 * @see #DefaultUriBuilderFactory()
 	 */
 	public final boolean hasBaseUri() {
+		// 下面的逻辑判断使用()进行括起来
 		return (this.baseUri != null);
 	}
 
