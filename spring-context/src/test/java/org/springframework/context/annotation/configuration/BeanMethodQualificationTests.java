@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.springframework.context.annotation.configuration;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +31,9 @@ import org.springframework.beans.testfixture.beans.TestBean;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Fallback;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.annotation.AliasFor;
@@ -81,6 +84,32 @@ class BeanMethodQualificationTests {
 	}
 
 	@Test
+	void primary() {
+		AnnotationConfigApplicationContext ctx =
+				new AnnotationConfigApplicationContext(PrimaryConfig.class, StandardPojo.class, ConstructorPojo.class);
+		StandardPojo pojo = ctx.getBean(StandardPojo.class);
+		assertThat(pojo.testBean.getName()).isEqualTo("interesting");
+		assertThat(pojo.testBean2.getName()).isEqualTo("boring");
+		ConstructorPojo pojo2 = ctx.getBean(ConstructorPojo.class);
+		assertThat(pojo2.testBean.getName()).isEqualTo("interesting");
+		assertThat(pojo2.testBean2.getName()).isEqualTo("boring");
+		ctx.close();
+	}
+
+	@Test
+	void fallback() {
+		AnnotationConfigApplicationContext ctx =
+				new AnnotationConfigApplicationContext(FallbackConfig.class, StandardPojo.class, ConstructorPojo.class);
+		StandardPojo pojo = ctx.getBean(StandardPojo.class);
+		assertThat(pojo.testBean.getName()).isEqualTo("interesting");
+		assertThat(pojo.testBean2.getName()).isEqualTo("boring");
+		ConstructorPojo pojo2 = ctx.getBean(ConstructorPojo.class);
+		assertThat(pojo2.testBean.getName()).isEqualTo("interesting");
+		assertThat(pojo2.testBean2.getName()).isEqualTo("boring");
+		ctx.close();
+	}
+
+	@Test
 	void customWithLazyResolution() {
 		AnnotationConfigApplicationContext ctx =
 				new AnnotationConfigApplicationContext(CustomConfig.class, CustomPojo.class);
@@ -89,6 +118,7 @@ class BeanMethodQualificationTests {
 		assertThat(BeanFactoryAnnotationUtils.isQualifierMatch(value -> value.equals("boring"),
 		"testBean2", ctx.getDefaultListableBeanFactory())).isTrue();
 		CustomPojo pojo = ctx.getBean(CustomPojo.class);
+		assertThat(pojo.plainBean).isNull();
 		assertThat(pojo.testBean.getName()).isEqualTo("interesting");
 		TestBean testBean2 = BeanFactoryAnnotationUtils.qualifiedBeanOfType(
 				ctx.getDefaultListableBeanFactory(), TestBean.class, "boring");
@@ -132,7 +162,9 @@ class BeanMethodQualificationTests {
 				new AnnotationConfigApplicationContext(CustomConfigWithAttributeOverride.class, CustomPojo.class);
 		assertThat(ctx.getBeanFactory().containsSingleton("testBeanX")).isFalse();
 		CustomPojo pojo = ctx.getBean(CustomPojo.class);
+		assertThat(pojo.plainBean).isNull();
 		assertThat(pojo.testBean.getName()).isEqualTo("interesting");
+		assertThat(pojo.nestedTestBean).isNull();
 		ctx.close();
 	}
 
@@ -198,12 +230,77 @@ class BeanMethodQualificationTests {
 		}
 	}
 
+	@Configuration
+	static class PrimaryConfig {
+
+		@Bean @Qualifier("interesting") @Primary
+		public static TestBean testBean1() {
+			return new TestBean("interesting");
+		}
+
+		@Bean @Qualifier("interesting")
+		public static TestBean testBean1x() {
+			return new TestBean("");
+		}
+
+		@Bean @Boring @Primary
+		public TestBean testBean2(TestBean testBean1) {
+			TestBean tb = new TestBean("boring");
+			tb.setSpouse(testBean1);
+			return tb;
+		}
+
+		@Bean @Boring
+		public TestBean testBean2x() {
+			return new TestBean("");
+		}
+	}
+
+	@Configuration
+	static class FallbackConfig {
+
+		@Bean @Qualifier("interesting")
+		public static TestBean testBean1() {
+			return new TestBean("interesting");
+		}
+
+		@Bean @Qualifier("interesting") @Fallback
+		public static TestBean testBean1x() {
+			return new TestBean("");
+		}
+
+		@Bean @Boring
+		public TestBean testBean2(TestBean testBean1) {
+			TestBean tb = new TestBean("boring");
+			tb.setSpouse(testBean1);
+			return tb;
+		}
+
+		@Bean @Boring @Fallback
+		public TestBean testBean2x() {
+			return new TestBean("");
+		}
+	}
+
 	@Component @Lazy
 	static class StandardPojo {
 
 		@Autowired @Qualifier("interesting") TestBean testBean;
 
 		@Autowired @Boring TestBean testBean2;
+	}
+
+	@Component @Lazy
+	static class ConstructorPojo {
+
+		TestBean testBean;
+
+		TestBean testBean2;
+
+		ConstructorPojo(@Qualifier("interesting") TestBean testBean, @Boring TestBean testBean2) {
+			this.testBean = testBean;
+			this.testBean2 = testBean2;
+		}
 	}
 
 	@Qualifier
@@ -219,7 +316,7 @@ class BeanMethodQualificationTests {
 			return new TestBean("interesting");
 		}
 
-		@Bean @Qualifier("boring") @Lazy
+		@Bean(defaultCandidate=false) @Qualifier("boring") @Lazy
 		public TestBean testBean2(@Lazy TestBean testBean1) {
 			TestBean tb = new TestBean("boring");
 			tb.setSpouse(testBean1);
@@ -235,7 +332,7 @@ class BeanMethodQualificationTests {
 			return new TestBean("interesting");
 		}
 
-		@Bean @Qualifier("boring")
+		@Bean(defaultCandidate=false) @Qualifier("boring")
 		public TestBean testBean2(@Lazy TestBean testBean1) {
 			TestBean tb = new TestBean("boring");
 			tb.setSpouse(testBean1);
@@ -246,17 +343,23 @@ class BeanMethodQualificationTests {
 	@InterestingPojo
 	static class CustomPojo {
 
+		TestBean plainBean;
+
 		@InterestingNeed TestBean testBean;
 
 		@InterestingNeedWithRequiredOverride(required=false) NestedTestBean nestedTestBean;
+
+		public CustomPojo(Optional<TestBean> plainBean) {
+			this.plainBean = plainBean.orElse(null);
+		}
 	}
 
-	@Bean @Lazy @Qualifier("interesting")
+	@Bean(defaultCandidate=false) @Lazy @Qualifier("interesting")
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface InterestingBean {
 	}
 
-	@Bean @Lazy @Qualifier("interesting")
+	@Bean(defaultCandidate=false) @Lazy @Qualifier("interesting")
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface InterestingBeanWithName {
 

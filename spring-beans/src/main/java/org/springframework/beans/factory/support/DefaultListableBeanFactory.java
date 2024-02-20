@@ -1400,11 +1400,16 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				}
 			}
 
-			// Step 3: shortcut for declared dependency name matching target bean name
+			// Step 3: shortcut for declared dependency name or qualifier-suggested name matching target bean name
 			String dependencyName = descriptor.getDependencyName();
-			if (dependencyName != null && containsBean(dependencyName) &&
+			if (dependencyName == null || !containsBean(dependencyName)) {
+				String suggestedName = getAutowireCandidateResolver().getSuggestedName(descriptor);
+				dependencyName = (suggestedName != null && containsBean(suggestedName) ? suggestedName : null);
+			}
+			if (dependencyName != null &&
 					isTypeMatch(dependencyName, type) && isAutowireCandidate(dependencyName, descriptor) &&
-					!hasPrimaryConflict(dependencyName, type) && !isSelfReference(beanName, dependencyName)) {
+					!isFallback(dependencyName) && !hasPrimaryConflict(dependencyName, type) &&
+					!isSelfReference(beanName, dependencyName)) {
 				if (autowiredBeanNames != null) {
 					autowiredBeanNames.add(dependencyName);
 				}
@@ -1747,10 +1752,22 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		if (primaryCandidate != null) {
 			return primaryCandidate;
 		}
-		// Step 2: check bean name match
-		for (String candidateName : candidates.keySet()) {
-			if (matchesBeanName(candidateName, descriptor.getDependencyName())) {
-				return candidateName;
+		// Step 2a: match bean name against declared dependency name
+		String dependencyName = descriptor.getDependencyName();
+		if (dependencyName != null) {
+			for (String beanName : candidates.keySet()) {
+				if (matchesBeanName(beanName, dependencyName)) {
+					return beanName;
+				}
+			}
+		}
+		// Step 2b: match bean name against qualifier-suggested name
+		String suggestedName = getAutowireCandidateResolver().getSuggestedName(descriptor);
+		if (suggestedName != null) {
+			for (String beanName : candidates.keySet()) {
+				if (matchesBeanName(beanName, suggestedName)) {
+					return beanName;
+				}
 			}
 		}
 		// Step 3: check highest priority candidate
@@ -1780,6 +1797,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	@Nullable
 	protected String determinePrimaryCandidate(Map<String, Object> candidates, Class<?> requiredType) {
 		String primaryBeanName = null;
+		// First pass: identify unique primary candidate
 		for (Map.Entry<String, Object> entry : candidates.entrySet()) {
 			String candidateBeanName = entry.getKey();
 			Object beanInstance = entry.getValue();
@@ -1796,6 +1814,17 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 					}
 				}
 				else {
+					primaryBeanName = candidateBeanName;
+				}
+			}
+		}
+		// Second pass: identify unique non-fallback candidate
+		if (primaryBeanName == null) {
+			for (String candidateBeanName : candidates.keySet()) {
+				if (!isFallback(candidateBeanName)) {
+					if (primaryBeanName != null) {
+						return null;
+					}
 					primaryBeanName = candidateBeanName;
 				}
 			}
@@ -1863,6 +1892,21 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	}
 
 	/**
+	 * Return whether the bean definition for the given bean name has been
+	 * marked as a fallback bean.
+	 * @param beanName the name of the bean
+	 * @since 6.2
+	 */
+	private boolean isFallback(String beanName) {
+		String transformedBeanName = transformedBeanName(beanName);
+		if (containsBeanDefinition(transformedBeanName)) {
+			return getMergedLocalBeanDefinition(transformedBeanName).isFallback();
+		}
+		return (getParentBeanFactory() instanceof DefaultListableBeanFactory parent &&
+				parent.isFallback(transformedBeanName));
+	}
+
+	/**
 	 * Return the priority assigned for the given bean instance by
 	 * the {@code jakarta.annotation.Priority} annotation.
 	 * <p>The default implementation delegates to the specified
@@ -1907,7 +1951,6 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	 * Determine whether there is a primary bean registered for the given dependency type,
 	 * not matching the given bean name.
 	 */
-	@Nullable
 	private boolean hasPrimaryConflict(String beanName, Class<?> dependencyType) {
 		for (String candidate : this.primaryBeanNames) {
 			if (isTypeMatch(candidate, dependencyType) && !candidate.equals(beanName)) {
