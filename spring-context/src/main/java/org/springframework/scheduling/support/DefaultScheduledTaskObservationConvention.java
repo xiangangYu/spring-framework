@@ -19,6 +19,7 @@ package org.springframework.scheduling.config;
 import io.micrometer.common.KeyValue;
 import io.micrometer.common.KeyValues;
 
+import org.springframework.scheduling.support.ScheduledTaskObservationDocumentation.LowCardinalityKeyNames;
 import org.springframework.util.StringUtils;
 
 // 这种导入方式见得比较少，下面是导入了内部类，而且是static导入

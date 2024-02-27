@@ -14,30 +14,22 @@
  * limitations under the License.
  */
 
-package org.springframework.orm.jpa;
-
-import org.junit.jupiter.api.Test;
-
-import static org.mockito.Mockito.verify;
+package org.springframework.core.testfixture.ide;
 
 /**
- * @author Rod Johnson
- * @author Phillip Webb
+ * Test utilities related to IDEs.
+ *
+ * @author Sam Brannen
+ * @since 6.2
  */
-class EntityManagerFactoryBeanSupportTests extends AbstractEntityManagerFactoryBeanTests {
+public class IdeUtils {
 
-	@Test
-	void testHookIsCalled() {
-		DummyEntityManagerFactoryBean demf = new DummyEntityManagerFactoryBean(mockEmf);
-
-		demf.afterPropertiesSet();
-
-		checkInvariants(demf);
-
-		// Should trigger close method expected by EntityManagerFactory mock
-		demf.destroy();
-
-		verify(mockEmf).close();
+	/**
+	 * Determine if the current code is running in the Eclipse IDE.
+	 */
+	public static boolean runningInEclipse() {
+		return StackWalker.getInstance().walk(stream -> stream.anyMatch(
+				stackFrame -> stackFrame.getClassName().startsWith("org.eclipse.jdt")));
 	}
 
 }
