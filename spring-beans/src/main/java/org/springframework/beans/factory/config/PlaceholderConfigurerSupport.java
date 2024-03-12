@@ -101,7 +101,7 @@ public abstract class PlaceholderConfigurerSupport extends PropertyResourceConfi
 	/** Default value separator: {@value}. */
 	public static final String DEFAULT_VALUE_SEPARATOR = ":";
 
-	/** Default escape character: {@value}. */
+	/** Default escape character: {@code '\'}. */
 	public static final Character DEFAULT_ESCAPE_CHARACTER = '\\';
 
 	// 下面的是变量定义，而不是常量定义
@@ -115,7 +115,7 @@ public abstract class PlaceholderConfigurerSupport extends PropertyResourceConfi
 	@Nullable
 	protected String valueSeparator = DEFAULT_VALUE_SEPARATOR;
 
-	/** Defaults to {@value #DEFAULT_ESCAPE_CHARACTER}. */
+	/** Defaults to {@link #DEFAULT_ESCAPE_CHARACTER}. */
 	@Nullable
 	protected Character escapeCharacter = DEFAULT_ESCAPE_CHARACTER;
 
@@ -164,7 +164,7 @@ public abstract class PlaceholderConfigurerSupport extends PropertyResourceConfi
 	 * Specify the escape character to use to ignore placeholder prefix
 	 * or value separator, or {@code null} if no escaping should take
 	 * place.
-	 * <p>Default is {@value #DEFAULT_ESCAPE_CHARACTER}.
+	 * <p>Default is {@link #DEFAULT_ESCAPE_CHARACTER}.
 	 * @since 6.2
 	 */
 	public void setEscapeCharacter(@Nullable Character escsEscapeCharacter) {
