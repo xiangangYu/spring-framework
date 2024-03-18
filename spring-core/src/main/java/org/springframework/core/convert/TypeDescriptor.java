@@ -30,7 +30,6 @@ import java.util.stream.Stream;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
@@ -552,10 +551,6 @@ public class TypeDescriptor implements Serializable {
 		return builder.toString();
 	}
 
-	private static String getName(Class<?> clazz) {
-		String canonicalName = clazz.getCanonicalName();
-		return (canonicalName != null ? canonicalName : clazz.getName());
-	}
 
 	/**
 	 * Create a new type descriptor for an object.
@@ -738,6 +733,11 @@ public class TypeDescriptor implements Serializable {
 		return new TypeDescriptor(property).nested(nestingLevel);
 	}
 
+	private static String getName(Class<?> clazz) {
+		String canonicalName = clazz.getCanonicalName();
+		return (canonicalName != null ? canonicalName : clazz.getName());
+	}
+
 
 	/**
 	 * Adapter class for exposing a {@code TypeDescriptor}'s annotations as an
@@ -751,7 +751,7 @@ public class TypeDescriptor implements Serializable {
 
 		private final Annotation[] annotations;
 
-		private AnnotatedElementAdapter(@NonNull Annotation[] annotations) {
+		private AnnotatedElementAdapter(Annotation[] annotations) {
 			this.annotations = annotations;
 		}
 
@@ -811,7 +811,7 @@ public class TypeDescriptor implements Serializable {
 
 		@Override
 		public String toString() {
-			return "AnnotatedElementAdapter annotations=" + Arrays.toString(this.annotations);
+			return Arrays.toString(this.annotations);
 		}
 	}
 
