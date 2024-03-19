@@ -54,7 +54,7 @@ import org.springframework.util.StringUtils;
 public class CglibSubclassingInstantiationStrategy extends SimpleInstantiationStrategy {
 
 	/**
-	 * Index in the CGLIB callback array for passthrough behavior,
+	 * Index in the CGLIB callback array for passthrough(透传) behavior,
 	 * in which case the subclass won't override the original class.
 	 */
 	private static final int PASSTHROUGH = 0;
