@@ -14,29 +14,13 @@
  * limitations under the License.
  */
 
-package org.springframework.core.convert.support;
+package org.springframework.test.context.support.samples;
 
-import kotlin.text.Regex;
-
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Component;
 
 /**
- * Converts from a String to a Kotlin {@link Regex}.
- *
- * @author Stephane Nicoll
- * @author Sebastien Deleuze
- * @since 6.1
+ * Intended to be picked up by component scanning in tests in the support package.
  */
-final class StringToRegexConverter implements Converter<String, Regex> {
-
-	@Override
-	@Nullable
-	public Regex convert(String source) {
-		if (source.isEmpty()) {
-			return null;
-		}
-		return new Regex(source);
-	}
-
+@Component
+public class SampleComponent {
 }
