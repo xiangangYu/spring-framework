@@ -337,6 +337,7 @@ public class ServiceLocatorFactoryBean implements FactoryBean<Object>, BeanFacto
 	}
 
 	@Override
+	@Nullable
 	public Class<?> getObjectType() {
 		return this.serviceLocatorInterface;
 	}

@@ -204,6 +204,7 @@ class PersistenceManagedTypesBeanRegistrationAotProcessor implements BeanRegistr
 			});
 		}
 
+		@SuppressWarnings("NullAway")
 		private void registerInstantiatorForReflection(ReflectionHints reflection, @Nullable Annotation annotation) {
 			if (annotation == null) {
 				return;
