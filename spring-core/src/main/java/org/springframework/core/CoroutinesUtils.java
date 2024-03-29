@@ -115,7 +115,7 @@ public abstract class CoroutinesUtils {
 		Assert.isTrue(KotlinDetector.isSuspendingFunction(method), "Method must be a suspending function");
 		KFunction<?> function = ReflectJvmMapping.getKotlinFunction(method);
 		Assert.notNull(function, () -> "Failed to get Kotlin function for method: " + method);
-		if (method.isAccessible() && !KCallablesJvm.isAccessible(function)) {
+		if (!KCallablesJvm.isAccessible(function)) {
 			KCallablesJvm.setAccessible(function, true);
 		}
 		Mono<Object> mono = MonoKt.mono(context, (scope, continuation) -> {
@@ -130,7 +130,11 @@ public abstract class CoroutinesUtils {
 									KType type = parameter.getType();
 									if (!(type.isMarkedNullable() && arg == null) && type.getClassifier() instanceof KClass<?> kClass
 											&& KotlinDetector.isInlineClass(JvmClassMappingKt.getJavaClass(kClass))) {
-										arg = KClasses.getPrimaryConstructor(kClass).call(arg);
+										KFunction<?> constructor = KClasses.getPrimaryConstructor(kClass);
+										if (!KCallablesJvm.isAccessible(constructor)) {
+											KCallablesJvm.setAccessible(constructor, true);
+										}
+										arg = constructor.call(arg);
 									}
 									argMap.put(parameter, arg);
 								}
