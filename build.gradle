@@ -160,5 +160,5 @@ configure(moduleProjects) { project ->
 // 配置根项目
 configure(rootProject) {
 	description = "Spring Framework"
-	apply plugin: 'org.springframework.build.api-diff'
+//	apply plugin: 'org.springframework.build.api-diff'
 }

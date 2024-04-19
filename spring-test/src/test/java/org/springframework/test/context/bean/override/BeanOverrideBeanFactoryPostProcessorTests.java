@@ -192,7 +192,7 @@ class BeanOverrideBeanFactoryPostProcessorTests {
 	 */
 
 	static final SomeInterface OVERRIDE = new SomeImplementation();
-
+	// 两个变量之间加一个空行，原本这里没有空行，新版本增加了空行
 	static final ExampleService OVERRIDE_SERVICE = new FailingExampleService();
 
 	static class ReplaceBeans {
