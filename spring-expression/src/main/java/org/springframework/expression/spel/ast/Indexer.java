@@ -355,8 +355,11 @@ public class Indexer extends SpelNodeImpl {
 
 	@Override
 	public boolean isCompilable() {
+		if (this.exitTypeDescriptor == null) {
+			return false;
+		}
 		if (this.indexedType == IndexedType.ARRAY) {
-			return (this.exitTypeDescriptor != null && this.arrayTypeDescriptor != null);
+			return (this.arrayTypeDescriptor != null);
 		}
 		SpelNodeImpl index = this.children[0];
 		if (this.indexedType == IndexedType.LIST) {
@@ -413,17 +416,13 @@ public class Indexer extends SpelNodeImpl {
 				default -> AALOAD;
 			};
 
-			cf.enterCompilationScope();
-			index.generateCode(mv, cf);
-			cf.exitCompilationScope();
+			generateIndexCode(index, mv, cf);
 			mv.visitInsn(insn);
 		}
 
 		else if (this.indexedType == IndexedType.LIST) {
 			mv.visitTypeInsn(CHECKCAST, "java/util/List");
-			cf.enterCompilationScope();
-			index.generateCode(mv, cf);
-			cf.exitCompilationScope();
+			generateIndexCode(index, mv, cf);
 			mv.visitMethodInsn(INVOKEINTERFACE, "java/util/List", "get", "(I)Ljava/lang/Object;", true);
 		}
 
@@ -436,9 +435,7 @@ public class Indexer extends SpelNodeImpl {
 				mv.visitLdcInsn(mapKeyName);
 			}
 			else {
-				cf.enterCompilationScope();
-				index.generateCode(mv, cf);
-				cf.exitCompilationScope();
+				generateIndexCode(index, mv, cf);
 			}
 			mv.visitMethodInsn(
 					INVOKEINTERFACE, "java/util/Map", "get", "(Ljava/lang/Object;)Ljava/lang/Object;", true);
@@ -451,7 +448,7 @@ public class Indexer extends SpelNodeImpl {
 			}
 			CompilablePropertyAccessor compilablePropertyAccessor =
 					(CompilablePropertyAccessor) this.cachedPropertyReadAccessor;
-			Assert.state(compilablePropertyAccessor != null, "No cached read accessor");
+			Assert.state(compilablePropertyAccessor != null, "No cached PropertyAccessor for reading");
 			String propertyName = (String) stringLiteral.getLiteralValue().getValue();
 			Assert.state(propertyName != null, "No property name");
 			compilablePropertyAccessor.generateCode(propertyName, mv, cf);
@@ -468,6 +465,12 @@ public class Indexer extends SpelNodeImpl {
 			}
 			mv.visitLabel(skipIfNull);
 		}
+	}
+
+	private void generateIndexCode(SpelNodeImpl index, MethodVisitor mv, CodeFlow cf) {
+		cf.enterCompilationScope();
+		index.generateCode(mv, cf);
+		cf.exitCompilationScope();
 	}
 
 	@Override
@@ -792,10 +795,11 @@ public class Indexer extends SpelNodeImpl {
 									this.evaluationContext, this.targetObject, this.name);
 						}
 						updatePropertyReadState(accessor, this.name, targetType);
+						TypedValue result = accessor.read(this.evaluationContext, this.targetObject, this.name);
 						if (accessor instanceof CompilablePropertyAccessor compilablePropertyAccessor) {
 							setExitTypeDescriptor(CodeFlow.toDescriptor(compilablePropertyAccessor.getPropertyType()));
 						}
-						return accessor.read(this.evaluationContext, this.targetObject, this.name);
+						return result;
 					}
 				}
 			}
