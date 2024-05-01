@@ -43,7 +43,7 @@ rootProject.children.each {project ->
 
 // 项目加载，里面进行一些逻辑判断并进行变量赋值
 settings.gradle.projectsLoaded {
-	gradleEnterprise {
+	develocity {
 		buildScan {
 			File buildDir = settings.gradle.rootProject
 					.getLayout().getBuildDirectory().getAsFile().get()
