@@ -38,7 +38,7 @@ public interface ApplicationEventPublisher {
 	 * Notify all <strong>matching</strong> listeners registered with this
 	 * application of an application event. Events may be framework events
 	 * (such as ContextRefreshedEvent) or application-specific events.
-	 * <p>Such an event publication step is effectively a hand-off to the
+	 * <p>Such an event publication step is effectively a hand-off to(传递、交接) the
 	 * multicaster and does not imply synchronous/asynchronous execution
 	 * or even immediate execution at all. Event listeners are encouraged
 	 * to be as efficient as possible, individually(单独地) using asynchronous
