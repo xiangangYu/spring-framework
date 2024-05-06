@@ -42,8 +42,8 @@ public interface MessageSource {
 	/**
 	 * Try to resolve the message. Return default message if no message was found.
 	 * @param code the message code to look up, e.g. 'calculator.noRateSet'.
-	 * MessageSource users are encouraged to base message names on qualified class
-	 * or package names, avoiding potential conflicts and ensuring maximum clarity.
+	 * MessageSource users are encouraged(鼓励) to base message names on qualified class
+	 * or package names, avoiding potential conflicts and ensuring maximum clarity(清晰).
 	 * @param args an array of arguments that will be filled in for params within
 	 * the message (params look like "{0}", "{1,date}", "{2,time}" within a message),
 	 * or {@code null} if none

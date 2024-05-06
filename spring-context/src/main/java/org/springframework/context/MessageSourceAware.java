@@ -23,7 +23,7 @@ import org.springframework.beans.factory.Aware;
  * {@link MessageSource} (typically the ApplicationContext) that it runs in.
  *
  * <p>Note that the {@code MessageSource} can usually also be passed in as a bean
- * reference (via arbitrary bean properties or constructor arguments), because
+ * reference (via arbitrary(任意) bean properties or constructor arguments), because
  * it is defined as a bean with name {@code "messageSource"} in the application
  * context.
  *

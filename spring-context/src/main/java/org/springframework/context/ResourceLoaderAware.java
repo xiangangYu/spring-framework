@@ -41,7 +41,7 @@ import org.springframework.core.io.ResourceLoader;
  *
  * <p>A passed-in {@code ResourceLoader} can also be checked for the
  * {@link org.springframework.core.io.support.ResourcePatternResolver} interface
- * and cast accordingly, in order to resolve resource patterns into arrays of
+ * and cast(投) accordingly, in order to resolve resource patterns into arrays of
  * {@code Resource} objects. This will always work when running in an ApplicationContext
  * (since the context interface extends the ResourcePatternResolver interface). Use a
  * {@link org.springframework.core.io.support.PathMatchingResourcePatternResolver} as

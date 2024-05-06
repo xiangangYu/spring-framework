@@ -34,7 +34,7 @@ public interface MessageSourceResolvable {
 
 	/**
 	 * Return the codes to be used to resolve this message, in the order that
-	 * they should get tried. The last code will therefore be the default one.
+	 * they should get tried. The last code will therefore(因此) be the default one.
 	 * @return a String array of codes which are associated with this message
 	 */
 	@Nullable
@@ -55,7 +55,7 @@ public interface MessageSourceResolvable {
 	/**
 	 * Return the default message to be used to resolve this message.
 	 * <p>The default implementation simply returns {@code null}.
-	 * Note that the default message may be identical to the primary
+	 * Note that the default message may be identical(相同) to the primary
 	 * message code ({@link #getCodes()}), which effectively enforces
 	 * {@link org.springframework.context.support.AbstractMessageSource#setUseCodeAsDefaultMessage}
 	 * for this particular message.

@@ -40,7 +40,7 @@ package org.springframework.context;
  * then component A should have a lower phase value than component B. During
  * the shutdown process, component B would be stopped before component A.
  *
- * <p>Any explicit "depends-on" relationship will take precedence over the phase
+ * <p>Any explicit "depends-on" relationship will take precedence(优先) over the phase
  * order such that the dependent bean always starts after its dependency and
  * always stops before its dependency.
  *
@@ -87,7 +87,7 @@ public interface SmartLifecycle extends Lifecycle, Phased {
 	 * started automatically by the container at the time that the containing
 	 * {@link ApplicationContext} gets refreshed.
 	 * <p>A value of {@code false} indicates that the component is intended to
-	 * be started through an explicit {@link #start()} call instead, analogous
+	 * be started through an explicit {@link #start()} call instead, analogous(类似)
 	 * to a plain {@link Lifecycle} implementation.
 	 * <p>The default implementation returns {@code true}.
 	 * @see #start()
