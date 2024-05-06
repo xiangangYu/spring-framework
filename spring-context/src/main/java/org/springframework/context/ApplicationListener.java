@@ -52,7 +52,7 @@ public interface ApplicationListener<E extends ApplicationEvent> extends EventLi
 	 * Return whether this listener supports asynchronous execution.
 	 * @return {@code true} if this listener instance can be executed asynchronously
 	 * depending on the multicaster configuration (the default), or {@code false} if it
-	 * needs to immediately run within the original thread which published the event
+	 * needs to immediately(立即) run within the original thread which published the event
 	 * @since 6.1
 	 * @see org.springframework.context.event.SimpleApplicationEventMulticaster#setTaskExecutor
 	 */
@@ -72,5 +72,9 @@ public interface ApplicationListener<E extends ApplicationEvent> extends EventLi
 	static <T> ApplicationListener<PayloadApplicationEvent<T>> forPayload(Consumer<T> consumer) {
 		return event -> consumer.accept(event.getPayload());
 	}
+
+	/**
+	 * 在接口中添加default实现及静态方法，这种方式用得还是比较少
+	 */
 
 }
