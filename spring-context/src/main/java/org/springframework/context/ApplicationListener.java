@@ -75,6 +75,26 @@ public interface ApplicationListener<E extends ApplicationEvent> extends EventLi
 
 	/**
 	 * 在接口中添加default实现及静态方法，这种方式用得还是比较少
+	 *
+	 * Java 8 新特性：接口的静态方法和默认方法
+	 * Java 8 允许给接口添加一个非抽象的方法实现，只需要使用 default 关键字即可，这个特征又叫做扩展方法（也称为默认方法或虚拟扩展方法
+	 * 或防护方法）。在实现该接口时，该默认扩展方法在子类上可以直接使用，它的使用方式类似于抽象类中非抽象成员方法。
+	 *
+	 * 接口里可以声明静态方法，并且可以实现。
+	 * private interface DefaulableFactory {
+	 *    // Interfaces now allow static methods
+	 *    static Defaulable create(Supplier< Defaulable > supplier ) {
+	 *        return supplier.get();
+	 *    }
+	 * }
+	 *
+	 * public static void main( String[] args ) {
+	 *    Defaulable defaulable = DefaulableFactory.create( DefaultableImpl::new );
+	 *    System.out.println( defaulable.myDefalutMethod() );
+	 *
+	 *    defaulable = DefaulableFactory.create( OverridableImpl::new );
+	 *    System.out.println( defaulable.myDefalutMethod() );
+	 * }
 	 */
 
 }
