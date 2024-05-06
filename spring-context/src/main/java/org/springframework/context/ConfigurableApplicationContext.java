@@ -35,7 +35,7 @@ import org.springframework.lang.Nullable;
  * {@link org.springframework.context.ApplicationContext} interface.
  *
  * <p>Configuration and lifecycle methods are encapsulated here to avoid
- * making them obvious to ApplicationContext client code. The present
+ * making them obvious(明显的) to ApplicationContext client code. The present
  * methods should only be used by startup and shutdown code.
  *
  * @author Juergen Hoeller
