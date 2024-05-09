@@ -25,7 +25,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 
 /**
- * {@link RuntimeHintsRegistrar} implementation that registers reflection entries
+ * {@link RuntimeHintsRegistrar} implementation that registers reflection hints
  * for {@link AbstractHandshakeHandler}.
  *
  * @author Sebastien Deleuze
@@ -61,6 +61,7 @@ class HandshakeHandlerRuntimeHints implements RuntimeHintsRegistrar {
 				"com.ibm.websphere.wsoc.WsWsocServerContainer", classLoader);
 	}
 
+
 	@Override
 	public void registerHints(RuntimeHints hints, @Nullable ClassLoader classLoader) {
 		ReflectionHints reflectionHints = hints.reflection();
@@ -90,5 +91,6 @@ class HandshakeHandlerRuntimeHints implements RuntimeHintsRegistrar {
 	}
 
 	// read for mark
+
 
 }

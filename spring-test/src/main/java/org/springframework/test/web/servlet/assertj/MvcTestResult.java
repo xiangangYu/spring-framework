@@ -22,23 +22,36 @@ import org.springframework.lang.Nullable;
 import org.springframework.test.web.servlet.MvcResult;
 
 /**
- * A {@link MvcResult} that additionally supports AssertJ style assertions.
+ * Provides the result of an executed request using {@link MockMvcTester} that
+ * is meant to be used with {@link org.assertj.core.api.Assertions#assertThat(AssertProvider)
+ * assertThat}.
  *
  * <p>Can be in one of two distinct states:
  * <ol>
- * <li>The request processed successfully, and {@link #getUnresolvedException()}
- * is therefore {@code null}.</li>
- * <li>The request failed unexpectedly with {@link #getUnresolvedException()}
- * providing more information about the error. Any attempt to access a member of
- * the result fails with an exception.</li>
+ * <li>The request processed successfully, even if it failed with an exception
+ * that has been resolved. The {@linkplain #getMvcResult() result} is available,
+ * and {@link #getUnresolvedException()} will return {@code null}.</li>
+ * <li>The request failed unexpectedly. {@link #getUnresolvedException()}
+ * provides more information about the error, and any attempt to access the
+ * {@linkplain #getMvcResult() result} will fail with an exception.</li>
  * </ol>
  *
  * @author Stephane Nicoll
  * @author Brian Clozel
  * @since 6.2
- * @see AssertableMockMvc
+ * @see MockMvcTester
  */
-public interface AssertableMvcResult extends MvcResult, AssertProvider<MvcResultAssert> {
+public interface MvcTestResult extends AssertProvider<MvcTestResultAssert> {
+
+	/**
+	 * Return the {@linkplain MvcResult result} of the processing. If
+	 * the processing has failed with an unresolved exception, the
+	 * result is not available, see {@link #getUnresolvedException()}.
+	 * @return the {@link MvcResult}
+	 * @throws IllegalStateException if the processing has failed with
+	 * an unresolved exception
+	 */
+	MvcResult getMvcResult();
 
 	/**
 	 * Return the exception that was thrown unexpectedly while processing the
