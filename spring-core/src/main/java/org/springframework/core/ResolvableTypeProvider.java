@@ -21,8 +21,8 @@ import org.springframework.lang.Nullable;
 /**
  * Any object can implement this interface to provide its actual {@link ResolvableType}.
  *
- * <p>Such information is very useful when figuring out if the instance matches a generic
- * signature as Java does not convey the signature at runtime.
+ * <p>Such information is very useful when figuring out(找出、判断) if the instance matches a generic
+ * signature as Java does not convey(传达) the signature at runtime.
  *
  * <p>Users of this interface should be careful in complex hierarchy scenarios, especially
  * when the generic type signature of the class changes in subclasses. It is always

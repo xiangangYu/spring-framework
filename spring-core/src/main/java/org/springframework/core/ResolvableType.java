@@ -47,7 +47,7 @@ import org.springframework.util.StringUtils;
 /**
  * Encapsulates a Java {@link java.lang.reflect.Type}, providing access to
  * {@link #getSuperType() supertypes}, {@link #getInterfaces() interfaces}, and
- * {@link #getGeneric(int...) generic parameters} along with the ability to ultimately
+ * {@link #getGeneric(int...) generic parameters} along with the ability to ultimately(最终)
  * {@link #resolve() resolve} to a {@link java.lang.Class}.
  *
  * <p>A {@code ResolvableType} may be obtained from a {@linkplain #forField(Field) field},
@@ -88,7 +88,9 @@ public class ResolvableType implements Serializable {
 
 	/**
 	 * {@code ResolvableType} returned when no value is available. {@code NONE} is used
-	 * in preference to {@code null} so that multiple method calls can be safely chained.
+	 * in preference to(偏好、优先于) {@code null} so that multiple method calls can be safely chained.
+	 *
+	 * 当没有具体的实例对象时，使用none对象来进行返回，防止出现null调用出现空指针，这是种很好的方式
 	 */
 	public static final ResolvableType NONE = new ResolvableType(EmptyType.INSTANCE, null, null, 0);
 
@@ -1545,6 +1547,7 @@ public class ResolvableType implements Serializable {
 
 	/**
 	 * Strategy interface used to resolve {@link TypeVariable TypeVariables}.
+	 * 内部接口数据，这个见的还是比较少
 	 */
 	interface VariableResolver extends Serializable {
 
@@ -1563,6 +1566,9 @@ public class ResolvableType implements Serializable {
 	}
 
 
+	/**
+	 * 这又是一个内部类，此外对于代码风格，方法之间的分割用一行空格，内部类使用两行空格，如上面的两个空格
+	 */
 	@SuppressWarnings("serial")
 	private static class DefaultVariableResolver implements VariableResolver {
 
@@ -1584,7 +1590,9 @@ public class ResolvableType implements Serializable {
 		}
 	}
 
-
+	/**
+	 * 又是一个内部类
+	 */
 	@SuppressWarnings("serial")
 	private static class TypeVariablesVariableResolver implements VariableResolver {
 
@@ -1616,7 +1624,10 @@ public class ResolvableType implements Serializable {
 		}
 	}
 
-
+	/**
+	 * 这又是一个内部类，为什么会有这么多的内部类呢
+	 * Synthetic(合成)
+	 */
 	private static final class SyntheticParameterizedType implements ParameterizedType, Serializable {
 
 		private final Type rawType;
@@ -1678,6 +1689,8 @@ public class ResolvableType implements Serializable {
 
 	/**
 	 * Internal helper to handle bounds from {@link WildcardType WildcardTypes}.
+	 *
+	 * 这又是一个内部类，为什么不使用公共的文件类，而要使用内部类呢
 	 */
 	private static class WildcardBounds {
 
@@ -1704,7 +1717,7 @@ public class ResolvableType implements Serializable {
 		}
 
 		/**
-		 * Return {@code true} if these bounds are assignable from all the specified types.
+		 * Return {@code true} if these bounds are assignable(可分配得) from all the specified types.
 		 * @param types the types to test against
 		 * @return {@code true} if these bounds are assignable from all types
 		 */
@@ -1795,6 +1808,7 @@ public class ResolvableType implements Serializable {
 
 		/**
 		 * The various kinds of bounds.
+		 * 内部类中定义内部枚举，这个见得更少
 		 */
 		enum Kind {UPPER, LOWER}
 	}
@@ -1802,6 +1816,8 @@ public class ResolvableType implements Serializable {
 
 	/**
 	 * Internal {@link Type} used to represent an empty value.
+	 * 静态的内部类，见得还是比较少，平时在业务功能开发中很少使用内部类
+	 * 使用内部类进行业务开发的方式可以参考参考
 	 */
 	@SuppressWarnings("serial")
 	static class EmptyType implements Type, Serializable {
@@ -1812,5 +1828,17 @@ public class ResolvableType implements Serializable {
 			return INSTANCE;
 		}
 	}
+
+//	public  static void main(String[] args) throws NoSuchFieldException {
+//		ResolvableType t = ResolvableType.forField(Conventions.class.getDeclaredField("PLURAL_SUFFIX"));
+//		System.out.println(t);
+//
+//		String[] types = {"hello", "world", "xiaoao"};
+//		StringJoiner stringJoiner = new StringJoiner(", ", "<", ">");
+//		for (String type : types) {
+//			stringJoiner.add(type);
+//		}
+//		System.out.println(stringJoiner);
+//	}
 
 }
