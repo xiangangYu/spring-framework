@@ -783,6 +783,7 @@ public class MockHttpServletRequestBuilder
 			if (this.content != null && this.content.length > 0) {
 				throw new IllegalStateException("Could not write form data with an existing body");
 			}
+			// 下面的语句过长，上个版本中把三元运算的"?"放到了下一行，这个版本调到了上面，所以遇到换行时表达式的运算符要放到上面
 			Charset charset = (this.characterEncoding != null ?
 					Charset.forName(this.characterEncoding) : StandardCharsets.UTF_8);
 			MediaType mediaType = (request.getContentType() != null ?
