@@ -50,6 +50,7 @@ import org.springframework.util.Assert;
  */
 public class InputStreamResource extends AbstractResource {
 
+	// 下面的变量没有进行初始化赋值
 	private final InputStreamSource inputStreamSource;
 
 	private final String description;
@@ -103,6 +104,7 @@ public class InputStreamResource extends AbstractResource {
 	 */
 	public InputStreamResource(InputStream inputStream, @Nullable String description) {
 		Assert.notNull(inputStream, "InputStream must not be null");
+		// 下面的变量赋值是lambda赋值，可以看成匿名内部类对接口的实现
 		this.inputStreamSource = () -> inputStream;
 		this.description = (description != null ? description : "");
 		this.equality = inputStream;
