@@ -34,7 +34,7 @@ package org.springframework.context;
  * phase value and ends with the <i>highest</i> phase value ({@code Integer.MIN_VALUE}
  * is the lowest possible, and {@code Integer.MAX_VALUE} is the highest possible).
  * The shutdown process will apply the reverse order. Any components with the
- * same value will be arbitrarily ordered within the same phase.
+ * same value will be arbitrarily(任意) ordered within the same phase.
  *
  * <p>Example: if component B depends on component A having already started,
  * then component A should have a lower phase value than component B. During
@@ -112,7 +112,7 @@ public interface SmartLifecycle extends Lifecycle, Phased {
 	 * <p>The default implementation delegates to {@link #stop()} and immediately
 	 * triggers the given callback in the calling thread. Note that there is no
 	 * synchronization between the two, so custom implementations may at least
-	 * want to put the same steps within their common lifecycle monitor (if any).
+	 * want to put the same steps within their common lifecycle monitor(监控) (if any).
 	 * @see #stop()
 	 * @see #getPhase()
 	 */
