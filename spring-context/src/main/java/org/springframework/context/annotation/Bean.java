@@ -46,7 +46,7 @@ import org.springframework.core.annotation.AliasFor;
  *
  * <p>While a {@link #name} attribute is available, the default strategy for
  * determining the name of a bean is to use the name of the {@code @Bean} method.
- * This is convenient and intuitive, but if explicit naming is desired, the
+ * This is convenient and intuitive(直觉的), but if explicit naming is desired, the
  * {@code name} attribute (or its alias {@code value}) may be used. Also note
  * that {@code name} accepts an array of Strings, allowing for multiple names
  * (i.e. a primary bean name plus one or more aliases) for a single bean.
@@ -64,7 +64,7 @@ import org.springframework.core.annotation.AliasFor;
  * <p>Note that the {@code @Bean} annotation does not provide attributes for profile,
  * scope, lazy, depends-on or primary. Rather, it should be used in conjunction with
  * {@link Scope @Scope}, {@link Lazy @Lazy}, {@link DependsOn @DependsOn} and
- * {@link Primary @Primary} annotations to declare those semantics. For example:
+ * {@link Primary @Primary} annotations to declare those semantics(语义学). For example:
  *
  * <pre class="code">
  *     &#064;Bean
@@ -83,7 +83,7 @@ import org.springframework.core.annotation.AliasFor;
  * {@code @DependsOn} enforces the creation of specific other beans before this
  * bean will be created, in addition to any dependencies that the bean expressed
  * through direct references, which is typically helpful for singleton startup.
- * {@code @Primary} is a mechanism to resolve ambiguity at the injection point level
+ * {@code @Primary} is a mechanism to resolve ambiguity(歧异) at the injection point level
  * if a single target component needs to be injected but several beans match by type.
  *
  * <p>Additionally, {@code @Bean} methods may also declare qualifier annotations
@@ -318,6 +318,7 @@ public @interface Bean {
 	 * Local enumeration for the bootstrap mode.
 	 * @since 6.2
 	 * @see #bootstrap()
+	 * 在注解中定义枚举
 	 */
 	enum Bootstrap {
 
