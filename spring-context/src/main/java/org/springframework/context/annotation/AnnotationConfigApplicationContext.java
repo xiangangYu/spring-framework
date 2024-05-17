@@ -30,7 +30,7 @@ import org.springframework.util.Assert;
 
 /**
  * Standalone application context, accepting <em>component classes</em> as input &mdash;
- * in particular {@link Configuration @Configuration}-annotated classes, but also plain
+ * in particular {@link Configuration @Configuration}-annotated classes, but also plain(简单的，不加修饰的)
  * {@link org.springframework.stereotype.Component @Component} types and JSR-330 compliant
  * classes using {@code jakarta.inject} annotations.
  *
@@ -39,7 +39,7 @@ import org.springframework.util.Assert;
  *
  * <p>In case of multiple {@code @Configuration} classes, {@link Bean @Bean} methods
  * defined in later classes will override those defined in earlier classes. This can
- * be leveraged to deliberately override certain bean definitions via an extra
+ * be leveraged to(被利用于) deliberately(故意地) override certain bean definitions via an extra
  * {@code @Configuration} class.
  *
  * <p>See {@link Configuration @Configuration}'s javadoc for usage examples.
@@ -88,6 +88,8 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * {@link Configuration @Configuration} classes
 	 */
 	public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
+		// 下面的这种把不同业务逻辑写到不同的方法里面，在需要的地方进行逻辑编排的方式很值得借鉴，
+		// 像在做退款业务中，把停车和充电的分开处理
 		this();
 		register(componentClasses);
 		refresh();
@@ -107,7 +109,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 
 
 	/**
-	 * Propagate the given custom {@code Environment} to the underlying
+	 * Propagate(传播) the given custom {@code Environment} to the underlying
 	 * {@link AnnotatedBeanDefinitionReader} and {@link ClassPathBeanDefinitionScanner}.
 	 */
 	@Override

@@ -17,7 +17,7 @@
 package org.springframework.core.metrics;
 
 /**
- * Instruments the application startup phase using {@link StartupStep steps}.
+ * Instruments(仪表板) the application startup phase using {@link StartupStep steps}.
  * <p>The core container and its infrastructure components can use the {@code ApplicationStartup}
  * to mark steps during the application startup and collect data about the execution context
  * or their processing time.
