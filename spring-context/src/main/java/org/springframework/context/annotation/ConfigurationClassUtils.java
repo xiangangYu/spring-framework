@@ -76,6 +76,7 @@ public abstract class ConfigurationClassUtils {
 
 	private static final Log logger = LogFactory.getLog(ConfigurationClassUtils.class);
 
+	// 初始化静态常量集合的方式值得借鉴
 	private static final Set<String> candidateIndicators = Set.of(
 			Component.class.getName(),
 			ComponentScan.class.getName(),

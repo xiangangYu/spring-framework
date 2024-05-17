@@ -36,7 +36,7 @@ import org.springframework.util.Assert;
 /**
  * Convenient adapter for programmatic registration of bean classes.
  *
- * <p>This is an alternative to {@link ClassPathBeanDefinitionScanner}, applying
+ * <p>This is an alternative(可替代的) to {@link ClassPathBeanDefinitionScanner}, applying
  * the same resolution of annotations but for explicitly registered classes only.
  *
  * @author Juergen Hoeller
@@ -249,6 +249,7 @@ public class AnnotatedBeanDefinitionReader {
 			@Nullable Class<? extends Annotation>[] qualifiers, @Nullable Supplier<T> supplier,
 			@Nullable BeanDefinitionCustomizer[] customizers) {
 
+		// abd的缩写方式取类的首字母，这种方式值得借鉴
 		AnnotatedGenericBeanDefinition abd = new AnnotatedGenericBeanDefinition(beanClass);
 		if (this.conditionEvaluator.shouldSkip(abd.getMetadata())) {
 			return;
