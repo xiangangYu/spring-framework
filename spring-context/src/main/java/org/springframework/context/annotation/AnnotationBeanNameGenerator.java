@@ -57,7 +57,7 @@ import org.springframework.util.StringUtils;
  * if available. Note that Spring component annotations always override such
  * standard annotations.
  *
- * <p>If the annotation's value doesn't indicate a bean name, an appropriate
+ * <p>If the annotation's value doesn't indicate(表明) a bean name, an appropriate
  * name will be built based on the short name of the class (with the first
  * letter lower-cased), unless the first two letters are uppercase. For example:
  *
@@ -97,6 +97,7 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 	 * attribute in {@code @Component}.
 	 * @since 6.1
 	 * @see #determineBeanNameFromAnnotation(AnnotatedBeanDefinition)
+	 * final修饰的变量，如果是集合，可以对集合中的元素进行增删，但是不能对这个集合变量进行重新指定
 	 */
 	private static final Set<String> conventionBasedStereotypeCheckCache = ConcurrentHashMap.newKeySet();
 
@@ -254,5 +255,7 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 		String shortClassName = ClassUtils.getShortName(beanClassName);
 		return StringUtils.uncapitalizeAsProperty(shortClassName);
 	}
+
+	// read for mark
 
 }
