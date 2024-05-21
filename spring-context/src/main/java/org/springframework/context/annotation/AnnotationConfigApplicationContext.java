@@ -200,4 +200,6 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 		this.reader.registerBean(beanClass, beanName, supplier, customizers);
 	}
 
+	// read for mark
+
 }
