@@ -41,4 +41,6 @@ public interface AnnotationConfigRegistry {
 	 */
 	void scan(String... basePackages);
 
+	// read for mark
+
 }
