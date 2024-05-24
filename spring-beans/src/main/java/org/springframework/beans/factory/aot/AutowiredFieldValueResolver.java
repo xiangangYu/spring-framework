@@ -198,12 +198,8 @@ public final class AutowiredFieldValueResolver extends AutowiredElementResolver 
 	}
 
 	private Field getField(RegisteredBean registeredBean) {
-		Field field = ReflectionUtils.findField(registeredBean.getBeanClass(), this.fieldName);
-		Assert.notNull(field, () -> "No field '" + this.fieldName + "' found on " +
-				registeredBean.getBeanClass().getName());
 		// 通过反射工具获取指定的field名字的Field对象
-		Field field = ReflectionUtils.findField(registeredBean.getBeanClass(),
-				this.fieldName);
+		Field field = ReflectionUtils.findField(registeredBean.getBeanClass(), this.fieldName);
 		Assert.notNull(field, () -> "No field '" + this.fieldName + "' found on "
 				+ registeredBean.getBeanClass().getName());
 		return field;
