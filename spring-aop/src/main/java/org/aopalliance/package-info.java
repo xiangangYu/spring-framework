@@ -1,4 +1,4 @@
 /**
- * Spring's variant of the AOP Alliance interfaces.
+ * Spring's variant of the AOP Alliance(联合) interfaces.
  */
 package org.aopalliance;
