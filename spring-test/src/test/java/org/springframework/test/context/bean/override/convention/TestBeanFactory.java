@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot;
+package org.springframework.test.context.bean.override.convention;
 
 /**
- * Record class holding key information for beans registered in a bean factory.
+ * Shared {@link TestBean @TestBean} factory methods.
  *
  * 下面的这个record 所谓的Record class还是第一次见，是用来干什么的？
  *
@@ -75,8 +75,15 @@ package org.springframework.beans.factory.aot;
  * @param beanClass the type of the registered bean
  * @author Brian Clozel
  * @since 6.0.8
+ * @author Sam Brannen
+ * @since 6.2
  */
-record BeanRegistrationKey(String beanName, Class<?> beanClass) {
+interface TestBeanFactory {
+
+	public static String createTestMessage() {
+		return "test";
+	}
+
 }
 
 // read for mark
