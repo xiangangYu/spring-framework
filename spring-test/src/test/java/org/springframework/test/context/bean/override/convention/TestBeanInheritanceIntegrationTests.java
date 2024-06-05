@@ -20,12 +20,18 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.bean.override.convention.AbstractTestBeanIntegrationTestCase.FakePojo;
+import org.springframework.test.context.bean.override.convention.AbstractTestBeanIntegrationTestCase.Pojo;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * {@link TestBean @TestBean} inheritance integration tests for success scenarios.
+ *
+ * <p>Tests inheritance within a class hierarchy as well as "inheritance" within
+ * an enclosing class hierarchy.
  *
  * @author Simon Baslé
  * @author Sam Brannen
@@ -34,13 +40,16 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class TestBeanInheritanceIntegrationTests {
 
-	static AbstractTestBeanIntegrationTestCase.Pojo enclosingClassBeanOverride() {
-		return new AbstractTestBeanIntegrationTestCase.FakePojo("in enclosing test class");
+	static Pojo enclosingClassBeanOverride() {
+		return new FakePojo("in enclosing test class");
 	}
 
 	@Nested
-	@DisplayName("Concrete inherited test with correct @TestBean setup")
-	public class ConcreteTestBeanIntegrationTests extends AbstractTestBeanIntegrationTestCase {
+	@DisplayName("Nested, concrete inherited tests with correct @TestBean setup")
+	public class NestedConcreteTestBeanIntegrationTests extends AbstractTestBeanIntegrationTestCase {
+
+		@Autowired
+		ApplicationContext ctx;
 
 		@TestBean(name = "pojo", methodName = "commonBeanOverride")
 		Pojo pojo;
@@ -52,28 +61,33 @@ public class TestBeanInheritanceIntegrationTests {
 			return new FakePojo("someBeanOverride");
 		}
 
-		@Test
-		void fieldInSupertypeMethodInType(ApplicationContext ctx) {
-			assertThat(ctx.getBean("someBean")).as("applicationContext").hasToString("someBeanOverride");
-			assertThat(this.someBean.getValue()).as("injection point").isEqualTo("someBeanOverride");
+		// Hides otherBeanTestOverride() defined in AbstractTestBeanIntegrationTestCase.
+		static Pojo otherBeanTestOverride() {
+			return new FakePojo("otherBean in subclass");
 		}
 
 		@Test
-		void fieldInTypeMethodInSuperType(ApplicationContext ctx) {
+		void fieldInSubtypeWithFactoryMethodInSupertype() {
 			assertThat(ctx.getBean("pojo")).as("applicationContext").hasToString("in superclass");
 			assertThat(this.pojo.getValue()).as("injection point").isEqualTo("in superclass");
 		}
 
 		@Test
-		void fieldInTypeMethodInEnclosingClass(ApplicationContext ctx) {
-			assertThat(ctx.getBean("pojo2")).as("applicationContext").hasToString("in enclosing test class");
-			assertThat(this.pojo2.getValue()).as("injection point").isEqualTo("in enclosing test class");
+		void fieldInSupertypeWithFactoryMethodInSubtype() {
+			assertThat(ctx.getBean("someBean")).as("applicationContext").hasToString("someBeanOverride");
+			assertThat(this.someBean.getValue()).as("injection point").isEqualTo("someBeanOverride");
 		}
 
 		@Test
-		void fieldInSupertypePrioritizeMethodInType(ApplicationContext ctx) {
-			assertThat(ctx.getBean("someBean")).as("applicationContext").hasToString("someBeanOverride");
-			assertThat(this.someBean.getValue()).as("injection point").isEqualTo("someBeanOverride");
+		void fieldInSupertypeWithPrioritizedFactoryMethodInSubtype() {
+			assertThat(ctx.getBean("otherBean")).as("applicationContext").hasToString("otherBean in subclass");
+			assertThat(super.otherBean.getValue()).as("injection point").isEqualTo("otherBean in subclass");
+		}
+
+		@Test
+		void fieldInNestedClassWithFactoryMethodInEnclosingClass() {
+			assertThat(ctx.getBean("pojo2")).as("applicationContext").hasToString("in enclosing test class");
+			assertThat(this.pojo2.getValue()).as("injection point").isEqualTo("in enclosing test class");
 		}
 	}
 
