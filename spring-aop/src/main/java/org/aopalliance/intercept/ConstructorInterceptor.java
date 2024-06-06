@@ -47,7 +47,7 @@ public interface ConstructorInterceptor extends Interceptor {
 
 	/**
 	 * Implement this method to perform extra treatments before and
-	 * after the construction of a new object. Polite implementations
+	 * after the construction of a new object. Polite(礼貌) implementations
 	 * would certainly like to invoke {@link Joinpoint#proceed()}.
 	 * @param invocation the construction joinpoint
 	 * @return the newly created object, which is also the result of

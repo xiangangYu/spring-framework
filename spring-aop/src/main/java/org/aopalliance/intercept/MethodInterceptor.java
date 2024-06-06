@@ -47,7 +47,7 @@ public interface MethodInterceptor extends Interceptor {
 
 	/**
 	 * Implement this method to perform extra treatments before and
-	 * after the invocation. Polite implementations would certainly
+	 * after the invocation. Polite(礼貌) implementations would certainly
 	 * like to invoke {@link Joinpoint#proceed()}.
 	 * @param invocation the method invocation joinpoint
 	 * @return the result of the call to {@link Joinpoint#proceed()};
