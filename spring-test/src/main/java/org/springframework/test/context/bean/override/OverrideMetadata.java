@@ -16,14 +16,26 @@
 
 package org.springframework.test.context.bean.override;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.SingletonBeanRegistry;
 import org.springframework.core.ResolvableType;
+import org.springframework.core.annotation.MergedAnnotation;
+import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
+import org.springframework.util.ReflectionUtils;
+
+import static org.springframework.core.annotation.MergedAnnotations.SearchStrategy.DIRECT;
 
 /**
  * Metadata for Bean Override injection points, also responsible for creation of
@@ -38,6 +50,7 @@ import org.springframework.lang.Nullable;
  * annotation or the annotated field.
  *
  * @author Simon Baslé
+ * @author Stephane Nicoll
  * @since 6.2
  */
 public abstract class OverrideMetadata {
@@ -46,25 +59,54 @@ public abstract class OverrideMetadata {
 
 	private final ResolvableType beanType;
 
+	@Nullable
+	private final String beanName;
+
 	private final BeanOverrideStrategy strategy;
 
 
-	protected OverrideMetadata(Field field, ResolvableType beanType,
+	protected OverrideMetadata(Field field, ResolvableType beanType, @Nullable String beanName,
 			BeanOverrideStrategy strategy) {
-
 		this.field = field;
 		this.beanType = beanType;
+		this.beanName = beanName;
 		this.strategy = strategy;
 	}
 
 	/**
-	 * Get the bean name to override, or {@code null} to look for a single
-	 * matching bean of type {@link #getBeanType()}.
-	 * <p>Defaults to {@code null}.
+	 * Parse the given {@code testClass} and provide the use of bean override.
+	 * @param testClass the class to parse
+	 * @return a list of bean overrides metadata
 	 */
-	@Nullable
-	protected String getBeanName() {
-		return null;
+	public static List<OverrideMetadata> forTestClass(Class<?> testClass) {
+		List<OverrideMetadata> all = new LinkedList<>();
+		ReflectionUtils.doWithFields(testClass, field -> parseField(field, testClass, all));
+		return all;
+	}
+
+	private static void parseField(Field field, Class<?> testClass, List<OverrideMetadata> metadataList) {
+		AtomicBoolean overrideAnnotationFound = new AtomicBoolean();
+		MergedAnnotations.from(field, DIRECT).stream(BeanOverride.class).forEach(mergedAnnotation -> {
+			MergedAnnotation<?> metaSource = mergedAnnotation.getMetaSource();
+			Assert.state(metaSource != null, "@BeanOverride annotation must be meta-present");
+
+			BeanOverride beanOverride = mergedAnnotation.synthesize();
+			BeanOverrideProcessor processor = BeanUtils.instantiateClass(beanOverride.value());
+			Annotation composedAnnotation = metaSource.synthesize();
+
+			Assert.state(overrideAnnotationFound.compareAndSet(false, true),
+					() -> "Multiple @BeanOverride annotations found on field: " + field);
+			OverrideMetadata metadata = processor.createMetadata(composedAnnotation, testClass, field);
+			metadataList.add(metadata);
+		});
+	}
+
+
+	/**
+	 * Get the annotated {@link Field}.
+	 */
+	public final Field getField() {
+		return this.field;
 	}
 
 	/**
@@ -75,10 +117,12 @@ public abstract class OverrideMetadata {
 	}
 
 	/**
-	 * Get the annotated {@link Field}.
+	 * Get the bean name to override, or {@code null} to look for a single
+	 * matching bean of type {@link #getBeanType()}.
 	 */
-	public final Field getField() {
-		return this.field;
+	@Nullable
+	public String getBeanName() {
+		return this.beanName;
 	}
 
 	/**
@@ -123,22 +167,25 @@ public abstract class OverrideMetadata {
 			return false;
 		}
 		OverrideMetadata that = (OverrideMetadata) obj;
-		return Objects.equals(this.strategy, that.strategy) &&
-				Objects.equals(this.field, that.field) &&
-				Objects.equals(this.beanType, that.beanType);
+		return Objects.equals(this.beanType.getType(), that.beanType.getType()) &&
+				Objects.equals(this.beanName, that.beanName) &&
+				Objects.equals(this.strategy, that.strategy) &&
+				Arrays.equals(this.field.getAnnotations(), that.field.getAnnotations());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(this.strategy, this.field, this.beanType);
+		return Objects.hash(this.beanType.getType(), this.beanName, this.strategy,
+				Arrays.hashCode(this.field.getAnnotations()));
 	}
 
 	@Override
 	public String toString() {
 		return new ToStringCreator(this)
-				.append("strategy", this.strategy)
 				.append("field", this.field)
 				.append("beanType", this.beanType)
+				.append("beanName", this.beanName)
+				.append("strategy", this.strategy)
 				.toString();
 	}
 
