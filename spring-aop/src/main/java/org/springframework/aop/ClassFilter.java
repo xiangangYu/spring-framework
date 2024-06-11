@@ -49,7 +49,7 @@ public interface ClassFilter {
 
 
 	/**
-	 * Canonical instance of a {@code ClassFilter} that matches all classes.
+	 * Canonical(规范) instance of a {@code ClassFilter} that matches all classes.
 	 */
 	ClassFilter TRUE = TrueClassFilter.INSTANCE;
 
