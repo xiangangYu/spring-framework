@@ -74,14 +74,15 @@ public abstract class OverrideMetadata {
 	}
 
 	/**
-	 * Parse the given {@code testClass} and provide the use of bean override.
+	 * Parse the given {@code testClass} and build the corresponding list of
+	 * bean {@code OverrideMetadata}.
 	 * @param testClass the class to parse
-	 * @return a list of bean overrides metadata
+	 * @return a list of {@code OverrideMetadata}
 	 */
 	public static List<OverrideMetadata> forTestClass(Class<?> testClass) {
-		List<OverrideMetadata> all = new LinkedList<>();
-		ReflectionUtils.doWithFields(testClass, field -> parseField(field, testClass, all));
-		return all;
+		List<OverrideMetadata> metadata = new LinkedList<>();
+		ReflectionUtils.doWithFields(testClass, field -> parseField(field, testClass, metadata));
+		return metadata;
 	}
 
 	private static void parseField(Field field, Class<?> testClass, List<OverrideMetadata> metadataList) {
@@ -159,24 +160,32 @@ public abstract class OverrideMetadata {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) {
+	public boolean equals(Object other) {
+		if (other == this) {
 			return true;
 		}
-		if (obj == null || !getClass().isAssignableFrom(obj.getClass())) {
+		if (other == null || other.getClass() != getClass()) {
 			return false;
 		}
-		OverrideMetadata that = (OverrideMetadata) obj;
-		return Objects.equals(this.beanType.getType(), that.beanType.getType()) &&
-				Objects.equals(this.beanName, that.beanName) &&
-				Objects.equals(this.strategy, that.strategy) &&
+		OverrideMetadata that = (OverrideMetadata) other;
+		if (!Objects.equals(this.beanType.getType(), that.beanType.getType()) ||
+				!Objects.equals(this.beanName, that.beanName) ||
+				!Objects.equals(this.strategy, that.strategy)) {
+			return false;
+		}
+		if (this.beanName != null) {
+			return true;
+		}
+		// by type lookup
+		return Objects.equals(this.field.getName(), that.field.getName()) &&
 				Arrays.equals(this.field.getAnnotations(), that.field.getAnnotations());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(this.beanType.getType(), this.beanName, this.strategy,
-				Arrays.hashCode(this.field.getAnnotations()));
+		int hash = Objects.hash(getClass(), this.beanType.getType(), this.beanName, this.strategy);
+		return (this.beanName != null ? hash : hash +
+				Objects.hash(this.field.getName(), Arrays.hashCode(this.field.getAnnotations())));
 	}
 
 	@Override

@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package org.springframework.test.context.bean.override.convention;
+package org.springframework.test.context.bean.override.example;
 
 /**
- * Shared {@link TestBean @TestBean} factory methods.
+ * Interface that exposes a single method that is used by bean overriding
+ * tests.
  *
  * 下面的这个record 所谓的Record class还是第一次见，是用来干什么的？
  *
@@ -78,7 +79,7 @@ package org.springframework.test.context.bean.override.convention;
  * @author Sam Brannen
  * @since 6.2
  */
-interface TestBeanFactory {
+public interface TestBeanFactory {
 
 	static String createTestMessage() {
 		return "test";

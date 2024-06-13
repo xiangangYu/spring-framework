@@ -36,15 +36,14 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 /**
- * {@link MockitoSpyBean @MockitoSpyBean} "by type" integration tests for success scenarios.
+ * Integration tests for {@link MockitoSpyBean} that use by-type lookup.
  *
  * @author Simon Baslé
  * @author Sam Brannen
  * @since 6.2
- * @see FailingMockitoSpyBeanByTypeIntegrationTests
  */
 @SpringJUnitConfig
-public class MockitoSpyBeanByTypeIntegrationTests {
+public class MockitoSpyBeanForByTypeLookupIntegrationTests {
 
 	@MockitoSpyBean
 	ExampleService anyNameForService;
