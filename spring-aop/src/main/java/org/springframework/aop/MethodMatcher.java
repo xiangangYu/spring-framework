@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 /**
  * Part of a {@link Pointcut}: Checks whether the target method is eligible for advice.
  *
- * <p>A {@code MethodMatcher} may be evaluated <b>statically</b> or at <b>runtime</b>
+ * <p>A {@code MethodMatcher} may be evaluated(评价) <b>statically</b> or at <b>runtime</b>
  * (dynamically). Static matching involves a method and (possibly) method attributes.
  * Dynamic matching also makes arguments for a particular call available, and any
  * effects of running previous advice applying to the joinpoint.
@@ -46,7 +46,7 @@ import java.lang.reflect.Method;
  * {@link Object#hashCode()}, and {@link Object#toString()} in order to allow the
  * matcher to be used in caching scenarios &mdash; for example, in proxies generated
  * by CGLIB. As of Spring Framework 6.0.13, the {@code toString()} implementation
- * must generate a unique string representation that aligns with the logic used
+ * must generate a unique string representation that aligns with(符合) the logic used
  * to implement {@code equals()}. See concrete implementations of this interface
  * within the framework for examples.
  *
@@ -98,7 +98,7 @@ public interface MethodMatcher {
 
 
 	/**
-	 * Canonical instance of a {@code MethodMatcher} that matches all methods.
+	 * Canonical(规范) instance of a {@code MethodMatcher} that matches all methods.
 	 */
 	MethodMatcher TRUE = TrueMethodMatcher.INSTANCE;
 

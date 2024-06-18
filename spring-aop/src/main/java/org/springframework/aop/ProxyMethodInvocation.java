@@ -24,7 +24,7 @@ import org.springframework.lang.Nullable;
  * Extension of the AOP Alliance {@link org.aopalliance.intercept.MethodInvocation}
  * interface, allowing access to the proxy that the method invocation was made through.
  *
- * <p>Useful to be able to substitute return values with the proxy,
+ * <p>Useful to be able to substitute(替代) return values with the proxy,
  * if necessary, for example if the invocation target returned itself.
  *
  * @author Juergen Hoeller
@@ -54,7 +54,7 @@ public interface ProxyMethodInvocation extends MethodInvocation {
 	 * Create a clone of this object. If cloning is done before {@code proceed()}
 	 * is invoked on this object, {@code proceed()} can be invoked once per clone
 	 * to invoke the joinpoint (and the rest of the advice chain) more than once.
-	 * @param arguments the arguments that the cloned invocation is supposed to use,
+	 * @param arguments the arguments that the cloned invocation is supposed(假定) to use,
 	 * overriding the original arguments
 	 * @return an invocable clone of this invocation.
 	 * {@code proceed()} can be called once per clone.

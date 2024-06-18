@@ -22,7 +22,7 @@ package org.springframework.aop;
  * get replaced with the proxy object when returned from a method invocation).
  *
  * <p>Note that this is a marker interface in the style of {@link java.io.Serializable},
- * semantically applying to a declared interface rather than to the full class
+ * semantically(语义上) applying to a declared interface rather than to the full class
  * of a concrete object. In other words, this marker applies to a particular
  * interface only (typically an introduction interface that does not serve
  * as the primary interface of an AOP proxy), and hence does not affect

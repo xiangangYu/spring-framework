@@ -38,7 +38,7 @@ public interface TargetSource extends TargetClassAware {
 	/**
 	 * Return the type of targets returned by this {@link TargetSource}.
 	 * <p>Can return {@code null}, although certain usages of a {@code TargetSource}
-	 * might just work with a predetermined target class.
+	 * might just work with a predetermined(预定) target class.
 	 * @return the type of targets returned by this {@link TargetSource}
 	 */
 	@Override
@@ -50,7 +50,7 @@ public interface TargetSource extends TargetClassAware {
 	 * <p>In that case, there will be no need to invoke {@link #releaseTarget(Object)},
 	 * and the AOP framework can cache the return value of {@link #getTarget()}.
 	 * <p>The default implementation returns {@code false}.
-	 * @return {@code true} if the target is immutable
+	 * @return {@code true} if the target is immutable(不可变)
 	 * @see #getTarget
 	 */
 	default boolean isStatic() {

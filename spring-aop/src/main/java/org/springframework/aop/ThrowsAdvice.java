@@ -39,7 +39,7 @@ package org.springframework.aop;
  * The overriding exception will typically be a RuntimeException; this is compatible
  * with any method signature. However, if a throws-advice method throws a checked
  * exception, it will have to match the declared exceptions of the target method
- * and is hence to some degree coupled to specific target method signatures.
+ * and is hence to some degree(深度) coupled to(耦合到) specific target method signatures.
  * <b>Do not throw an undeclared checked exception that is incompatible with
  * the target method's signature!</b>
  *
