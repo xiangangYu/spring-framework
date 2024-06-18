@@ -102,7 +102,7 @@ public abstract class AbstractJsonContentAssert<SELF extends AbstractJsonContent
 	/**
 	 * Verify that the actual value can be converted to an instance of the
 	 * given {@code target}, and produce a new {@linkplain AbstractObjectAssert
-	 * assertion} object narrowed to that type.
+	 * assertion} object narrowed(缩小) to that type.
 	 * @param target the {@linkplain Class type} to convert the actual value to
 	 */
 	public <T> AbstractObjectAssert<?, T> convertTo(Class<T> target) {

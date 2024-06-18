@@ -28,7 +28,7 @@ package org.springframework.aop;
  * {@link Object#hashCode()}, and {@link Object#toString()} in order to allow the
  * filter to be used in caching scenarios &mdash; for example, in proxies generated
  * by CGLIB. As of Spring Framework 6.0.13, the {@code toString()} implementation
- * must generate a unique string representation that aligns with the logic used
+ * must generate a unique string representation that aligns with(符合) the logic used
  * to implement {@code equals()}. See concrete implementations of this interface
  * within the framework for examples.
  *
