@@ -1,5 +1,5 @@
 /**
- * Bean post-processors for use in ApplicationContexts to simplify AOP usage
+ * Bean post-processors(后置处理器) for use in ApplicationContexts to simplify AOP usage
  * by automatically creating AOP proxies without the need to use a ProxyFactoryBean.
  *
  * <p>The various post-processors in this package need only be added to an ApplicationContext
