@@ -28,7 +28,7 @@ import org.springframework.lang.Nullable;
  * Abstract base class for pooling {@link org.springframework.aop.TargetSource}
  * implementations which maintain a pool of target instances, acquiring and
  * releasing a target object from the pool for each method invocation.
- * This abstract base class is independent of concrete pooling technology;
+ * This abstract base class is independent(独立的) of concrete pooling technology;
  * see the subclass {@link CommonsPool2TargetSource} for a concrete example.
  *
  * <p>Subclasses must implement the {@link #getTarget} and
@@ -42,7 +42,7 @@ import org.springframework.lang.Nullable;
  * makes these stats available on proxied objects through an IntroductionAdvisor.
  *
  * <p>This class implements the {@link org.springframework.beans.factory.DisposableBean}
- * interface in order to force subclasses to implement a {@link #destroy()}
+ * interface in order to force subclasses to implement a {@link #destroy()}， Disposable：一次性
  * method, closing down their object pool.
  *
  * @author Rod Johnson
@@ -98,7 +98,7 @@ public abstract class AbstractPoolingTargetSource extends AbstractPrototypeBased
 	 * Acquire an object from the pool.
 	 * @return an object from the pool
 	 * @throws Exception we may need to deal with checked exceptions from pool
-	 * APIs, so we're forgiving with our exception signature
+	 * APIs, so we're forgiving with(宽容) our exception signature
 	 */
 	@Override
 	@Nullable
@@ -116,7 +116,7 @@ public abstract class AbstractPoolingTargetSource extends AbstractPrototypeBased
 
 
 	/**
-	 * Return an IntroductionAdvisor that provides a mixin
+	 * Return an IntroductionAdvisor that provides a mixin(混入)
 	 * exposing statistics about the pool maintained by this object.
 	 */
 	public DefaultIntroductionAdvisor getPoolingConfigMixin() {

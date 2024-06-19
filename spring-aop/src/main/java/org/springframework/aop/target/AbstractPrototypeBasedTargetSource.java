@@ -70,7 +70,7 @@ public abstract class AbstractPrototypeBasedTargetSource extends AbstractBeanFac
 	}
 
 	/**
-	 * Subclasses should call this method to destroy an obsolete prototype instance.
+	 * Subclasses should call this method to destroy an obsolete(废弃的) prototype instance.
 	 * @param target the bean instance to destroy
 	 */
 	protected void destroyPrototypeInstance(Object target) {
