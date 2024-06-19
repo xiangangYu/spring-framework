@@ -25,7 +25,7 @@ import org.springframework.lang.Nullable;
  *
  * <p>If a {@code TargetSource} is "static", it will always return
  * the same target, allowing optimizations in the AOP framework. Dynamic
- * target sources can support pooling, hot swapping, etc.
+ * target sources can support pooling(池化), hot swapping, etc.
  *
  * <p>Application developers don't usually need to work with
  * {@code TargetSources} directly: this is an AOP framework interface.

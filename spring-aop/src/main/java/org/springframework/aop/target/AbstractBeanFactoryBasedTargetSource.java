@@ -52,7 +52,7 @@ import org.springframework.util.ObjectUtils;
  */
 public abstract class AbstractBeanFactoryBasedTargetSource implements TargetSource, BeanFactoryAware, Serializable {
 
-	/** use serialVersionUID from Spring 1.2.7 for interoperability. */
+	/** use serialVersionUID from Spring 1.2.7 for interoperability(互操作性). */
 	private static final long serialVersionUID = -4721607536018568393L;
 
 
@@ -72,7 +72,7 @@ public abstract class AbstractBeanFactoryBasedTargetSource implements TargetSour
 	 * reference so that we can create new prototype instances as necessary.
 	 */
 	@Nullable
-	private BeanFactory beanFactory;
+	private BeanFactory  beanFactory;
 
 
 	/**

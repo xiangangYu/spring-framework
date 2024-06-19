@@ -74,7 +74,7 @@ public abstract class AbstractLazyCreationTargetSource implements TargetSource {
 
 	/**
 	 * Returns the lazy-initialized target object,
-	 * creating it on-the-fly if it doesn't exist already.
+	 * creating it on-the-fly(立即) if it doesn't exist already.
 	 * @see #createObject()
 	 */
 	@Override
