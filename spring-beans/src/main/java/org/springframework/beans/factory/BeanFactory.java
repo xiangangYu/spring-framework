@@ -305,7 +305,7 @@ public interface BeanFactory {
 	 * <p>Translates aliases back to the corresponding canonical bean name.
 	 * <p>Will ask the parent factory if the bean cannot be found in this factory instance.
 	 * @param name the name of the bean to query
-	 * @return whether this bean will always deliver independent instances
+	 * @return whether this bean will always deliver(提供) independent instances
 	 * @throws NoSuchBeanDefinitionException if there is no bean with the given name
 	 * @since 2.0.3
 	 * @see #getBean

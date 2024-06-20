@@ -38,7 +38,7 @@ import org.springframework.util.Assert;
  * {@code GenericObjectPool} class; these properties are passed to the
  * {@code GenericObjectPool} during construction. If creating a subclass of this
  * class to change the {@code ObjectPool} implementation type, pass in the values
- * of configuration properties that are relevant to your chosen implementation.
+ * of configuration properties that are relevant to(与...有关) your chosen implementation.
  *
  * <p>The {@code testOnBorrow}, {@code testOnReturn} and {@code testWhileIdle}
  * properties are explicitly not mirrored because the implementation of
@@ -72,10 +72,16 @@ public class CommonsPool2TargetSource extends AbstractPoolingTargetSource implem
 
 	private long maxWait = GenericObjectPoolConfig.DEFAULT_MAX_WAIT_MILLIS;
 
+	/**
+	 * Eviction(驱逐，淘汰)
+	 */
 	private long timeBetweenEvictionRunsMillis = GenericObjectPoolConfig.DEFAULT_TIME_BETWEEN_EVICTION_RUNS_MILLIS;
 
 	private long minEvictableIdleTimeMillis = GenericObjectPoolConfig.DEFAULT_MIN_EVICTABLE_IDLE_TIME_MILLIS;
 
+	/**
+	 * Exhausted(耗尽)
+	 */
 	private boolean blockWhenExhausted = GenericObjectPoolConfig.DEFAULT_BLOCK_WHEN_EXHAUSTED;
 
 	/**
@@ -291,6 +297,12 @@ public class CommonsPool2TargetSource extends AbstractPoolingTargetSource implem
 	public void activateObject(PooledObject<Object> p) throws Exception {
 	}
 
+	/**
+	 *
+	 * @param p a {@code PooledObject} wrapping the instance to be passivated(钝化)
+	 *
+	 * @throws Exception
+	 */
 	@Override
 	public void passivateObject(PooledObject<Object> p) throws Exception {
 	}

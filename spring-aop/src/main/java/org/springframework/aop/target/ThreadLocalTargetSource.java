@@ -27,9 +27,9 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.core.NamedThreadLocal;
 
 /**
- * Alternative to an object pool. This {@link org.springframework.aop.TargetSource}
+ * Alternative(可供选择的) to an object pool. This {@link org.springframework.aop.TargetSource}
  * uses a threading model in which every thread has its own copy of the target.
- * There's no contention for targets. Target object creation is kept to a minimum
+ * There's no contention(冲突) for targets. Target object creation is kept to a minimum
  * on the running server.
  *
  * <p>Application code is written as to a normal pool; callers can't assume they
@@ -82,7 +82,9 @@ public class ThreadLocalTargetSource extends AbstractPrototypeBasedTargetSource
 	 */
 	@Override
 	public Object getTarget() throws BeansException {
+		// 对变量进行++操作
 		++this.invocationCount;
+		// 获取本地线程变量的值
 		Object target = this.targetInThread.get();
 		if (target == null) {
 			if (logger.isDebugEnabled()) {
@@ -91,6 +93,7 @@ public class ThreadLocalTargetSource extends AbstractPrototypeBasedTargetSource
 			}
 			// Associate target with ThreadLocal.
 			target = newPrototypeInstance();
+			// 设置本地线程变量值为目标对象
 			this.targetInThread.set(target);
 			synchronized (this.targetSet) {
 				this.targetSet.add(target);

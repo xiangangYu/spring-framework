@@ -102,7 +102,7 @@ public abstract class AbstractPrototypeBasedTargetSource extends AbstractBeanFac
 
 	/**
 	 * Replaces this object with a SingletonTargetSource on serialization.
-	 * Protected as otherwise it won't be invoked for subclasses.
+	 * Protected as otherwise(否则) it won't be invoked for subclasses.
 	 * (The {@code writeReplace()} method must be visible to the class
 	 * being serialized.)
 	 * <p>With this implementation of this method, there is no need to mark
