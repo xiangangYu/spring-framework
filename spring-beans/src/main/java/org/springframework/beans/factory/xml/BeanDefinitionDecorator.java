@@ -29,8 +29,8 @@ import org.springframework.beans.factory.config.BeanDefinitionHolder;
  * custom tag into as many
  * {@link org.springframework.beans.factory.config.BeanDefinition BeanDefinitions} as
  * required and to transform the
- * {@link org.springframework.beans.factory.config.BeanDefinition} of the enclosing
- * {@code <bean>} tag, potentially even returning a completely different
+ * {@link org.springframework.beans.factory.config.BeanDefinition} of the enclosing(把...围起来，把...装入信封,封闭)
+ * {@code <bean>} tag, potentially(潜在的) even returning a completely different
  * {@link org.springframework.beans.factory.config.BeanDefinition} to replace the
  * original.
  *
