@@ -30,7 +30,7 @@ import org.springframework.lang.Nullable;
 /**
  * Support class for implementing custom {@link NamespaceHandler NamespaceHandlers}.
  * Parsing and decorating of individual {@link Node Nodes} is done via {@link BeanDefinitionParser}
- * and {@link BeanDefinitionDecorator} strategy interfaces, respectively.
+ * and {@link BeanDefinitionDecorator} strategy interfaces, respectively(分别).
  *
  * <p>Provides the {@link #registerBeanDefinitionParser} and {@link #registerBeanDefinitionDecorator}
  * methods for registering a {@link BeanDefinitionParser} or {@link BeanDefinitionDecorator}
@@ -109,6 +109,7 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 	 */
 	@Nullable
 	private BeanDefinitionDecorator findDecoratorForNode(Node node, ParserContext parserContext) {
+		// 对变量进行null赋值，然后根据不同情况进行具体的赋值判断，最后在看变量是否为null进行逻辑处理，这种方式值得借鉴
 		BeanDefinitionDecorator decorator = null;
 		String localName = parserContext.getDelegate().getLocalName(node);
 		if (node instanceof Element) {
