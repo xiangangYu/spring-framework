@@ -35,6 +35,7 @@ import org.springframework.util.Assert;
  */
 public class AdvisorComponentDefinition extends AbstractComponentDefinition {
 
+	// 下面的变量使用final修饰，但没有赋值而是在构造函数中进行赋值，在其他方法中进行赋值会报错
 	private final String advisorBeanName;
 
 	private final BeanDefinition advisorDefinition;

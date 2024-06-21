@@ -33,9 +33,9 @@ import org.springframework.util.Assert;
  * Utility class for handling registration of AOP auto-proxy creators.
  *
  * <p>Only a single auto-proxy creator should be registered yet multiple concrete
- * implementations are available. This class provides a simple escalation protocol,
+ * implementations are available. This class provides a simple escalation(升级) protocol,
  * allowing a caller to request a particular auto-proxy creator and know that creator,
- * <i>or a more capable variant thereof</i>, will be registered as a post-processor.
+ * <i>or a more capable(能够) variant thereof(其中)</i>, will be registered as a post-processor.
  *
  * @author Rob Harrop
  * @author Juergen Hoeller
@@ -53,6 +53,8 @@ public abstract class AopConfigUtils {
 
 	/**
 	 * Stores the auto proxy creator classes in escalation order.
+	 *
+	 * 下面的静态List初始化方式使用static块的方式值得学习，static块要在APC_PRIORITY_LIST变量定义的后面，不然会报错
 	 */
 	private static final List<Class<?>> APC_PRIORITY_LIST = new ArrayList<>(3);
 
@@ -140,6 +142,7 @@ public abstract class AopConfigUtils {
 		return beanDefinition;
 	}
 
+	// Priority(优先权)
 	private static int findPriorityForClass(Class<?> clazz) {
 		return APC_PRIORITY_LIST.indexOf(clazz);
 	}
