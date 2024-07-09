@@ -94,6 +94,7 @@ public abstract class AopUtils {
 	 */
 	@Contract("null -> false")
 	public static boolean isJdkDynamicProxy(@Nullable Object object) {
+		// jdk动态代理的判断Proxy.isProxyClass
 		return (object instanceof SpringProxy && Proxy.isProxyClass(object.getClass()));
 	}
 
@@ -134,7 +135,7 @@ public abstract class AopUtils {
 
 	/**
 	 * Select an invocable(可调用的) method on the target type: either the given method itself
-	 * if actually exposed on the target type, or otherwise a corresponding method
+	 * if actually exposed on the target type, or otherwise a corresponding(相应的) method
 	 * on one of the target type's interfaces or on the target type itself.
 	 * @param method the method to check
 	 * @param targetType the target type to search methods on (typically an AOP proxy)
@@ -176,7 +177,7 @@ public abstract class AopUtils {
 	}
 
 	/**
-	 * Determine whether the given method is a "toString" method.
+	 * Determine(测定) whether the given method is a "toString" method.
 	 * @see java.lang.Object#toString()
 	 */
 	public static boolean isToStringMethod(@Nullable Method method) {
@@ -247,7 +248,7 @@ public abstract class AopUtils {
 			// No need to iterate the methods if we're matching any method anyway...
 			return true;
 		}
-
+		// instanceof 判断 进行变量的初始化
 		IntroductionAwareMethodMatcher introductionAwareMethodMatcher = null;
 		if (methodMatcher instanceof IntroductionAwareMethodMatcher iamm) {
 			introductionAwareMethodMatcher = iamm;
@@ -262,6 +263,7 @@ public abstract class AopUtils {
 		for (Class<?> clazz : classes) {
 			Method[] methods = ReflectionUtils.getAllDeclaredMethods(clazz);
 			for (Method method : methods) {
+				// 三元表达式的判断有点长了
 				if (introductionAwareMethodMatcher != null ?
 						introductionAwareMethodMatcher.matches(method, targetClass, hasIntroductions) :
 						methodMatcher.matches(method, targetClass)) {
@@ -310,7 +312,7 @@ public abstract class AopUtils {
 
 	/**
 	 * Determine the sublist of the {@code candidateAdvisors} list
-	 * that is applicable to the given class.
+	 * that is applicable to(适用于) the given class.
 	 * @param candidateAdvisors the Advisors to evaluate
 	 * @param clazz the target class
 	 * @return sublist of Advisors that can apply to an object of the given class
@@ -320,6 +322,7 @@ public abstract class AopUtils {
 		if (candidateAdvisors.isEmpty()) {
 			return candidateAdvisors;
 		}
+		// 有资格的，合格的
 		List<Advisor> eligibleAdvisors = new ArrayList<>();
 		for (Advisor candidate : candidateAdvisors) {
 			if (candidate instanceof IntroductionAdvisor && canApply(candidate, clazz)) {
@@ -353,6 +356,7 @@ public abstract class AopUtils {
 			throws Throwable {
 
 		// Use reflection to invoke the method.
+		// Suspending 阻塞,暂停。 反射调用method.invoke(target, args)
 		try {
 			ReflectionUtils.makeAccessible(method);
 			return (coroutinesReactorPresent && KotlinDetector.isSuspendingFunction(method) ?
