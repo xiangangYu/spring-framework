@@ -29,7 +29,7 @@ import org.springframework.util.ObjectUtils;
  * Abstract base regular expression pointcut bean. JavaBean properties are:
  * <ul>
  * <li>pattern: regular expression for the fully-qualified method names to match.
- * The exact regexp syntax will depend on the subclass (e.g. Perl5 regular expressions)
+ * The exact regexp(正则表达式) syntax will depend on the subclass (e.g. Perl5 regular expressions)
  * <li>patterns: alternative property taking a String array of patterns.
  * The result will be the union of these patterns.
  * </ul>
@@ -58,6 +58,7 @@ public abstract class AbstractRegexpMethodPointcut extends StaticMethodMatcherPo
 
 	/**
 	 * Regular expressions <strong>not</strong> to match.
+	 * 字符串数组的初始化可以是下面的这种方式 new String[0]
 	 */
 	private String[] excludedPatterns = new String[0];
 
@@ -93,7 +94,7 @@ public abstract class AbstractRegexpMethodPointcut extends StaticMethodMatcherPo
 	}
 
 	/**
-	 * Convenience method when we have only a single exclusion pattern.
+	 * Convenience method when we have only a single exclusion(排除) pattern.
 	 * Use either this method or {@link #setExcludedPatterns}, not both.
 	 * @see #setExcludedPatterns
 	 */
