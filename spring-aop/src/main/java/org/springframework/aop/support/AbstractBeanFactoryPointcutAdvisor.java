@@ -31,7 +31,7 @@ import org.springframework.util.Assert;
  * to be configured as reference to an Advice bean in a BeanFactory.
  *
  * <p>Specifying the name of an advice bean instead of the advice object itself
- * (if running within a BeanFactory) increases loose coupling at initialization time,
+ * (if running within a BeanFactory) increases loose(松的) coupling(耦合) at initialization time,
  * in order to not initialize the advice object until the pointcut actually matches.
  *
  * @author Juergen Hoeller
@@ -52,11 +52,12 @@ public abstract class AbstractBeanFactoryPointcutAdvisor extends AbstractPointcu
 	@Nullable
 	private transient volatile Advice advice;
 
+	// 下面的adviceMonitor只是用于增强的monitor监视，用于对象同步锁
 	private transient Object adviceMonitor = new Object();
 
 
 	/**
-	 * Specify the name of the advice bean that this advisor should refer to.
+	 * Specify the name of the advice bean that this advisor should refer to(参看,参照).
 	 * <p>An instance of the specified bean will be obtained on first access
 	 * of this advisor's advice. This advisor will only ever obtain at most one
 	 * single instance of the advice bean, caching the instance for the lifetime
@@ -86,6 +87,7 @@ public abstract class AbstractBeanFactoryPointcutAdvisor extends AbstractPointcu
 	 * @since 3.1
 	 */
 	public void setAdvice(Advice advice) {
+		// 这里为什么要加锁呢
 		synchronized (this.adviceMonitor) {
 			this.advice = advice;
 		}

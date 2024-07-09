@@ -24,7 +24,7 @@ import org.springframework.util.Assert;
  *
  * <p>Can be subclassed to override {@code requiresRefresh()} to suppress
  * unnecessary refreshes. By default, a refresh will be performed every time
- * the "refreshCheckDelay" has elapsed.
+ * the "refreshCheckDelay" has elapsed(过去).
  *
  * @author Rob Harrop
  * @author Rod Johnson
