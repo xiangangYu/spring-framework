@@ -87,7 +87,7 @@ public abstract class ClassFilters {
 	}
 
 	/**
-	 * Return a class filter that represents the logical negation of the specified
+	 * Return a class filter that represents the logical negation(否定) of the specified
 	 * filter instance.
 	 * @param classFilter the {@link ClassFilter} to negate
 	 * @return a filter that represents the logical negation of the specified filter
@@ -140,7 +140,7 @@ public abstract class ClassFilters {
 
 
 	/**
-	 * ClassFilter implementation for an intersection of the given ClassFilters.
+	 * ClassFilter implementation for an intersection(交叉) of the given ClassFilters.
 	 */
 	@SuppressWarnings("serial")
 	private static class IntersectionClassFilter implements ClassFilter, Serializable {

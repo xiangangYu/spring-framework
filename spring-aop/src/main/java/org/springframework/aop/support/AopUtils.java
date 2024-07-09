@@ -65,6 +65,7 @@ import org.springframework.util.ReflectionUtils;
  */
 public abstract class AopUtils {
 
+	// coroutines:协程
 	private static final boolean coroutinesReactorPresent = ClassUtils.isPresent(
 			"kotlinx.coroutines.reactor.MonoKt", AopUtils.class.getClassLoader());
 
@@ -113,7 +114,7 @@ public abstract class AopUtils {
 	/**
 	 * Determine the target class of the given bean instance which might be an AOP proxy.
 	 * <p>Returns the target class for an AOP proxy or the plain class otherwise.
-	 * @param candidate the instance to check (might be an AOP proxy)
+	 * @param candidate (有资格的，候选的) the instance to check (might be an AOP proxy)
 	 * @return the target class (or the plain class of the given object as fallback;
 	 * never {@code null})
 	 * @see org.springframework.aop.TargetClassAware#getTargetClass()
@@ -132,7 +133,7 @@ public abstract class AopUtils {
 	}
 
 	/**
-	 * Select an invocable method on the target type: either the given method itself
+	 * Select an invocable(可调用的) method on the target type: either the given method itself
 	 * if actually exposed on the target type, or otherwise a corresponding method
 	 * on one of the target type's interfaces or on the target type itself.
 	 * @param method the method to check

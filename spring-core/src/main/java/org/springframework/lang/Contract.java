@@ -23,7 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Inspired from {@code org.jetbrains.annotations.Contract}, this variant has been introduce in the
+ * Inspired(启发) from {@code org.jetbrains.annotations.Contract}, this variant has been introduce in the
  * {@code org.springframework.lang} package to avoid requiring an extra dependency, while still following the same semantics.
  *
  * <p>Specifies some aspects of the method behavior depending on the arguments. Can be used by tools for advanced data flow analysis.
@@ -61,12 +61,12 @@ import java.lang.annotation.Target;
 public @interface Contract {
 
 	/**
-	 * Contains the contract clauses describing causal relations between call arguments and the returned value.
+	 * Contains the contract clauses describing causal(原因的) relations between call arguments and the returned value.
 	 */
 	String value() default "";
 
 	/**
-	 * Specifies if this method is pure, i.e. has no visible side effects. This may be used for more precise data flow analysis, and
+	 * Specifies if this method is pure, i.e. has no visible side effects. This may be used for more precise(精确) data flow analysis, and
 	 * to check that the method's return value is actually used in the call place.
 	 */
 	boolean pure() default false;
