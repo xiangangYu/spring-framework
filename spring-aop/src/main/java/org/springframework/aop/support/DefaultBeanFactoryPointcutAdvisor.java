@@ -25,7 +25,7 @@ import org.springframework.lang.Nullable;
  * as well as the Pointcut to be configured through a bean property.
  *
  * <p>Specifying the name of an advice bean instead of the advice object itself
- * (if running within a BeanFactory) increases loose coupling at initialization time,
+ * (if running within a BeanFactory) increases loose coupling (松耦合) at initialization time,
  * in order to not initialize the advice object until the pointcut actually matches.
  *
  * @author Juergen Hoeller

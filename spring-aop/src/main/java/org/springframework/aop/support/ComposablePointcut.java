@@ -27,8 +27,12 @@ import org.springframework.util.Assert;
 /**
  * Convenient class for building up pointcuts.
  *
- * <p>All methods return {@code ComposablePointcut}, so we can use concise idioms
+ * Composable(可组合的)
+ *
+ * <p>All methods return {@code ComposablePointcut}, so we can use concise(简明,精炼) idioms(习语)
  * like in the following example.
+ *
+ * 下面的很多方法都是返回ComposablePointcut，然后使用builder模式进行装饰
  *
  * <pre class="code">Pointcut pc = new ComposablePointcut()
  *                      .union(classFilter)

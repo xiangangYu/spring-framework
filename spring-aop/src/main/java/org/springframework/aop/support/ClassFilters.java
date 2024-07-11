@@ -26,7 +26,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 /**
- * Static utility methods for composing {@link ClassFilter ClassFilters}.
+ * Static utility methods for composing(构成) {@link ClassFilter ClassFilters}.
  *
  * @author Rod Johnson
  * @author Rob Harrop
