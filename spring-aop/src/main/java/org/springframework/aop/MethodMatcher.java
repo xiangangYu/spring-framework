@@ -86,7 +86,7 @@ public interface MethodMatcher {
 	 * <p>This method is invoked only if {@link #matches(Method, Class)} returns
 	 * {@code true} for the given method and target class, and if
 	 * {@link #isRuntime()} returns {@code true}.
-	 * <p>Invoked immediately before potential running of the advice, after any
+	 * <p>Invoked immediately before potential(潜在) running of the advice, after any
 	 * advice earlier in the advice chain has run.
 	 * @param method the candidate method
 	 * @param targetClass the target class

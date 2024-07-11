@@ -34,7 +34,7 @@ public abstract class DynamicMethodMatcher implements MethodMatcher {
 	}
 
 	/**
-	 * Can override to add preconditions for dynamic matching. This implementation
+	 * Can override to add preconditions(前置条件) for dynamic matching. This implementation
 	 * always returns true.
 	 */
 	@Override

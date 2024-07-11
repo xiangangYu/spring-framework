@@ -34,7 +34,7 @@ import org.springframework.util.ClassUtils;
  * Support for implementations of {@link org.springframework.aop.IntroductionInfo}.
  *
  * <p>Allows subclasses to conveniently add all interfaces from a given object,
- * and to suppress interfaces that should not be added. Also allows for querying
+ * and to suppress(抑制，压制) interfaces that should not be added. Also allows for querying
  * all introduced interfaces.
  *
  * @author Rod Johnson
@@ -110,7 +110,7 @@ public class IntroductionInfoSupport implements IntroductionInfo, Serializable {
 	//---------------------------------------------------------------------
 
 	/**
-	 * This method is implemented only to restore the logger.
+	 * This method is implemented only to restore(恢复) the logger.
 	 * We don't make the logger static as that would mean that subclasses
 	 * would use this class's log category.
 	 */

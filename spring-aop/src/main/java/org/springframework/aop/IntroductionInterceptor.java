@@ -23,8 +23,10 @@ import org.aopalliance.intercept.MethodInterceptor;
  * to be implemented by the interceptor, and available via a proxy using that
  * interceptor. This is a fundamental AOP concept called <b>introduction</b>.
  *
- * <p>Introductions are often <b>mixins</b>, enabling the building of composite
+ * <p>Introductions are often <b>mixins</b>, enabling the building of composite(混合的)
  * objects that can achieve many of the goals of multiple inheritance in Java.
+ *
+ * mixins：混合，混入
  *
  * @author Rod Johnson
  * @see DynamicIntroductionAdvice

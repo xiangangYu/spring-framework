@@ -125,7 +125,7 @@ public class DelegatingIntroductionInterceptor extends IntroductionInfoSupport
 	}
 
 	/**
-	 * Proceed with the supplied {@link org.aopalliance.intercept.MethodInterceptor}.
+	 * Proceed(继续) with the supplied {@link org.aopalliance.intercept.MethodInterceptor}.
 	 * Subclasses can override this method to intercept method invocations on the
 	 * target object which is useful when an introduction needs to monitor the object
 	 * that it is introduced into. This method is <strong>never</strong> called for

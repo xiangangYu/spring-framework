@@ -26,7 +26,7 @@ import java.util.regex.PatternSyntaxException;
  * <ul>
  * <li>pattern: regular expression for the fully-qualified method names to match
  * <li>patterns: alternative property taking a String array of patterns. The result will
- * be the union of these patterns.
+ * be the union(联合) of these patterns.
  * </ul>
  *
  * <p>Note: the regular expressions must be a match. For example,
