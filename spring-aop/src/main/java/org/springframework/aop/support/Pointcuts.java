@@ -65,7 +65,7 @@ public abstract class Pointcuts {
 	}
 
 	/**
-	 * Perform the least expensive check for a pointcut match.
+	 * Perform the least(最小的。最少的) expensive check for a pointcut match.
 	 * @param pointcut the pointcut to match
 	 * @param method the candidate method
 	 * @param targetClass the target class
@@ -78,7 +78,7 @@ public abstract class Pointcuts {
 			return true;
 		}
 		if (pointcut.getClassFilter().matches(targetClass)) {
-			// Only check if it gets past first hurdle.
+			// Only check if it gets past first hurdle(障碍).
 			MethodMatcher mm = pointcut.getMethodMatcher();
 			if (mm.matches(method, targetClass)) {
 				// We may need additional runtime (argument) check.

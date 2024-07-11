@@ -85,7 +85,7 @@ public abstract class MethodMatchers {
 	/**
 	 * Return a method matcher that represents the logical negation of the specified
 	 * matcher instance.
-	 * @param methodMatcher the {@link MethodMatcher} to negate
+	 * @param methodMatcher the {@link MethodMatcher} to negate(否定)
 	 * @return a matcher that represents the logical negation of the specified matcher
 	 * @since 6.1
 	 */

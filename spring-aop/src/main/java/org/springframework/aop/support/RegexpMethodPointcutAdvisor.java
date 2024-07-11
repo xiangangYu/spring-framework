@@ -29,7 +29,7 @@ import org.springframework.util.ObjectUtils;
  * making them an {@link org.springframework.aop.Advisor}.
  *
  * <p>Configure this class using the "pattern" and "patterns"
- * pass-through properties. These are analogous to the pattern
+ * pass-through properties. These are analogous(类似) to the pattern
  * and patterns properties of {@link AbstractRegexpMethodPointcut}.
  *
  * <p>Can delegate to any {@link AbstractRegexpMethodPointcut} subclass.

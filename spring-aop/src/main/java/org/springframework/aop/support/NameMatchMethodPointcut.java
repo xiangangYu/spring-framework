@@ -33,7 +33,7 @@ import org.springframework.util.PatternMatchUtils;
  * pattern (see {@link #isMatch(String, String)} for details on the supported
  * pattern styles).
  *
- * <p>Does not handle overloaded methods: all methods with a given name will be eligible.
+ * <p>Does not handle overloaded(重载) methods: all methods with a given name will be eligible.
  *
  * @author Juergen Hoeller
  * @author Rod Johnson
@@ -64,6 +64,7 @@ public class NameMatchMethodPointcut extends StaticMethodMatcherPointcut impleme
 	 * @see #setMappedName(String)
 	 */
 	public void setMappedNames(String... mappedNamePatterns) {
+		// ... 可变参数，其实是用数组来接的，下面的Arrays.asList就是数组调用的方法
 		this.mappedNamePatterns = new ArrayList<>(Arrays.asList(mappedNamePatterns));
 	}
 
