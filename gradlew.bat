@@ -14,6 +14,8 @@
 @rem limitations under the License.
 @rem
 @rem 一个shell脚本和一个Windows批处理脚本，用于使用 Wrap程序执行构建。
+@rem SPDX-License-Identifier: Apache-2.0
+@rem
 
 @if "%DEBUG%"=="" @echo off
 @rem ##########################################################################
