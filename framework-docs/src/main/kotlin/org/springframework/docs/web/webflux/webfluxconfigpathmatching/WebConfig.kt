@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.testfixture.beans.factory.generator.deprecation;
+package org.springframework.docs.web.webflux.webfluxconfigpathmatching
 
-/**
- * A sample bean that's fully deprecated for removal.
- *
- * @author Stephane Nicoll
- */
-@Deprecated(forRemoval = true)
-public class DeprecatedForRemovalBean {
+import org.springframework.context.annotation.Configuration
+import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.method.HandlerTypePredicate
+import org.springframework.web.reactive.config.PathMatchConfigurer
+import org.springframework.web.reactive.config.WebFluxConfigurer
 
-	// This isn't flag deprecated on purpose
-	public static class Nested {}
+@Configuration
+class WebConfig : WebFluxConfigurer {
+
+	override fun configurePathMatching(configurer: PathMatchConfigurer) {
+		configurer.addPathPrefix(
+			"/api", HandlerTypePredicate.forAnnotation(RestController::class.java))
+	}
 }
