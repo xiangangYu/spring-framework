@@ -38,11 +38,13 @@ import org.springframework.util.Assert;
  * has the highest precedence.</li>
  * </ul>
  *
- * <p>Important: This comparator is used with AspectJ's
+ * <p>Important: This comparator is used with AspectJ's  Partial(部分)
  * {@link org.aspectj.util.PartialOrder PartialOrder} sorting utility. Thus, unlike
  * a normal {@link Comparator}, a return value of {@code 0} from this comparator
  * means we don't care about the ordering, not that the two elements must be sorted
  * identically.
+ *
+ * Precedence(优先)
  *
  * @author Adrian Colyer
  * @author Juergen Hoeller

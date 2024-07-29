@@ -29,7 +29,7 @@ import org.springframework.util.ClassUtils;
 
 /**
  * An AOT {@link BeanRegistrationAotProcessor} that detects the presence of
- * classes compiled with AspectJ and adds the related required field hints.
+ * classes compiled with AspectJ and adds the related required field hints(提示).
  *
  * @author Sebastien Deleuze
  * @since 6.1

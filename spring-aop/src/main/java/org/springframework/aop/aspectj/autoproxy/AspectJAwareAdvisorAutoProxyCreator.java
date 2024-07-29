@@ -41,6 +41,8 @@ import org.springframework.util.ClassUtils;
  * subclass that exposes AspectJ's invocation context and understands AspectJ's rules
  * for advice precedence when multiple pieces of advice come from the same aspect.
  *
+ * Disposable(一次性)
+ *
  * @author Adrian Colyer
  * @author Juergen Hoeller
  * @author Ramnivas Laddad
@@ -77,6 +79,7 @@ public class AspectJAwareAdvisorAutoProxyCreator extends AbstractAdvisorAutoProx
 					new PartiallyComparableAdvisorHolder(advisor, DEFAULT_PRECEDENCE_COMPARATOR));
 		}
 		List<PartiallyComparableAdvisorHolder> sorted = PartialOrder.sort(partiallyComparableAdvisors);
+		// 不等于null判断可以使用下面的这种sorted != null进行对比
 		if (sorted != null) {
 			List<Advisor> result = new ArrayList<>(advisors.size());
 			for (PartiallyComparableAdvisorHolder pcAdvisor : sorted) {
@@ -101,6 +104,7 @@ public class AspectJAwareAdvisorAutoProxyCreator extends AbstractAdvisorAutoProx
 
 	@Override
 	protected boolean shouldSkip(Class<?> beanClass, String beanName) {
+		// 打todo的方式如下
 		// TODO: Consider optimization by caching the list of the aspect names
 		List<Advisor> candidateAdvisors = findCandidateAdvisors();
 		for (Advisor advisor : candidateAdvisors) {
@@ -125,6 +129,7 @@ public class AspectJAwareAdvisorAutoProxyCreator extends AbstractAdvisorAutoProx
 
 	/**
 	 * Implements AspectJ's {@link PartialComparable} interface for defining partial orderings.
+	 * Partial(部分)
 	 */
 	private static class PartiallyComparableAdvisorHolder implements PartialComparable {
 

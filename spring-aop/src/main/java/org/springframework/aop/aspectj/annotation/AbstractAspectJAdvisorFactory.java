@@ -45,7 +45,7 @@ import org.springframework.lang.Nullable;
  * given AspectJ classes from classes honoring the AspectJ 5 annotation syntax.
  *
  * <p>This class handles annotation parsing and validation functionality.
- * It does not actually generate Spring AOP Advisors, which is deferred to subclasses.
+ * It does not actually generate Spring AOP Advisors, which is deferred to(被推迟到) subclasses.
  *
  * @author Rod Johnson
  * @author Adrian Colyer

@@ -61,7 +61,7 @@ public class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorA
 
 	/**
 	 * Set a list of regex patterns, matching eligible @AspectJ bean names.
-	 * <p>Default is to consider all @AspectJ beans as eligible.
+	 * <p>Default is to consider all @AspectJ beans as eligible(有资格的).
 	 */
 	public void setIncludePatterns(List<String> patterns) {
 		this.includePatterns = new ArrayList<>(patterns.size());
@@ -134,7 +134,7 @@ public class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorA
 
 	/**
 	 * Subclass of BeanFactoryAspectJAdvisorsBuilderAdapter that delegates to
-	 * surrounding AnnotationAwareAspectJAutoProxyCreator facilities.
+	 * surrounding(环绕，周围) AnnotationAwareAspectJAutoProxyCreator facilities.
 	 */
 	private class BeanFactoryAspectJAdvisorsBuilderAdapter extends BeanFactoryAspectJAdvisorsBuilder {
 
