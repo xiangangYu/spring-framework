@@ -89,7 +89,7 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 		return jp;
 	}
 
-
+	// 下面的很多变量没有进行初始化
 	private final Class<?> declaringClass;
 
 	private final String methodName;
@@ -196,6 +196,7 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 	 * @see #getPointcut()
 	 */
 	public final Pointcut buildSafePointcut() {
+		// intersection相交
 		Pointcut pc = getPointcut();
 		MethodMatcher safeMethodMatcher = MethodMatchers.intersection(
 				new AdviceExcludingMethodMatcher(this.aspectJAdviceMethod), pc.getMethodMatcher());
@@ -262,9 +263,11 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 	 * Set by the creator of this advice object if the argument names are known.
 	 * <p>This could be for example because they have been explicitly specified in XML
 	 * or in an advice annotation.
+	 * 可变参数 ... 可以使用数组来接
 	 * @param argumentNames list of argument names
 	 */
 	public void setArgumentNamesFromStringArray(String... argumentNames) {
+		// 可变参数使用数组来接收
 		this.argumentNames = new String[argumentNames.length];
 		for (int i = 0; i < argumentNames.length; i++) {
 			this.argumentNames[i] = argumentNames[i].strip();

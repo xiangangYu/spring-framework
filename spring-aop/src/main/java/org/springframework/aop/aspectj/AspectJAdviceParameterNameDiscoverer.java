@@ -34,12 +34,12 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
 /**
- * {@link ParameterNameDiscoverer} implementation that tries to deduce parameter names
+ * {@link ParameterNameDiscoverer} implementation that tries to deduce(推断、推论) parameter names
  * for an advice method from the pointcut expression, returning, and throwing clauses.
  * If an unambiguous interpretation is not available, it returns {@code null}.
  *
  * <h3>Algorithm Summary</h3>
- * <p>If an unambiguous binding can be deduced, then it is.
+ * <p>If an unambiguous(不含糊) binding can be deduced, then it is.
  * If the advice requirements cannot possibly be satisfied, then {@code null}
  * is returned. By setting the {@link #setRaiseExceptions(boolean) raiseExceptions}
  * property to {@code true}, descriptive exceptions will be thrown instead of
@@ -132,6 +132,7 @@ public class AspectJAdviceParameterNameDiscoverer implements ParameterNameDiscov
 	private static final int STEP_REFERENCE_PCUT_BINDING = 7;
 	private static final int STEP_FINISHED = 8;
 
+	// 字符串集合的初始化方式
 	private static final Set<String> singleValuedAnnotationPcds = Set.of(
 			"@this",
 			"@target",
@@ -141,7 +142,7 @@ public class AspectJAdviceParameterNameDiscoverer implements ParameterNameDiscov
 
 	private static final Set<String> nonReferencePointcutTokens = new HashSet<>();
 
-
+	// 静态字符串集合的初始化
 	static {
 		Set<PointcutPrimitive> pointcutPrimitives = PointcutParser.getAllSupportedPointcutPrimitives();
 		for (PointcutPrimitive primitive : pointcutPrimitives) {
@@ -159,7 +160,7 @@ public class AspectJAdviceParameterNameDiscoverer implements ParameterNameDiscov
 	/** The pointcut expression associated with the advice, as a simple String. */
 	@Nullable
 	private final String pointcutExpression;
-
+	// raise 提升，增加
 	private boolean raiseExceptions;
 
 	/** If the advice is afterReturning, and binds the return value, this is the parameter name used. */
@@ -188,7 +189,7 @@ public class AspectJAdviceParameterNameDiscoverer implements ParameterNameDiscov
 
 	/**
 	 * Indicate whether {@link IllegalArgumentException} and {@link AmbiguousBindingException}
-	 * must be thrown as appropriate in the case of failing to deduce advice parameter names.
+	 * must be thrown as appropriate in the case of failing to deduce(推断,推测) advice parameter names.
 	 * @param raiseExceptions {@code true} if exceptions are to be thrown
 	 */
 	public void setRaiseExceptions(boolean raiseExceptions) {
@@ -421,7 +422,7 @@ public class AspectJAdviceParameterNameDiscoverer implements ParameterNameDiscov
 	}
 
 	/**
-	 * Match the given list of extracted variable names to argument slots.
+	 * Match the given list of extracted variable names to argument slots(插槽).
 	 */
 	private void bindAnnotationsFromVarNames(List<String> varNames) {
 		if (!varNames.isEmpty()) {
@@ -451,7 +452,7 @@ public class AspectJAdviceParameterNameDiscoverer implements ParameterNameDiscov
 	}
 
 	/**
-	 * If the token starts meets Java identifier conventions, it's in.
+	 * If the token starts meets Java identifier conventions(约定), it's in.
 	 */
 	@Nullable
 	private String maybeExtractVariableName(@Nullable String candidateToken) {

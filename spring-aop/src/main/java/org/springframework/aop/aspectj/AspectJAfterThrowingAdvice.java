@@ -79,4 +79,6 @@ public class AspectJAfterThrowingAdvice extends AbstractAspectJAdvice
 		return getDiscoveredThrowingType().isAssignableFrom(ex.getClass());
 	}
 
+	// read for mark
+
 }
