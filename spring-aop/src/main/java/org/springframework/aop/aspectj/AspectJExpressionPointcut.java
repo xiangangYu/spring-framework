@@ -65,7 +65,7 @@ import org.springframework.util.StringUtils;
  * that uses the AspectJ weaver to evaluate a pointcut expression.
  *
  * <p>The pointcut expression value is an AspectJ expression. This can
- * reference other pointcuts and use composition and other operations.
+ * reference other pointcuts and use composition(结构、组成) and other operations.
  *
  * <p>Naturally, as this is to be processed by Spring AOP's proxy-based model,
  * only method execution pointcuts are supported.

@@ -27,6 +27,7 @@ import org.springframework.lang.Nullable;
 
 /**
  * Internal {@link ShadowMatch} utilities.
+ * shadow(阴影，影子)
  *
  * @author Stephane Nicoll
  * @since 6.2

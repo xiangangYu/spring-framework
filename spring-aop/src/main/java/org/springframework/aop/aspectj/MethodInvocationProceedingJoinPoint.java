@@ -40,8 +40,8 @@ import org.springframework.util.Assert;
  * The {@code getTarget()} method returns the current Spring AOP target (which may be
  * {@code null} if there is no target instance) as a plain POJO without any advice.
  * <b>If you want to call the object and have the advice take effect, use {@code getThis()}.</b>
- * A common example is casting the object to an introduced interface in the implementation of
- * an introduction. There is no such distinction between target and proxy in AspectJ itself.
+ * A common example is casting(分配) the object to an introduced interface in the implementation of
+ * an introduction. There is no such distinction(分别) between target and proxy in AspectJ itself.
  *
  * @author Rod Johnson
  * @author Juergen Hoeller

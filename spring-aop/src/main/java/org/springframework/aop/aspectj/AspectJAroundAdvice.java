@@ -29,7 +29,7 @@ import org.springframework.lang.Nullable;
 
 /**
  * Spring AOP around advice (MethodInterceptor) that wraps
- * an AspectJ advice method. Exposes ProceedingJoinPoint.
+ * an AspectJ advice method. Exposes(暴露) ProceedingJoinPoint.
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
