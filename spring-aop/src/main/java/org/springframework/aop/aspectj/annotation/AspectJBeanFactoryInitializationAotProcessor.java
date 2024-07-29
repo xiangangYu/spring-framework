@@ -40,6 +40,7 @@ import org.springframework.util.ClassUtils;
  */
 class AspectJBeanFactoryInitializationAotProcessor implements BeanFactoryInitializationAotProcessor {
 
+	// 判断某个类是否存在
 	private static final boolean aspectJPresent = ClassUtils.isPresent("org.aspectj.lang.annotation.Pointcut",
 			AspectJBeanFactoryInitializationAotProcessor.class.getClassLoader());
 

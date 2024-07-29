@@ -39,7 +39,7 @@ public class PrototypeAspectInstanceFactory extends BeanFactoryAspectInstanceFac
 
 	/**
 	 * Create a PrototypeAspectInstanceFactory. AspectJ will be called to
-	 * introspect to create AJType metadata using the type returned for the
+	 * introspect(反省) to create AJType metadata using the type returned for the
 	 * given bean name from the BeanFactory.
 	 * @param beanFactory the BeanFactory to obtain instance(s) from
 	 * @param name the name of the bean
