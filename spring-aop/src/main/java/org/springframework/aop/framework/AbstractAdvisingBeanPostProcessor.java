@@ -46,7 +46,7 @@ public abstract class AbstractAdvisingBeanPostProcessor extends ProxyProcessorSu
 
 
 	/**
-	 * Set whether this post-processor's advisor is supposed to apply before
+	 * Set whether this post-processor's advisor is supposed to(假定) apply before
 	 * existing advisors when encountering a pre-advised object.
 	 * <p>Default is "false", applying the advisor after existing advisors, i.e.
 	 * as close as possible to the target method. Switch this to "true" in order
@@ -61,6 +61,7 @@ public abstract class AbstractAdvisingBeanPostProcessor extends ProxyProcessorSu
 
 	@Override
 	public Class<?> determineBeanType(Class<?> beanClass, String beanName) {
+		// determine(决定)
 		if (this.advisor != null && isEligible(beanClass)) {
 			ProxyFactory proxyFactory = new ProxyFactory();
 			proxyFactory.copyFrom(this);
