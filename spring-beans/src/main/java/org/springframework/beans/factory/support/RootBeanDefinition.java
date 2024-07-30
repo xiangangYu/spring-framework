@@ -48,7 +48,7 @@ import org.springframework.util.Assert;
  * (see {@link #setTargetType(ResolvableType)}/{@link #setResolvedFactoryMethod(Method)}).
  *
  * <p>Note: The preferred choice for bean definitions derived from declarative sources
- * (e.g. XML definitions) is the flexible {@link GenericBeanDefinition} variant.
+ * (e.g. XML definitions) is the flexible(灵活) {@link GenericBeanDefinition} variant.
  * GenericBeanDefinition comes with the advantage that it allows for dynamically
  * defining parent dependencies, not 'hard-coding' the role as a root bean definition,
  * even supporting parent relationship changes in the bean post-processor phase.

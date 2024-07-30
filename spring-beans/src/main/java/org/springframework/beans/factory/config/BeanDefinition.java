@@ -51,6 +51,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	/**
 	 * Scope identifier for the standard prototype scope: {@value}.
 	 * <p>Note that extended bean factories might support further scopes.
+	 * 变量定义使用某个常量定义来进行定义，这种方式值得学习
 	 * @see #setScope
 	 * @see ConfigurableBeanFactory#SCOPE_PROTOTYPE
 	 */
@@ -76,7 +77,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
 	/**
 	 * Role hint indicating that a {@code BeanDefinition} is providing an
-	 * entirely background role and has no relevance to the end-user. This hint is
+	 * entirely background role and has no relevance(关联) to the end-user. This hint is
 	 * used when registering beans that are completely part of the internal workings
 	 * of a {@link org.springframework.beans.factory.parsing.ComponentDefinition}.
 	 */

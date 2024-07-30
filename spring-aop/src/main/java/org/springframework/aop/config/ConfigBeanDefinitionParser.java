@@ -466,6 +466,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 			String expression = element.getAttribute(POINTCUT);
 			AbstractBeanDefinition pointcutDefinition = createPointcutDefinition(expression);
 			pointcutDefinition.setSource(parserContext.extractSource(element));
+			// 这种在每个路径中进行返回的方式，跟以前统一入口，统一出口的方式有点不一样
 			return pointcutDefinition;
 		}
 		else if (element.hasAttribute(POINTCUT_REF)) {

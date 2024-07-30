@@ -29,9 +29,9 @@ import org.springframework.lang.Nullable;
  * {@link BeanDefinitionParser} responsible for parsing the
  * {@code <aop:spring-configured/>} tag.
  *
- * <p><b>NOTE:</b> This is essentially a duplicate of Spring 2.5's
+ * <p><b>NOTE:</b> This is essentially a duplicate(重复) of Spring 2.5's
  * {@link org.springframework.context.config.SpringConfiguredBeanDefinitionParser}
- * for the {@code <context:spring-configured/>} tag, mirrored here for compatibility with
+ * for the {@code <context:spring-configured/>} tag, mirrored(镜像) here for compatibility(兼容) with
  * Spring 2.0's {@code <aop:spring-configured/>} tag (avoiding a direct dependency on the
  * context package).
  *
