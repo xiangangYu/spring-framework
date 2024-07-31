@@ -57,7 +57,7 @@ import org.springframework.util.ObjectUtils;
  *
  * <p>This class is serializable; subclasses need not be.
  *
- * <p>This class is used to hold snapshots of proxies.
+ * <p>This class is used to hold snapshots(快照) of proxies.
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -100,7 +100,7 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 
 	/**
 	 * List of minimal {@link AdvisorKeyEntry} instances,
-	 * to be assigned to the {@link #advisors} field on reduction.
+	 * to be assigned to the {@link #advisors} field on reduction(降低、减少).
 	 * @since 6.0.10
 	 * @see #reduceToAdvisorKey
 	 */

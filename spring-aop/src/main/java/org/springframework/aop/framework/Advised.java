@@ -78,7 +78,7 @@ public interface Advised extends TargetClassAware {
 	 * <p>It can be necessary to expose the proxy if an advised object needs
 	 * to invoke a method on itself with advice applied. Otherwise, if an
 	 * advised object invokes a method on {@code this}, no advice will be applied.
-	 * <p>Default is {@code false}, for optimal performance.
+	 * <p>Default is {@code false}, for optimal(最佳的) performance.
 	 */
 	void setExposeProxy(boolean exposeProxy);
 
@@ -87,7 +87,7 @@ public interface Advised extends TargetClassAware {
 	 * <p>It can be necessary to expose the proxy if an advised object needs
 	 * to invoke a method on itself with advice applied. Otherwise, if an
 	 * advised object invokes a method on {@code this}, no advice will be applied.
-	 * <p>Getting the proxy is analogous to an EJB calling {@code getEJBObject()}.
+	 * <p>Getting the proxy is analogous to(类似于) an EJB calling {@code getEJBObject()}.
 	 * @see AopContext
 	 */
 	boolean isExposeProxy();
