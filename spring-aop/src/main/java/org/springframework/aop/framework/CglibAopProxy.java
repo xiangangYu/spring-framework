@@ -66,7 +66,7 @@ import org.springframework.util.ObjectUtils;
  *
  * <p>{@link DefaultAopProxyFactory} will automatically create CGLIB-based
  * proxies if necessary, for example in case of proxying a target class
- * (see the {@link DefaultAopProxyFactory attendant javadoc} for details).
+ * (see the {@link DefaultAopProxyFactory attendant(等待) javadoc} for details).
  *
  * <p>Proxies created using this class are thread-safe if the underlying
  * (target) class is thread-safe.
@@ -85,7 +85,7 @@ import org.springframework.util.ObjectUtils;
 @SuppressWarnings("serial")
 class CglibAopProxy implements AopProxy, Serializable {
 
-	// Constants for CGLIB callback array indices
+	// Constants for CGLIB callback array indices(指标、索引)
 	private static final int AOP_PROXY = 0;
 	private static final int INVOKE_TARGET = 1;
 	private static final int NO_OVERRIDE = 2;
@@ -231,6 +231,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 			}
 		}
 		catch (CodeGenerationException | IllegalArgumentException ex) {
+			// catch 多个异常使用 "|" 隔开，还是第一次看到
 			throw new AopConfigException("Could not generate CGLIB subclass of " + this.advised.getTargetClass() +
 					": Common causes of this problem include using a final class or a non-visible class",
 					ex);
@@ -410,7 +411,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 	/**
 	 * Process a return value. Wraps a return of {@code this} if necessary to be the
 	 * {@code proxy} and also verifies that {@code null} is not returned as a primitive.
-	 * Also takes care of the conversion from {@code Mono} to Kotlin Coroutines if needed.
+	 * Also takes care of the conversion(转换) from {@code Mono} to Kotlin Coroutines if needed.
 	 */
 	@Nullable
 	private static Object processReturnType(
@@ -449,6 +450,9 @@ class CglibAopProxy implements AopProxy, Serializable {
 	 * Method interceptor used for static targets with no advice chain. The call is
 	 * passed directly back to the target. Used when the proxy needs to be exposed
 	 * and it can't be determined that the method won't return {@code this}.
+	 *
+	 * 内部类
+	 *
 	 */
 	private static class StaticUnadvisedInterceptor implements MethodInterceptor, Serializable {
 
