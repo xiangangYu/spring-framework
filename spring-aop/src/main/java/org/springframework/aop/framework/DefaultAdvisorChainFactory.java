@@ -58,7 +58,7 @@ public class DefaultAdvisorChainFactory implements AdvisorChainFactory, Serializ
 	public List<Object> getInterceptorsAndDynamicInterceptionAdvice(
 			Advised config, Method method, @Nullable Class<?> targetClass) {
 
-		// This is somewhat tricky... We have to process introductions first,
+		// This is somewhat tricky(难办的，棘手的)... We have to process introductions first,
 		// but we need to preserve order in the ultimate list.
 		AdvisorAdapterRegistry registry = GlobalAdvisorAdapterRegistry.getInstance();
 		Advisor[] advisors = config.getAdvisors();
