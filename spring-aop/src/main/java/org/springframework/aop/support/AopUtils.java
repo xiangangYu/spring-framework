@@ -189,6 +189,7 @@ public abstract class AopUtils {
 	 * @see java.lang.Object#finalize()
 	 */
 	public static boolean isFinalizeMethod(@Nullable Method method) {
+		// 下面的方法表明，如果method为null,则就不能判断其是finalize的方法
 		return (method != null && method.getName().equals("finalize") &&
 				method.getParameterCount() == 0);
 	}

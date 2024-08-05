@@ -920,6 +920,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 
 		@Override
 		public boolean equals(@Nullable Object other) {
+			// 下面的这种多个判断以&&在行尾的方式值得学习
 			return (this == other || (other instanceof ProxyCallbackFilter that &&
 					this.advised.getAdvisorKey().equals(that.advised.getAdvisorKey()) &&
 					AopProxyUtils.equalsProxiedInterfaces(this.advised, that.advised) &&

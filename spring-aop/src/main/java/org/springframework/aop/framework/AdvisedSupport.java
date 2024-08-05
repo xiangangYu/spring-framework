@@ -51,7 +51,7 @@ import org.springframework.util.ObjectUtils;
  * <p>These are not themselves AOP proxies, but subclasses of this class are
  * normally factories from which AOP proxy instances are obtained directly.
  *
- * <p>This class frees subclasses of the housekeeping of Advices
+ * <p>This class frees subclasses of the housekeeping(家务) of Advices
  * and Advisors, but doesn't actually implement proxy creation
  * methods, which are provided by subclasses.
  *
