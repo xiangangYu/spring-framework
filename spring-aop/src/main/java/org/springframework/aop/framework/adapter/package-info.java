@@ -1,5 +1,5 @@
 /**
- * SPI package allowing Spring AOP framework to handle arbitrary advice types.
+ * SPI(service provider interface) package allowing Spring AOP framework to handle arbitrary advice types.
  *
  * <p>Users who want merely(仅仅，只是) to <i>use</i> the Spring AOP framework, rather than extend
  * its capabilities, don't need to concern themselves with this package.
