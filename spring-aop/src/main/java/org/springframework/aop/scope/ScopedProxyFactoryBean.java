@@ -36,10 +36,10 @@ import org.springframework.util.ClassUtils;
  * Convenient proxy factory bean for scoped objects.
  *
  * <p>Proxies created using this factory bean are thread-safe singletons
- * and may be injected into shared objects, with transparent scoping behavior.
+ * and may be injected into shared objects, with transparent(透明) scoping behavior.
  *
  * <p>Proxies returned by this class implement the {@link ScopedObject} interface.
- * This presently allows for removing the corresponding object from the scope,
+ * This presently(目前) allows for removing the corresponding object from the scope,
  * seamlessly creating a new instance in the scope on next access.
  *
  * <p>Please note that the proxies created by this factory are
