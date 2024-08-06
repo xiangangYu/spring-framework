@@ -325,7 +325,7 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 	/**
 	 * Create a new prototype instance of this class's created proxy object,
 	 * backed by an independent AdvisedSupport configuration.
-	 * @return a totally independent proxy, whose advice we may manipulate in isolation
+	 * @return a totally independent(独立的) proxy, whose advice we may manipulate in isolation(隔离)
 	 */
 	private synchronized Object newPrototypeInstance() {
 		// In the case of a prototype, we need to give the proxy

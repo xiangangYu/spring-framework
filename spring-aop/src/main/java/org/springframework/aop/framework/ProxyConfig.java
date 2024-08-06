@@ -69,7 +69,7 @@ public class ProxyConfig implements Serializable {
 	}
 
 	/**
-	 * Set whether proxies should perform aggressive optimizations.
+	 * Set whether proxies should perform aggressive(积极的) optimizations.
 	 * The exact meaning of "aggressive optimizations" will differ
 	 * between proxies, but there is usually some tradeoff.
 	 * Default is "false".

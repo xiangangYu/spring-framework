@@ -103,7 +103,7 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 	 * along with any InterceptorAndDynamicMethodMatchers that need evaluation at runtime.
 	 * MethodMatchers included in this struct must already have been found to have matched
 	 * as far as was possibly statically. Passing an array might be about 10% faster,
-	 * but would complicate the code. And it would work only for static pointcuts.
+	 * but would complicate(复杂的) the code. And it would work only for static pointcuts.
 	 */
 	protected ReflectiveMethodInvocation(
 			Object proxy, @Nullable Object target, Method method, @Nullable Object[] arguments,

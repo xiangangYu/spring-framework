@@ -24,6 +24,12 @@ import org.springframework.aop.MethodMatcher;
  * Internal framework record, combining a {@link MethodInterceptor} instance
  * with a {@link MethodMatcher} for use as an element in the advisor chain.
  *
+ * 使用record来定义类，是java 16中引入的，其有如下特点
+ *
+ * 1.它是一个final类
+ * 2.自动实现equals、hashCode、toString函数
+ * 3.成员变量均为public属性
+ *
  * @author Rod Johnson
  * @author Sam Brannen
  * @param interceptor the {@code MethodInterceptor}
