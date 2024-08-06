@@ -55,7 +55,7 @@ import org.springframework.util.StringUtils;
 
 /**
  * {@link org.springframework.beans.factory.config.BeanPostProcessor} implementation
- * that wraps each eligible bean with an AOP proxy, delegating to specified interceptors
+ * that wraps each eligible(有资格的) bean with an AOP proxy, delegating to specified interceptors
  * before invoking the bean itself.
  *
  * <p>This class distinguishes between "common" interceptors: shared for all proxies it
@@ -68,7 +68,7 @@ import org.springframework.util.StringUtils;
  *
  * <p>Such auto-proxying is particularly useful if there's a large number of beans that
  * need to be wrapped with similar proxies, i.e. delegating to the same interceptors.
- * Instead of x repetitive proxy definitions for x target beans, you can register
+ * Instead of x repetitive(重复) proxy definitions for x target beans, you can register
  * one single such post processor with the bean factory to achieve the same effect.
  *
  * <p>Subclasses can apply any strategy to decide if a bean is to be proxied, e.g. by type,
