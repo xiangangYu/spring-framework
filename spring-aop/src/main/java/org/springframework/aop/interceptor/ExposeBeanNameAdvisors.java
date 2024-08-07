@@ -30,7 +30,7 @@ import org.springframework.lang.Nullable;
 /**
  * Convenient methods for creating advisors that may be used when autoproxying beans
  * created with the Spring IoC container, binding the bean name to the current
- * invocation. May support a {@code bean()} pointcut designator with AspectJ.
+ * invocation. May support a {@code bean()} pointcut designator(指示器) with AspectJ.
  *
  * <p>Typically used in Spring auto-proxying, where the bean name is known
  * at proxy creation time.
