@@ -39,6 +39,7 @@ import org.springframework.util.Assert;
  */
 public abstract class ScopedProxyUtils {
 
+	// 下面的常量定义有点意思，先定义一个常量，再用这个常量获取其长度
 	private static final String TARGET_NAME_PREFIX = "scopedTarget.";
 
 	private static final int TARGET_NAME_PREFIX_LENGTH = TARGET_NAME_PREFIX.length();
