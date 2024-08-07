@@ -28,7 +28,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
- * Base {@code MethodInterceptor} implementation for tracing.
+ * Base {@code MethodInterceptor} implementation for tracing(跟踪，记录).
  *
  * <p>By default, log messages are written to the log for the interceptor class,
  * not the class which is being intercepted. Setting the {@code useDynamicLogger}
@@ -86,7 +86,7 @@ public abstract class AbstractTraceInterceptor implements MethodInterceptor, Ser
 	/**
 	 * Set the name of the logger to use. The name will be passed to the
 	 * underlying logger implementation through Commons Logging, getting
-	 * interpreted as log category according to the logger's configuration.
+	 * interpreted(解释) as log category according to the logger's configuration.
 	 * <p>This can be specified to not log into the category of a class
 	 * (whether this interceptor's class or the class getting called)
 	 * but rather into a specific named category.
@@ -168,7 +168,7 @@ public abstract class AbstractTraceInterceptor implements MethodInterceptor, Ser
 	}
 
 	/**
-	 * Determine whether the interceptor should kick in, that is,
+	 * Determine whether the interceptor should kick in(开始起作用), that is,
 	 * whether the {@code invokeUnderTrace} method should be called.
 	 * <p>Default behavior is to check whether the given {@code Log}
 	 * instance is enabled. Subclasses can override this to apply the
@@ -196,7 +196,7 @@ public abstract class AbstractTraceInterceptor implements MethodInterceptor, Ser
 	 * Write the supplied trace message to the supplied {@code Log} instance.
 	 * <p>To be called by {@link #invokeUnderTrace} for enter/exit messages.
 	 * <p>Delegates to {@link #writeToLog(Log, String, Throwable)} as the
-	 * ultimate delegate that controls the underlying logger invocation.
+	 * ultimate(最终的) delegate that controls the underlying logger invocation.
 	 * @since 4.3.10
 	 * @see #writeToLog(Log, String, Throwable)
 	 */

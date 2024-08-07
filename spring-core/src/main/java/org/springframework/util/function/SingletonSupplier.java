@@ -27,6 +27,8 @@ import org.springframework.util.Assert;
  * A {@link java.util.function.Supplier} decorator that caches a singleton result and
  * makes it available from {@link #get()} (nullable) and {@link #obtain()} (null-safe).
  *
+ * supplier翻译为供应商，提供者
+ *
  * <p>A {@code SingletonSupplier} can be constructed via {@code of} factory methods
  * or via constructors that provide a default supplier as a fallback. This is
  * particularly useful for method reference suppliers, falling back to a default
@@ -49,7 +51,8 @@ public class SingletonSupplier<T> implements Supplier<T> {
 	private volatile T singletonInstance;
 
 	/**
-	 * Guards access to write operations on the {@code singletonInstance} field.
+	 * Guards(警卫) access to write operations on the {@code singletonInstance} field.
+	 * reentrant：可再入的
 	 */
 	private final Lock writeLock = new ReentrantLock();
 
@@ -57,7 +60,7 @@ public class SingletonSupplier<T> implements Supplier<T> {
 	/**
 	 * Build a {@code SingletonSupplier} with the given singleton instance
 	 * and a default supplier for the case when the instance is {@code null}.
-	 * @param instance the singleton instance (potentially {@code null})
+	 * @param instance the singleton instance (potentially(潜在) {@code null})
 	 * @param defaultSupplier the default supplier as a fallback
 	 */
 	public SingletonSupplier(@Nullable T instance, Supplier<? extends T> defaultSupplier) {

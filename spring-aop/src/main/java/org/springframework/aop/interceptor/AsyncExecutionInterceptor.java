@@ -38,7 +38,7 @@ import org.springframework.lang.Nullable;
  * asynchronously, using a given {@link org.springframework.core.task.AsyncTaskExecutor}.
  * Typically used with the {@link org.springframework.scheduling.annotation.Async} annotation.
  *
- * <p>In terms of target method signatures, any parameter types are supported.
+ * <p>In terms of(依照、依据) target method signatures, any parameter types are supported.
  * However, the return type is constrained to either {@code void} or
  * {@code java.util.concurrent.Future}. In the latter case, the Future handle
  * returned from the proxy will be an actual asynchronous Future that can be used
@@ -50,7 +50,7 @@ import org.springframework.lang.Nullable;
  *
  * <p>When the return type is {@code java.util.concurrent.Future}, any exception thrown
  * during the execution can be accessed and managed by the caller. With {@code void}
- * return type however, such exceptions cannot be transmitted back. In that case an
+ * return type however, such exceptions cannot be transmitted(传播) back. In that case an
  * {@link AsyncUncaughtExceptionHandler} can be registered to process such exceptions.
  *
  * <p>Note: the {@code AnnotationAsyncExecutionInterceptor} subclass is preferred

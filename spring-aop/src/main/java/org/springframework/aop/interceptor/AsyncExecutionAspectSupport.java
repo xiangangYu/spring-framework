@@ -49,7 +49,7 @@ import org.springframework.util.function.SingletonSupplier;
  * {@code org.springframework.scheduling.annotation.AnnotationAsyncExecutionInterceptor}
  * or {@code org.springframework.scheduling.aspectj.AnnotationAsyncExecutionAspect}.
  *
- * <p>Provides support for <i>executor qualification</i> on a method-by-method basis.
+ * <p>Provides support for <i>executor qualification(资格)</i> on a method-by-method basis.
  * {@code AsyncExecutionAspectSupport} objects must be constructed with a default {@code
  * Executor}, but each individual method may further qualify a specific {@code Executor}
  * bean to be used when executing it, e.g. through an annotation attribute.

@@ -72,7 +72,7 @@ public abstract class AbstractMonitoringInterceptor extends AbstractTraceInterce
 	}
 
 	/**
-	 * Return the text that will get prepended to the trace data.
+	 * Return the text that will get prepended(预置) to the trace data.
 	 */
 	protected String getSuffix() {
 		return this.suffix;
@@ -99,6 +99,7 @@ public abstract class AbstractMonitoringInterceptor extends AbstractTraceInterce
 	 */
 	protected String createInvocationTraceName(MethodInvocation invocation) {
 		Method method = invocation.getMethod();
+		// clazz为什么用这个词呢？因为class是保留字，英语国家习惯用s和z互换，所以使用clazz代替class
 		Class<?> clazz = method.getDeclaringClass();
 		if (this.logTargetClassInvocation && clazz.isInstance(invocation.getThis())) {
 			clazz = invocation.getThis().getClass();

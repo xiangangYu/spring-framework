@@ -25,7 +25,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.ConcurrencyThrottleSupport;
 
 /**
- * Interceptor that throttles concurrent access, blocking invocations
+ * Interceptor that throttles(节流、阀门，节制) concurrent access, blocking invocations
  * if a specified concurrency limit is reached.
  *
  * <p>Can be applied to methods of local services that involve heavy use
