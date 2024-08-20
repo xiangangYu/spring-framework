@@ -359,9 +359,10 @@ public abstract class AopUtils {
 		// Use reflection to invoke the method.
 		// Suspending 阻塞,暂停。 反射调用method.invoke(target, args)
 		try {
-			ReflectionUtils.makeAccessible(method);
-			return (coroutinesReactorPresent && KotlinDetector.isSuspendingFunction(method) ?
-					KotlinDelegate.invokeSuspendingFunction(method, target, args) : method.invoke(target, args));
+			Method originalMethod = BridgeMethodResolver.findBridgedMethod(method);
+			ReflectionUtils.makeAccessible(originalMethod);
+			return (coroutinesReactorPresent && KotlinDetector.isSuspendingFunction(originalMethod) ?
+					KotlinDelegate.invokeSuspendingFunction(originalMethod, target, args) : originalMethod.invoke(target, args));
 		}
 		catch (InvocationTargetException ex) {
 			// Invoked method threw a checked exception.
