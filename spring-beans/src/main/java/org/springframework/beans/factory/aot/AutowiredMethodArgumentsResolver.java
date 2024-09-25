@@ -70,17 +70,17 @@ public final class AutowiredMethodArgumentsResolver extends AutowiredElementReso
 	private final boolean required;
 
 	@Nullable
-	private final String[] shortcuts;
+	private final String[] shortcutBeanNames;
 
 
 	private AutowiredMethodArgumentsResolver(String methodName, Class<?>[] parameterTypes,
-			boolean required, @Nullable String[] shortcuts) {
+			boolean required, @Nullable String[] shortcutBeanNames) {
 
 		Assert.hasText(methodName, "'methodName' must not be empty");
 		this.methodName = methodName;
 		this.parameterTypes = parameterTypes;
 		this.required = required;
-		this.shortcuts = shortcuts;
+		this.shortcutBeanNames = shortcutBeanNames;
 	}
 
 
@@ -112,7 +112,7 @@ public final class AutowiredMethodArgumentsResolver extends AutowiredElementReso
 	 * @param beanNames the bean names to use as shortcuts (aligned with the
 	 * method parameters)
 	 * @return a new {@link AutowiredMethodArgumentsResolver} instance that uses
-	 * the shortcuts
+	 * the given shortcut bean names
 	 */
 	public AutowiredMethodArgumentsResolver withShortcut(String... beanNames) {
 		return new AutowiredMethodArgumentsResolver(this.methodName, this.parameterTypes, this.required, beanNames);
@@ -178,7 +178,7 @@ public final class AutowiredMethodArgumentsResolver extends AutowiredElementReso
 			MethodParameter parameter = new MethodParameter(method, i);
 			DependencyDescriptor descriptor = new DependencyDescriptor(parameter, this.required);
 			descriptor.setContainingClass(beanClass);
-			String shortcut = (this.shortcuts != null ? this.shortcuts[i] : null);
+			String shortcut = (this.shortcutBeanNames != null ? this.shortcutBeanNames[i] : null);
 			if (shortcut != null) {
 				descriptor = new ShortcutDependencyDescriptor(descriptor, shortcut);
 			}
