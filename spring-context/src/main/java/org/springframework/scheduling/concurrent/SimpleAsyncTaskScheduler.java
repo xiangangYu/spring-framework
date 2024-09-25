@@ -113,6 +113,7 @@ public class SimpleAsyncTaskScheduler extends SimpleAsyncTaskExecutor implements
 	private static final TimeUnit NANO = TimeUnit.NANOSECONDS;
 
 
+	// 下面的属性赋值,直接调用方法返回值进行赋值,new 一个对象，这种方式见的较少
 	private final ScheduledExecutorService triggerExecutor = createScheduledExecutor();
 
 	private final ExecutorLifecycleDelegate triggerLifecycle = new ExecutorLifecycleDelegate(this.triggerExecutor);
