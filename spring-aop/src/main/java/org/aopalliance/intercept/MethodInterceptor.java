@@ -26,6 +26,8 @@ import javax.annotation.Nullable;
  * <p>The user should implement the {@link #invoke(MethodInvocation)}
  * method to modify the original behavior. E.g. the following class
  * implements a tracing interceptor (traces(跟踪) all the calls on the
+ * method to modify the original behavior. For example, the following class
+ * implements a tracing interceptor (traces all the calls on the
  * intercepted method(s)):
  *
  * <pre class=code>

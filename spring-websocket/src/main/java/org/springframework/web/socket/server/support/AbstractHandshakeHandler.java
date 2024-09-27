@@ -60,6 +60,7 @@ import org.springframework.web.socket.server.standard.WebSphereRequestUpgradeStr
  * <p>Performs initial validation of the WebSocket handshake request - possibly rejecting it
  * through the appropriate HTTP status code - while also allowing its subclasses to override
  * various parts of the negotiation(谈判、协商) process (e.g. origin validation, sub-protocol negotiation,
+ * various parts of the negotiation process (for example, origin validation, sub-protocol negotiation,
  * extensions negotiation, etc).
  *
  * <p>If the negotiation succeeds, the actual upgrade(升级) is delegated to a server-specific

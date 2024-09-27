@@ -127,7 +127,7 @@ public abstract class BeanUtils {
 	 * The cause may notably indicate a {@link NoSuchMethodException} if no
 	 * primary/default constructor was found, a {@link NoClassDefFoundError}
 	 * or other {@link LinkageError} in case of an unresolvable class definition
-	 * (e.g. due to a missing dependency at runtime), or an exception thrown
+	 * (for example, due to a missing dependency at runtime), or an exception thrown
 	 * from the constructor invocation itself.
 	 * @see Constructor#newInstance
 	 */
@@ -250,7 +250,7 @@ public abstract class BeanUtils {
 			// No public constructors -> check non-public
 			ctors = clazz.getDeclaredConstructors();
 			if (ctors.length == 1) {
-				// A single non-public constructor, e.g. from a non-public record type
+				// A single non-public constructor, for example, from a non-public record type
 				return (Constructor<T>) ctors[0];
 			}
 		}
@@ -540,7 +540,7 @@ public abstract class BeanUtils {
 
 	/**
 	 * Find a JavaBeans PropertyEditor following the 'Editor' suffix convention
-	 * (e.g. "mypackage.MyDomainClass" &rarr; "mypackage.MyDomainClassEditor").
+	 * (for example, "mypackage.MyDomainClass" &rarr; "mypackage.MyDomainClassEditor").
 	 * <p>Compatible to the standard JavaBeans convention as implemented by
 	 * {@link java.beans.PropertyEditorManager} but isolated from the latter's
 	 * registered default editors for primitive types.
@@ -562,7 +562,7 @@ public abstract class BeanUtils {
 				}
 			}
 			catch (Throwable ex) {
-				// e.g. AccessControlException on Google App Engine
+				// for example, AccessControlException on Google App Engine
 				return null;
 			}
 		}

@@ -32,6 +32,7 @@ public interface AnnotationConfigRegistry {
 	 * @param componentClasses one or more component classes,
 	 * e.g. {@link Configuration @Configuration} classes
 	 * 下面的Class<?>是任意类型的Class，...表示可变的参数，可以传递多个
+	 * for example, {@link Configuration @Configuration} classes
 	 */
 	void register(Class<?>... componentClasses);
 
