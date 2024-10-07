@@ -27,7 +27,6 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextCustomizer;
 import org.springframework.test.context.MergedContextConfiguration;
-import org.springframework.test.context.bean.override.BeanOverrideBeanFactoryPostProcessor.WrapEarlyBeanPostProcessor;
 
 /**
  * {@link ContextCustomizer} implementation that registers the necessary
@@ -39,7 +38,7 @@ import org.springframework.test.context.bean.override.BeanOverrideBeanFactoryPos
  */
 class BeanOverrideContextCustomizer implements ContextCustomizer {
 
-	private static final String REGISTRAR_BEAN_NAME =
+	static final String REGISTRAR_BEAN_NAME =
 			"org.springframework.test.context.bean.override.internalBeanOverrideRegistrar";
 
 	private static final String INFRASTRUCTURE_BEAN_NAME =
@@ -59,7 +58,7 @@ class BeanOverrideContextCustomizer implements ContextCustomizer {
 	public void customizeContext(ConfigurableApplicationContext context, MergedContextConfiguration mergedConfig) {
 		if (!(context instanceof BeanDefinitionRegistry registry)) {
 			throw new IllegalStateException("Cannot process bean overrides with an ApplicationContext " +
-					"that doesn't implement BeanDefinitionRegistry: " + context.getClass());
+					"that doesn't implement BeanDefinitionRegistry: " + context.getClass().getName());
 		}
 		registerInfrastructure(registry);
 	}

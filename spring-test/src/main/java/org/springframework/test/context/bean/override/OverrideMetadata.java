@@ -19,9 +19,12 @@ package org.springframework.test.context.bean.override;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.springframework.beans.BeanUtils;
@@ -44,18 +47,24 @@ import static org.springframework.core.annotation.MergedAnnotations.SearchStrate
  * <p><strong>WARNING</strong>: implementations are used as a cache key and
  * must implement proper {@code equals()} and {@code hashCode()} methods.
  *
- * <p>Specific implementations of metadata can have state to be used during
- * override {@linkplain #createOverride(String, BeanDefinition, Object)
- * instance creation} &mdash; for example, based on further parsing of the
+ * <p>Concrete implementations of {@code OverrideMetadata} can store state to use
+ * during override {@linkplain #createOverride(String, BeanDefinition, Object)
+ * instance creation} &mdash; for example, based on further processing of the
  * annotation or the annotated field.
+ *
+ * <p><strong>NOTE</strong>: Only <em>singleton</em> beans can be overridden.
+ * Any attempt to override a non-singleton bean will result in an exception.
  *
  * @author Simon Baslé
  * @author Stephane Nicoll
+ * @author Sam Brannen
  * @since 6.2
  */
 public abstract class OverrideMetadata {
 
 	private final Field field;
+
+	private final Set<Annotation> fieldAnnotations;
 
 	private final ResolvableType beanType;
 
@@ -67,25 +76,28 @@ public abstract class OverrideMetadata {
 
 	protected OverrideMetadata(Field field, ResolvableType beanType, @Nullable String beanName,
 			BeanOverrideStrategy strategy) {
+
 		this.field = field;
+		this.fieldAnnotations = annotationSet(field);
 		this.beanType = beanType;
 		this.beanName = beanName;
 		this.strategy = strategy;
 	}
 
 	/**
-	 * Parse the given {@code testClass} and build the corresponding list of
-	 * bean {@code OverrideMetadata}.
-	 * @param testClass the class to parse
+	 * Process the given {@code testClass} and build the corresponding list of
+	 * {@code OverrideMetadata} derived from {@link BeanOverride @BeanOverride}
+	 * fields in the test class and its type hierarchy.
+	 * @param testClass the test class to process
 	 * @return a list of {@code OverrideMetadata}
 	 */
 	public static List<OverrideMetadata> forTestClass(Class<?> testClass) {
 		List<OverrideMetadata> metadata = new LinkedList<>();
-		ReflectionUtils.doWithFields(testClass, field -> parseField(field, testClass, metadata));
+		ReflectionUtils.doWithFields(testClass, field -> processField(field, testClass, metadata));
 		return metadata;
 	}
 
-	private static void parseField(Field field, Class<?> testClass, List<OverrideMetadata> metadataList) {
+	private static void processField(Field field, Class<?> testClass, List<OverrideMetadata> metadataList) {
 		AtomicBoolean overrideAnnotationFound = new AtomicBoolean();
 		MergedAnnotations.from(field, DIRECT).stream(BeanOverride.class).forEach(mergedAnnotation -> {
 			MergedAnnotation<?> metaSource = mergedAnnotation.getMetaSource();
@@ -122,25 +134,25 @@ public abstract class OverrideMetadata {
 	 * matching bean of type {@link #getBeanType()}.
 	 */
 	@Nullable
-	public String getBeanName() {
+	public final String getBeanName() {
 		return this.beanName;
 	}
 
 	/**
-	 * Get the {@link BeanOverrideStrategy} for this instance, as a hint on
-	 * how and when the override instance should be created.
+	 * Get the {@link BeanOverrideStrategy} for this {@code OverrideMetadata},
+	 * which influences how and when the bean override instance should be created.
 	 */
 	public final BeanOverrideStrategy getStrategy() {
 		return this.strategy;
 	}
 
 	/**
-	 * Create an override instance from this {@link OverrideMetadata},
-	 * optionally provided with an existing {@link BeanDefinition} and/or an
+	 * Create a bean override instance for this {@code OverrideMetadata},
+	 * optionally based on an existing {@link BeanDefinition} and/or an
 	 * original instance, that is a singleton or an early wrapped instance.
 	 * @param beanName the name of the bean being overridden
 	 * @param existingBeanDefinition an existing bean definition for the supplied
-	 * bean name, or {@code null} if not relevant
+	 * bean name, or {@code null} if irrelevant
 	 * @param existingBeanInstance an existing instance for the supplied bean name
 	 * for wrapping purposes, or {@code null} if irrelevant
 	 * @return the instance with which to override the bean
@@ -149,8 +161,9 @@ public abstract class OverrideMetadata {
 			@Nullable Object existingBeanInstance);
 
 	/**
-	 * Optionally track objects created by this {@link OverrideMetadata}.
-	 * <p>The default is not to track, but this can be overridden in subclasses.
+	 * Optionally track objects created by this {@code OverrideMetadata}.
+	 * <p>The default implementation does not track the supplied instance, but
+	 * this can be overridden in subclasses as appropriate.
 	 * @param override the bean override instance to track
 	 * @param trackingBeanRegistry the registry in which trackers can
 	 * optionally be registered
@@ -176,16 +189,17 @@ public abstract class OverrideMetadata {
 		if (this.beanName != null) {
 			return true;
 		}
-		// by type lookup
-		return Objects.equals(this.field.getName(), that.field.getName()) &&
-				Arrays.equals(this.field.getAnnotations(), that.field.getAnnotations());
+
+		// by-type lookup
+		return (Objects.equals(this.field.getName(), that.field.getName()) &&
+				this.fieldAnnotations.equals(that.fieldAnnotations));
 	}
 
 	@Override
 	public int hashCode() {
 		int hash = Objects.hash(getClass(), this.beanType.getType(), this.beanName, this.strategy);
 		return (this.beanName != null ? hash : hash +
-				Objects.hash(this.field.getName(), Arrays.hashCode(this.field.getAnnotations())));
+				Objects.hash(this.field.getName(), this.fieldAnnotations));
 	}
 
 	@Override
@@ -196,6 +210,11 @@ public abstract class OverrideMetadata {
 				.append("beanName", this.beanName)
 				.append("strategy", this.strategy)
 				.toString();
+	}
+
+	private static Set<Annotation> annotationSet(Field field) {
+		Annotation[] annotations = field.getAnnotations();
+		return (annotations.length != 0 ? new HashSet<>(Arrays.asList(annotations)) : Collections.emptySet());
 	}
 
 }
