@@ -16,9 +16,9 @@
 
 package org.springframework.test.context.bean.override.mockito;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -26,7 +26,6 @@ import org.junit.jupiter.params.provider.FieldSource;
 import org.junit.platform.testkit.engine.EngineTestKit;
 import org.junit.platform.testkit.engine.Events;
 import org.mockito.exceptions.misusing.UnnecessaryStubbingException;
-import org.mockito.quality.Strictness;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.annotation.DirtiesContext;
@@ -42,26 +41,29 @@ import static org.junit.platform.testkit.engine.TestExecutionResultConditions.me
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.when;
 import static org.mockito.Mockito.mock;
+import static org.mockito.quality.Strictness.LENIENT;
+import static org.mockito.quality.Strictness.STRICT_STUBS;
 
 /**
  * Integration tests ensuring unnecessary stubbing is reported in various
  * cases where a strict style is chosen or assumed.
  *
  * @author Simon Baslé
+ * @author Sam Brannen
  * @since 6.2
  */
 class MockitoBeanSettingsStrictIntegrationTests {
 
 	@ParameterizedTest
 	@FieldSource("strictCases")
-	void unusedStubbingIsReported(Class<?> forCase) {
+	void unusedStubbingIsReported(Class<?> testCase, int startedCount, int failureCount) {
 		Events events = EngineTestKit.engine("junit-jupiter")
-				.selectors(selectClass(forCase))
+				.selectors(selectClass(testCase))
 				.execute()
 				.testEvents()
-				.assertStatistics(stats -> stats.started(1).failed(1));
+				.assertStatistics(stats -> stats.started(startedCount).failed(failureCount));
 
-		events.assertThatEvents().haveExactly(1,
+		events.assertThatEvents().haveExactly(failureCount,
 				event(test("unnecessaryStub"),
 						finishedWithFailure(
 								instanceOf(UnnecessaryStubbingException.class),
@@ -69,8 +71,13 @@ class MockitoBeanSettingsStrictIntegrationTests {
 	}
 
 	static final List<Arguments> strictCases = List.of(
-			argumentSet("explicit strictness", ExplicitStrictness.class),
-			argumentSet("implicit strictness with @MockitoBean on field", ImplicitStrictnessWithMockitoBean.class)
+			argumentSet("explicit strictness", ExplicitStrictness.class, 1, 1),
+			argumentSet("explicit strictness on enclosing class", ExplicitStrictnessEnclosingTestCase.class, 1, 1),
+			argumentSet("implicit strictness with @MockitoBean on field", ImplicitStrictnessWithMockitoBean.class, 1, 1),
+			// 3, 1 --> The tests in LenientStubbingNestedTestCase and InheritedLenientStubbingNestedTestCase
+			// should not result in an UnnecessaryStubbingException.
+			argumentSet("implicit strictness overridden and inherited in @Nested test classes",
+					ImplicitStrictnessWithMockitoBeanEnclosingTestCase.class, 3, 1)
 		);
 
 	abstract static class BaseCase {
@@ -85,7 +92,7 @@ class MockitoBeanSettingsStrictIntegrationTests {
 
 	@SpringJUnitConfig(Config.class)
 	@DirtiesContext
-	@MockitoBeanSettings(Strictness.STRICT_STUBS)
+	@MockitoBeanSettings(STRICT_STUBS)
 	static class ExplicitStrictness extends BaseCase {
 	}
 
@@ -93,9 +100,37 @@ class MockitoBeanSettingsStrictIntegrationTests {
 	@DirtiesContext
 	static class ImplicitStrictnessWithMockitoBean extends BaseCase {
 
-		@MockitoBean(enforceOverride = false)
-		@SuppressWarnings("unused")
-		DateTimeFormatter ignoredMock;
+		@MockitoBean
+		Runnable ignoredMock;
+	}
+
+	@SpringJUnitConfig(Config.class)
+	@DirtiesContext
+	@MockitoBeanSettings(STRICT_STUBS)
+	static class ExplicitStrictnessEnclosingTestCase {
+
+		@Nested
+		class NestedTestCase extends BaseCase {
+		}
+	}
+
+	@SpringJUnitConfig(Config.class)
+	@DirtiesContext
+	static class ImplicitStrictnessWithMockitoBeanEnclosingTestCase extends BaseCase {
+
+		@MockitoBean
+		Runnable ignoredMock;
+
+		@Nested
+		// Overrides implicit STRICT_STUBS
+		@MockitoBeanSettings(LENIENT)
+		class LenientStubbingNestedTestCase extends BaseCase {
+
+			@Nested
+			// Inherits LENIENT
+			class InheritedLenientStubbingNestedTestCase extends BaseCase {
+			}
+		}
 	}
 
 	@Configuration(proxyBeanMethods = false)
