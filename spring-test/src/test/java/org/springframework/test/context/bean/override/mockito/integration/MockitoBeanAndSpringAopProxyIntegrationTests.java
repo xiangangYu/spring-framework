@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.test.context.bean.override.mockito;
+package org.springframework.test.context.bean.override.mockito.integration;
 
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,6 +30,7 @@ import org.springframework.cache.interceptor.SimpleCacheResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,15 +41,16 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 /**
- * Tests for {@link MockitoBean @MockitoBean} used in combination Spring AOP.
+ * Tests for {@link MockitoBean @MockitoBean} used in combination with Spring AOP.
  *
  * @author Sam Brannen
  * @author Phillip Webb
  * @since 6.2
  * @see <a href="https://github.com/spring-projects/spring-boot/issues/5837">5837</a>
+ * @see MockitoSpyBeanAndSpringAopProxyIntegrationTests
  */
 @ExtendWith(SpringExtension.class)
-public class MockitoBeanAndSpringAopProxyTests {
+class MockitoBeanAndSpringAopProxyIntegrationTests {
 
 	@MockitoBean
 	DateService dateService;
@@ -70,12 +72,12 @@ public class MockitoBeanAndSpringAopProxyTests {
 		assertThat(Mockito.mockingDetails(dateService).isMock()).as("is Mockito mock").isTrue();
 
 		given(dateService.getDate(false)).willReturn(1L);
-		Long date1 = dateService.getDate(false);
-		assertThat(date1).isOne();
+		Long date = dateService.getDate(false);
+		assertThat(date).isOne();
 
 		given(dateService.getDate(false)).willReturn(2L);
-		Long date2 = dateService.getDate(false);
-		assertThat(date2).isEqualTo(2L);
+		date = dateService.getDate(false);
+		assertThat(date).isEqualTo(2L);
 
 		verify(dateService, times(2)).getDate(false);
 		verify(dateService, times(2)).getDate(eq(false));

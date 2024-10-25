@@ -16,6 +16,7 @@
 
 package org.springframework.test.context.bean.override.mockito;
 
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -34,6 +35,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.annotation.MergedAnnotations;
+import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.lang.Nullable;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestContextAnnotationUtils;
@@ -52,18 +54,17 @@ import org.springframework.util.ClassUtils;
  */
 public class MockitoResetTestExecutionListener extends AbstractTestExecutionListener {
 
-	static final boolean mockitoPresent = ClassUtils.isPresent("org.mockito.Mockito",
+	private static final boolean mockitoPresent = ClassUtils.isPresent("org.mockito.Mockito",
 			MockitoResetTestExecutionListener.class.getClassLoader());
 
 	private static final String SPRING_MOCKITO_PACKAGE = "org.springframework.test.context.bean.override.mockito";
 
-	private static final Predicate<MergedAnnotation<?>> isMockitoAnnotation = mergedAnnotation -> {
-			String packageName = mergedAnnotation.getType().getPackageName();
-			return packageName.startsWith(SPRING_MOCKITO_PACKAGE);
-		};
+	private static final Predicate<MergedAnnotation<?>> isSpringMockitoAnnotation = mergedAnnotation ->
+			mergedAnnotation.getType().getPackageName().equals(SPRING_MOCKITO_PACKAGE);
+
 
 	/**
-	 * Executes before {@link org.springframework.test.context.bean.override.BeanOverrideTestExecutionListener}.
+	 * Returns {@code Ordered.LOWEST_PRECEDENCE - 100}.
 	 */
 	@Override
 	public int getOrder() {
@@ -153,13 +154,13 @@ public class MockitoResetTestExecutionListener extends AbstractTestExecutionList
 	 */
 	private static boolean hasMockitoAnnotations(Class<?> clazz) {
 		// Declared on the class?
-		if (MergedAnnotations.from(clazz, MergedAnnotations.SearchStrategy.DIRECT).stream().anyMatch(isMockitoAnnotation)) {
+		if (isAnnotated(clazz)) {
 			return true;
 		}
 
 		// Declared on a field?
 		for (Field field : clazz.getDeclaredFields()) {
-			if (MergedAnnotations.from(field, MergedAnnotations.SearchStrategy.DIRECT).stream().anyMatch(isMockitoAnnotation)) {
+			if (isAnnotated(field)) {
 				return true;
 			}
 		}
@@ -179,7 +180,7 @@ public class MockitoResetTestExecutionListener extends AbstractTestExecutionList
 			}
 		}
 
-		// Declared on an enclosing class of an inner class?
+		// Declared on an enclosing class?
 		if (TestContextAnnotationUtils.searchEnclosingClass(clazz)) {
 			if (hasMockitoAnnotations(clazz.getEnclosingClass())) {
 				return true;
@@ -187,6 +188,10 @@ public class MockitoResetTestExecutionListener extends AbstractTestExecutionList
 		}
 
 		return false;
+	}
+
+	private static boolean isAnnotated(AnnotatedElement element) {
+		return MergedAnnotations.from(element, SearchStrategy.DIRECT).stream().anyMatch(isSpringMockitoAnnotation);
 	}
 
 }
