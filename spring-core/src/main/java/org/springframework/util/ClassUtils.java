@@ -92,6 +92,7 @@ public abstract class ClassUtils {
 	/** The nested class separator character: {@code '$'}. */
 	private static final char NESTED_CLASS_SEPARATOR = '$';
 
+	// 下面的注释也没有使用斜杠加上两颗星的方式
 	/** The CGLIB class separator: {@code "$$"}. */
 	public static final String CGLIB_CLASS_SEPARATOR = "$$";
 

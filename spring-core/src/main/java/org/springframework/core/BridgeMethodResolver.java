@@ -74,7 +74,7 @@ public final class BridgeMethodResolver {
 	/**
 	 * Determine the most specific method for the supplied {@link Method bridge Method}
 	 * in the given class hierarchy, even if not available on the local declaring class.
-	 * <p>This is effectively a combination of {@link ClassUtils#getMostSpecificMethod}
+	 * <p>This is effectively a combination(组合) of {@link ClassUtils#getMostSpecificMethod}
 	 * and {@link #findBridgedMethod}, resolving the original method even if no bridge
 	 * method has been generated at the same class hierarchy level (a known difference
 	 * between the Eclipse compiler and regular javac).
@@ -256,6 +256,7 @@ public final class BridgeMethodResolver {
 	 * If the supplied {@link Class} has a declared {@link Method} whose signature matches
 	 * that of the supplied {@link Method}, then this matching {@link Method} is returned,
 	 * otherwise {@code null} is returned.
+	 * 方法的头上可以使用@Nullable注解，表示可以返回null的值
 	 */
 	@Nullable
 	private static Method searchForMatch(Class<?> type, Method bridgeMethod) {
@@ -283,6 +284,7 @@ public final class BridgeMethodResolver {
 			// Method on generated subclass: return false to consistently ignore it for visibility purposes.
 			return false;
 		}
+		// 判断两个数组是否相等使用Arrays.equals
 		return (bridgeMethod.getReturnType().equals(bridgedMethod.getReturnType()) &&
 				bridgeMethod.getParameterCount() == bridgedMethod.getParameterCount() &&
 				Arrays.equals(bridgeMethod.getParameterTypes(), bridgedMethod.getParameterTypes()));
