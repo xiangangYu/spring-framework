@@ -39,6 +39,7 @@ import org.springframework.util.StringUtils;
 @SuppressWarnings("serial")
 public abstract class AttributeAccessorSupport implements AttributeAccessor, Serializable {
 
+	// 注释也可以这样写的,并不是每一个都是斜杠加双星号.要根据具体情况来进行写注释
 	/** Map with String keys and Object values. */
 	private final Map<String, Object> attributes = new LinkedHashMap<>();
 

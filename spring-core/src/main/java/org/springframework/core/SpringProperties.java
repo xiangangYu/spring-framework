@@ -54,7 +54,7 @@ public final class SpringProperties {
 
 	private static final Properties localProperties = new Properties();
 
-
+	// 静态代码块
 	static {
 		try {
 			ClassLoader cl = SpringProperties.class.getClassLoader();
@@ -99,7 +99,9 @@ public final class SpringProperties {
 	 */
 	@Nullable
 	public static String getProperty(String key) {
+		// 先有初始值
 		String value = localProperties.getProperty(key);
+		// 中间进行修改
 		if (value == null) {
 			try {
 				value = System.getProperty(key);
@@ -108,6 +110,7 @@ public final class SpringProperties {
 				System.err.println("Could not retrieve system property '" + key + "': " + ex);
 			}
 		}
+		// 返回初始变量
 		return value;
 	}
 
