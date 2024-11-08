@@ -70,6 +70,7 @@ public final class CollectionFactory {
 			TreeSet.class,
 			EnumSet.class);
 
+	// approximable 可逼近的
 	private static final Set<Class<?>> approximableMapTypes = Set.of(
 			// Standard map interfaces
 			Map.class,

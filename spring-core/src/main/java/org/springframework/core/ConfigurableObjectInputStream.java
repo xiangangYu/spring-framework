@@ -35,6 +35,7 @@ import org.springframework.util.ClassUtils;
  */
 public class ConfigurableObjectInputStream extends ObjectInputStream {
 
+	// @Nullable也可以用来修饰成员变量
 	@Nullable
 	private final ClassLoader classLoader;
 
