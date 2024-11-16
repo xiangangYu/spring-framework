@@ -30,9 +30,9 @@ import java.lang.annotation.Target;
  * just describes how the code works and doesn't add any functionality by means of
  * code generation.
  *
- * <p>Inspired from {@code org.jetbrains.annotations.Contract}, this variant has
- * been introduce in the {@code org.springframework.lang} package to avoid requiring
- * an extra dependency, while still following the same semantics.
+ * <p>Inspired by {@code org.jetbrains.annotations.Contract}, this variant has
+ * been introduced in the {@code org.springframework.lang} package to avoid
+ * requiring an extra dependency, while still following the same semantics.
  *
  * <p>Method contract has the following syntax:
  * <pre>{@code
@@ -93,4 +93,5 @@ public @interface Contract {
 	 * to check that the method's return value is actually used in the call place.
 	 */
 	boolean pure() default false;
+
 }
