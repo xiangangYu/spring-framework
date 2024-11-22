@@ -136,7 +136,7 @@ public final class FlashMap extends HashMap<String, Object> implements Comparabl
 
 	/**
 	 * Return whether this instance has expired depending on the amount of
-	 * elapsed time since the call to {@link #startExpirationPeriod}.
+	 * elapsed(过去了) time since the call to {@link #startExpirationPeriod}.
 	 */
 	public boolean isExpired() {
 		return (this.expirationTime != -1 && System.currentTimeMillis() > this.expirationTime);

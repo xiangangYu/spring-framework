@@ -32,7 +32,7 @@ import org.springframework.web.method.HandlerMethod;
  * triggers the execution of the handler itself. This mechanism can be used
  * for a large field of preprocessing aspects, or common handler behavior
  * like locale or theme changes. Its main purpose is to allow for factoring
- * out repetitive handler code.
+ * out(分解) repetitive(重复) handler code.
  *
  * <p>In an asynchronous processing scenario, the handler may be executed in a
  * separate thread while the main thread exits without rendering or invoking the
@@ -43,7 +43,7 @@ import org.springframework.web.method.HandlerMethod;
  * {@code org.springframework.web.servlet.AsyncHandlerInterceptor}
  *
  * <p>Typically an interceptor chain is defined per HandlerMapping bean,
- * sharing its granularity. To be able to apply a certain interceptor chain
+ * sharing its granularity(粒度). To be able to apply a certain interceptor chain
  * to a group of handlers, one needs to map the desired handlers via one
  * HandlerMapping bean. The interceptors themselves are defined as beans
  * in the application context, referenced by the mapping bean definition
@@ -51,7 +51,7 @@ import org.springframework.web.method.HandlerMethod;
  *
  * <p>HandlerInterceptor is basically similar to a Servlet Filter, but in
  * contrast to the latter it just allows custom pre-processing with the option
- * of prohibiting the execution of the handler itself, and custom post-processing.
+ * of prohibiting(禁止) the execution of the handler itself, and custom post-processing.
  * Filters are more powerful, for example they allow for exchanging the request
  * and response objects that are handed down the chain. Note that a filter
  * gets configured in web.xml, a HandlerInterceptor in the application context.

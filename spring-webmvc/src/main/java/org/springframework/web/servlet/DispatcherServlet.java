@@ -67,8 +67,8 @@ import org.springframework.web.util.WebUtils;
 
 /**
  * Central dispatcher for HTTP request handlers/controllers, for example, for web UI controllers
- * or HTTP-based remote service exporters. Dispatches to registered handlers for processing
- * a web request, providing convenient mapping and exception handling facilities.
+ * or HTTP-based remote service exporters(输出). Dispatches to registered handlers for processing
+ * a web request, providing convenient mapping and exception handling facilities(设施).
  *
  * <p>This servlet is very flexible: It can be used with just about any workflow, with the
  * installation of the appropriate adapter classes. It offers the following functionality
@@ -222,7 +222,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	public static final String WEB_APPLICATION_CONTEXT_ATTRIBUTE = DispatcherServlet.class.getName() + ".CONTEXT";
 
 	/**
-	 * Request attribute to hold the current LocaleResolver, retrievable by views.
+	 * Request attribute to hold the current LocaleResolver, retrievable(检索) by views.
 	 * @see org.springframework.web.servlet.support.RequestContextUtils#getLocaleResolver
 	 */
 	public static final String LOCALE_RESOLVER_ATTRIBUTE = DispatcherServlet.class.getName() + ".LOCALE_RESOLVER";
@@ -402,7 +402,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * context implements {@link ConfigurableApplicationContext}</li>
 	 * </ul>
 	 * If the context has already been refreshed, none of the above will occur, under the
-	 * assumption that the user has performed these actions (or not) per their specific
+	 * assumption(假设) that the user has performed these actions (or not) per their specific
 	 * needs.
 	 * <p>See {@link org.springframework.web.WebApplicationInitializer} for usage examples.
 	 * @param webApplicationContext the context to use
@@ -420,7 +420,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * Set whether to detect all HandlerMapping beans in this servlet's context. Otherwise,
 	 * just a single bean with name "handlerMapping" will be expected.
 	 * <p>Default is "true". Turn this off if you want this servlet to use a single
-	 * HandlerMapping, despite multiple HandlerMapping beans being defined in the context.
+	 * HandlerMapping, despite(尽管) multiple HandlerMapping beans being defined in the context.
 	 */
 	public void setDetectAllHandlerMappings(boolean detectAllHandlerMappings) {
 		this.detectAllHandlerMappings = detectAllHandlerMappings;
@@ -485,7 +485,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * <p>Default is "true", which is strongly recommended. Views should not rely on request attributes
 	 * having been set by (dynamic) includes. This allows JSP views rendered by an included controller
 	 * to use any model attributes, even with the same names as in the main JSP, without causing side
-	 * effects. Only turn this off for special needs, for example to deliberately allow main JSPs to
+	 * effects. Only turn this off for special needs, for example to deliberately(故意地) allow main JSPs to
 	 * access attributes from JSP views rendered by an included controller.
 	 */
 	public void setCleanupAfterInclude(boolean cleanupAfterInclude) {

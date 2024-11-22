@@ -32,9 +32,9 @@ import java.lang.annotation.Target;
  *
  * <p>Inspired by {@code org.jetbrains.annotations.Contract}, this variant has
  * been introduced in the {@code org.springframework.lang} package to avoid
- * requiring an extra dependency, while still following the same semantics.
+ * requiring an extra dependency, while still following the same semantics(语义).
  *
- * <p>Method contract has the following syntax:
+ * <p>Method contract(合同,约定) has the following syntax:
  * <pre>{@code
  *  contract ::= (clause ';')* clause
  *  clause ::= args '->' effect

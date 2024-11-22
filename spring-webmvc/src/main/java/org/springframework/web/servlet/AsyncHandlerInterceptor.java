@@ -48,8 +48,10 @@ import org.springframework.web.method.HandlerMethod;
  * Instead, interceptors can register to track an asynchronous request through
  * the {@code registerCallbackInterceptor} and {@code registerDeferredResultInterceptor}
  * methods on {@link org.springframework.web.context.request.async.WebAsyncManager
- * WebAsyncManager}. This can be done proactively on every request from
+ * WebAsyncManager}. This can be done proactively(主动) on every request from
  * {@code preHandle} regardless of whether async request processing will start.
+ *
+ * spring mvc,structs,hibernate,spring,很多年前的事了
  *
  * @author Rossen Stoyanchev
  * @since 3.2

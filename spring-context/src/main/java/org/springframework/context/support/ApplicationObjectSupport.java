@@ -157,6 +157,7 @@ public abstract class ApplicationObjectSupport implements ApplicationContextAwar
 	 */
 	protected final ApplicationContext obtainApplicationContext() {
 		ApplicationContext applicationContext = getApplicationContext();
+		// 断言,
 		Assert.state(applicationContext != null, "No ApplicationContext");
 		return applicationContext;
 	}
