@@ -87,12 +87,13 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 	@Nullable
 	private ConfigurableEnvironment environment;
 
+	// 好多集合类，在new的时候都是使用hash，link等
 	private final Set<String> requiredProperties = new HashSet<>(4);
 
 
 	/**
 	 * Subclasses can invoke this method to specify that this property
-	 * (which must match a JavaBean property they expose) is mandatory,
+	 * (which must match a JavaBean property they expose) is mandatory(强制的),
 	 * and must be supplied as a config parameter. This should be called
 	 * from the constructor of a subclass.
 	 * <p>This method is only relevant in case of traditional initialization
