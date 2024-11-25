@@ -34,7 +34,7 @@ import org.springframework.util.StringUtils;
  * <p>A FlashMap can be set up with a request path and request parameters to
  * help identify the target request. Without this information, a FlashMap is
  * made available to the next request, which may or may not be the intended
- * recipient. On a redirect, the target URL is known and a FlashMap can be
+ * recipient(收件人). On a redirect, the target URL is known and a FlashMap can be
  * updated with that information. This is done automatically when the
  * {@code org.springframework.web.servlet.view.RedirectView} is used.
  *

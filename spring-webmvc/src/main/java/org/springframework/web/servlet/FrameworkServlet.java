@@ -78,7 +78,7 @@ import org.springframework.web.util.WebUtils;
  * <p>This class offers the following functionality:
  * <ul>
  * <li>Manages a {@link org.springframework.web.context.WebApplicationContext
- * WebApplicationContext} instance per servlet. The servlet's configuration is determined
+ * WebApplicationContext} instance per servlet. The servlet's configuration is determined(确定)
  * by beans in the servlet's namespace.
  * <li>Publishes events on request processing, whether or not a request is
  * successfully handled.
