@@ -51,7 +51,7 @@ import org.springframework.web.context.support.StandardServletEnvironment;
  * its config parameters ({@code init-param} entries within the
  * {@code servlet} tag in {@code web.xml}) as bean properties.
  *
- * <p>A handy superclass for any type of servlet. Type conversion of config
+ * <p>A handy(方便) superclass for any type of servlet. Type conversion of config
  * parameters is automatic, with the corresponding setter method getting
  * invoked with the converted value. It is also possible for subclasses to
  * specify required properties. Parameters without matching bean property

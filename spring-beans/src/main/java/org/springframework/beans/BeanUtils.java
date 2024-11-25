@@ -125,7 +125,7 @@ public abstract class BeanUtils {
 	 * @param clazz the class to instantiate
 	 * @return the new instance
 	 * @throws BeanInstantiationException if the bean cannot be instantiated.
-	 * The cause may notably indicate a {@link NoSuchMethodException} if no
+	 * The cause may notably(特别是) indicate a {@link NoSuchMethodException} if no
 	 * primary/default constructor was found, a {@link NoClassDefFoundError}
 	 * or other {@link LinkageError} in case of an unresolvable class definition
 	 * (for example, due to a missing dependency at runtime), or an exception thrown
@@ -187,6 +187,7 @@ public abstract class BeanUtils {
 	public static <T> T instantiateClass(Constructor<T> ctor, Object... args) throws BeanInstantiationException {
 		Assert.notNull(ctor, "Constructor must not be null");
 		try {
+			// 使方法可见
 			ReflectionUtils.makeAccessible(ctor);
 			if (KotlinDetector.isKotlinReflectPresent() && KotlinDetector.isKotlinType(ctor.getDeclaringClass())) {
 				return KotlinDelegate.instantiateClass(ctor, args);

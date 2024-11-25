@@ -110,13 +110,13 @@ import org.springframework.web.util.WebUtils;
  * <p>Passes a "contextConfigLocation" servlet init-param to the context instance,
  * parsing it into potentially multiple file paths which can be separated by any
  * number of commas and spaces, like "test-servlet.xml, myServlet.xml".
- * If not explicitly specified, the context implementation is supposed to build a
+ * If not explicitly specified, the context implementation is supposed(假定) to build a
  * default location from the namespace of the servlet.
  *
  * <p>Note: In case of multiple config locations, later bean definitions will
  * override ones defined in earlier loaded files, at least when using Spring's
- * default ApplicationContext implementation. This can be leveraged to
- * deliberately override certain bean definitions via an extra XML file.
+ * default ApplicationContext implementation. This can be leveraged(杠杆) to
+ * deliberately(故意地) override certain bean definitions via an extra XML file.
  *
  * <p>The default namespace is "'servlet-name'-servlet", for example, "test-servlet" for a
  * servlet-name "test" (leading to a "/WEB-INF/test-servlet.xml" default location
@@ -170,6 +170,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 	/**
 	 * HTTP methods supported by {@link jakarta.servlet.http.HttpServlet}.
+	 * 初始化Set集合，可以使用Set.of("xx","yy",...)方式
 	 */
 	private static final Set<String> HTTP_SERVLET_METHODS =
 			Set.of("DELETE", "HEAD", "GET", "OPTIONS", "POST", "PUT", "TRACE");
@@ -241,7 +242,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 * option for servlet registration is through {@code web.xml} which requires the use
 	 * of a no-arg constructor.
 	 * <p>Calling {@link #setContextConfigLocation} (init-param 'contextConfigLocation')
-	 * will dictate which XML files will be loaded by the
+	 * will dictate(口述) which XML files will be loaded by the
 	 * {@linkplain #DEFAULT_CONTEXT_CLASS default XmlWebApplicationContext}
 	 * <p>Calling {@link #setContextClass} (init-param 'contextClass') overrides the
 	 * default {@code XmlWebApplicationContext} and allows for specifying an alternative class,
@@ -361,7 +362,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	}
 
 	/**
-	 * Return the namespace for this servlet, falling back to default scheme if
+	 * Return the namespace for this servlet, falling back(后退) to default scheme(方案) if
 	 * no custom namespace was set: for example, "test-servlet" for a servlet named "test".
 	 */
 	public String getNamespace() {
@@ -388,6 +389,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	/**
 	 * Specify which {@link ApplicationContextInitializer} instances should be used
 	 * to initialize the application context used by this {@code FrameworkServlet}.
+	 * 下面使用了...可变参数
 	 * @see #configureAndRefreshWebApplicationContext
 	 * @see #applyInitializers
 	 */
@@ -413,7 +415,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	/**
 	 * Set whether to publish this servlet's context as a ServletContext attribute,
 	 * available to all objects in the web container. Default is "true".
-	 * <p>This is especially handy during testing, although it is debatable whether
+	 * <p>This is especially handy during testing, although it is debatable(值得商榷) whether
 	 * it's good practice to let other application objects access the context this way.
 	 */
 	public void setPublishContext(boolean publishContext) {
@@ -433,7 +435,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	/**
 	 * Set whether to expose the LocaleContext and RequestAttributes as inheritable
 	 * for child threads (using an {@link java.lang.InheritableThreadLocal}).
-	 * <p>Default is "false", to avoid side effects on spawned background threads.
+	 * <p>Default is "false", to avoid side effects on spawned(产生) background threads.
 	 * Switch this to "true" to enable inheritance for custom child threads which
 	 * are spawned during request processing and only used for this request
 	 * (that is, ending after their initial task, without reuse of the thread).
@@ -514,6 +516,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 */
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) {
+		// 判断一个对象是否为null,并且是否为某种类型
 		if (this.webApplicationContext == null && applicationContext instanceof WebApplicationContext wac) {
 			this.webApplicationContext = wac;
 			this.webApplicationContextInjected = true;
@@ -742,7 +745,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 * {@link ApplicationContextInitializer} instances specified by the
 	 * "contextInitializerClasses" servlet init-param.
 	 * <p>See also {@link #postProcessWebApplicationContext}, which is designed to allow
-	 * subclasses (as opposed to end-users) to modify the application context, and is
+	 * subclasses (as opposed to(与...相反) end-users) to modify the application context, and is
 	 * called immediately before this method.
 	 * @param wac the configured WebApplicationContext (not refreshed yet)
 	 * @see #createWebApplicationContext
@@ -815,6 +818,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 * This method will be invoked after any bean properties have been set and
 	 * the WebApplicationContext has been loaded. The default implementation is empty;
 	 * subclasses may override this method to perform any initialization they require.
+	 * 方法的空实现
 	 * @throws ServletException in case of an initialization exception
 	 */
 	protected void initFrameworkServlet() throws ServletException {
@@ -1014,6 +1018,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 			doService(request, response);
 		}
 		catch (ServletException | IOException ex) {
+			// 上面的捕获异常有点意思，使用 | 来进行两个异常的捕获
 			failureCause = ex;
 			throw ex;
 		}
@@ -1194,6 +1199,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 		@Override
 		public void onApplicationEvent(ContextRefreshedEvent event) {
+			// 下面的class.this.method 一般用在内部类访问外部类的情况
 			FrameworkServlet.this.onApplicationEvent(event);
 		}
 	}

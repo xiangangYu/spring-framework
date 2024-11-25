@@ -23,7 +23,7 @@ import org.springframework.beans.factory.Aware;
  * Interface to be implemented by any object that wishes to be notified
  * of the {@link ApplicationContext} that it runs in.
  *
- * <p>Implementing this interface makes sense for example when an object
+ * <p>Implementing this interface makes sense(讲得通,合情合理) for example when an object
  * requires access to a set of collaborating(协作) beans. Note that configuration
  * via bean references(引用) is preferable to implementing this interface just
  * for bean lookup purposes.

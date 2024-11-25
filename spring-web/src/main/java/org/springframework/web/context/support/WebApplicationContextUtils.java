@@ -91,7 +91,7 @@ public abstract class WebApplicationContextUtils {
 	 * Find the root {@code WebApplicationContext} for this web app, typically
 	 * loaded via {@link org.springframework.web.context.ContextLoaderListener}.
 	 * <p>Will rethrow an exception that happened on root context startup,
-	 * to differentiate between a failed context startup and no context at all.
+	 * to differentiate(区分) between a failed context startup and no context at all.
 	 * @param sc the ServletContext to find the web application context for
 	 * @return the root WebApplicationContext for this web app, or {@code null} if none
 	 * @see org.springframework.web.context.WebApplicationContext#ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE
@@ -123,6 +123,7 @@ public abstract class WebApplicationContextUtils {
 		if (attr instanceof Exception exception) {
 			throw new IllegalStateException(exception);
 		}
+		// 下面的wac范围是整个方法，而不是局部变量吗?
 		if (!(attr instanceof WebApplicationContext wac)) {
 			throw new IllegalStateException("Context attribute is not of type WebApplicationContext: " + attr);
 		}
