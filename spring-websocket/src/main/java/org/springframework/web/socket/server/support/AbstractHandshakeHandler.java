@@ -47,34 +47,27 @@ import org.springframework.web.socket.handler.WebSocketHandlerDecorator;
 import org.springframework.web.socket.server.HandshakeFailureException;
 import org.springframework.web.socket.server.HandshakeHandler;
 import org.springframework.web.socket.server.RequestUpgradeStrategy;
-import org.springframework.web.socket.server.jetty.JettyRequestUpgradeStrategy;
-import org.springframework.web.socket.server.standard.GlassFishRequestUpgradeStrategy;
 import org.springframework.web.socket.server.standard.StandardWebSocketUpgradeStrategy;
-import org.springframework.web.socket.server.standard.TomcatRequestUpgradeStrategy;
-import org.springframework.web.socket.server.standard.UndertowRequestUpgradeStrategy;
-import org.springframework.web.socket.server.standard.WebLogicRequestUpgradeStrategy;
-import org.springframework.web.socket.server.standard.WebSphereRequestUpgradeStrategy;
 
 /**
  * A base class for {@link HandshakeHandler} implementations, independent(独立) of the Servlet API.
  *
  * <p>Performs initial validation of the WebSocket handshake request - possibly rejecting it
  * through the appropriate HTTP status code - while also allowing its subclasses to override
+ * various parts of the negotiation process: for example, origin validation, sub-protocol
+ * negotiation, extensions negotiation, etc.
  * various parts of the negotiation(谈判、协商) process (e.g. origin validation, sub-protocol negotiation,
  * various parts of the negotiation process (for example, origin validation, sub-protocol negotiation,
  * extensions negotiation, etc).
  *
  * <p>If the negotiation succeeds, the actual upgrade(升级) is delegated to a server-specific
  * {@link org.springframework.web.socket.server.RequestUpgradeStrategy}, which will update
- * the response as necessary and initialize the WebSocket.
+ * the response as necessary and initialize the WebSocket. As of 7.0, this class uses
+ * {@link StandardWebSocketUpgradeStrategy} unless explicitly configured.
  *
  * @author Rossen Stoyanchev
  * @author Juergen Hoeller
  * @since 4.2
- * @see org.springframework.web.socket.server.jetty.JettyRequestUpgradeStrategy
- * @see org.springframework.web.socket.server.standard.TomcatRequestUpgradeStrategy
- * @see org.springframework.web.socket.server.standard.UndertowRequestUpgradeStrategy
- * @see org.springframework.web.socket.server.standard.GlassFishRequestUpgradeStrategy
  */
 public abstract class AbstractHandshakeHandler implements HandshakeHandler, Lifecycle {
 
@@ -120,12 +113,10 @@ public abstract class AbstractHandshakeHandler implements HandshakeHandler, Life
 
 
 	/**
-	 * Default constructor that auto-detects and instantiates a
-	 * {@link RequestUpgradeStrategy} suitable for the runtime container.
-	 * @throws IllegalStateException if no {@link RequestUpgradeStrategy} can be found.
+	 * Default constructor that uses {@link StandardWebSocketUpgradeStrategy}.
 	 */
 	protected AbstractHandshakeHandler() {
-		this(initRequestUpgradeStrategy());
+		this(new StandardWebSocketUpgradeStrategy());
 	}
 
 	/**

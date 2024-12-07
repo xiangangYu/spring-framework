@@ -45,9 +45,7 @@ class JakartaAnnotationsRuntimeHints implements RuntimeHintsRegistrar {
 		Stream.of(
 				"jakarta.inject.Inject",
 				"jakarta.inject.Provider",
-				"jakarta.inject.Qualifier",
-				"javax.inject.Inject",
-				"javax.inject.Qualifier"
+				"jakarta.inject.Qualifier"
 			).forEach(typeName -> hints.reflection().registerType(TypeReference.of(typeName)));
 	}
 

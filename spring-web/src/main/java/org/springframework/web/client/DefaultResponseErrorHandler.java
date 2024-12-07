@@ -136,18 +136,7 @@ public class DefaultResponseErrorHandler implements ResponseErrorHandler {
 	 */
 	@Override
 	public void handleError(URI url, HttpMethod method, ClientHttpResponse response) throws IOException {
-		handleError(response);
 		handleError(response, response.getStatusCode(), url, method);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * <p>As of 6.2.1 this method is a no-op unless overridden.
-	 */
-	@SuppressWarnings("removal")
-	@Override
-	public void handleError(ClientHttpResponse response) throws IOException {
-		// no-op, but here for backwards compatibility
 	}
 
 	/**

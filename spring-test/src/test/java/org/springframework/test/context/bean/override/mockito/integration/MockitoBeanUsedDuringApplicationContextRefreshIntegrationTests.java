@@ -17,6 +17,7 @@
 package org.springframework.test.context.bean.override.mockito.integration;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -25,6 +26,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.bean.override.mockito.integration.MockitoBeanUsedDuringApplicationContextRefreshIntegrationTests.ContextRefreshedEventListener;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
 
@@ -35,6 +37,7 @@ import static org.mockito.BDDMockito.then;
  * @author Sam Brannen
  * @author Yanming Zhou
  * @since 6.2.1
+ * @see MockitoSpyBeanUsedDuringApplicationContextRefreshIntegrationTests
  */
 @SpringJUnitConfig(ContextRefreshedEventListener.class)
 class MockitoBeanUsedDuringApplicationContextRefreshIntegrationTests {
@@ -45,6 +48,8 @@ class MockitoBeanUsedDuringApplicationContextRefreshIntegrationTests {
 
 	@Test
 	void test() {
+		assertThat(Mockito.mockingDetails(eventProcessor).isMock()).as("isMock").isTrue();
+		assertThat(Mockito.mockingDetails(eventProcessor).isSpy()).as("isSpy").isFalse();
 		// Ensure that the mock was invoked during ApplicationContext refresh
 		// and has not been reset in the interim.
 		then(eventProcessor).should().process(any(ContextRefreshedEvent.class));
