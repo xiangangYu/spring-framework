@@ -33,7 +33,7 @@ import org.springframework.web.context.request.NativeWebRequest;
  * including a timeout or network error.
  *
  * <p>As a general rule exceptions raised by interceptor methods will cause
- * async processing to resume by dispatching back to the container and using
+ * async processing to resume by dispatching(调度) back to the container and using
  * the Exception instance as the concurrent result. Such exceptions will then
  * be processed through the {@code HandlerExceptionResolver} mechanism.
  *

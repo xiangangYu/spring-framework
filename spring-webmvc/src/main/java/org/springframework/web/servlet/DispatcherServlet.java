@@ -1028,7 +1028,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		boolean multipartRequestParsed = false;
 
 		WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(request);
-
+		// 在try中嵌套一个try，这种情况还是比较少见
 		try {
 			ModelAndView mv = null;
 			Exception dispatchException = null;

@@ -34,7 +34,7 @@ import org.springframework.lang.Nullable;
  * simply using the request's locale provided by the respective HTTP header.
  *
  * <p>Use {@link org.springframework.web.servlet.support.RequestContext#getLocale()}
- * to retrieve the current locale in controllers or views, independent
+ * to retrieve the current locale in controllers or views, independent(独立的)
  * of the actual resolution strategy.
  *
  * <p>Note: As of Spring 4.0, there is an extended strategy interface

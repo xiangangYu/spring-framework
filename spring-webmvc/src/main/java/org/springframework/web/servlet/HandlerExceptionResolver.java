@@ -26,8 +26,8 @@ import org.springframework.lang.Nullable;
  * handler mapping or execution, in the typical case to error views. Implementors are
  * typically registered as beans in the application context.
  *
- * <p>Error views are analogous to JSP error pages but can be used with any kind of
- * exception including any checked exception, with potentially fine-grained mappings for
+ * <p>Error views are analogous(类似) to JSP error pages but can be used with any kind of
+ * exception including any checked exception, with potentially fine-grained(精确的) mappings for
  * specific handlers.
  *
  * @author Juergen Hoeller

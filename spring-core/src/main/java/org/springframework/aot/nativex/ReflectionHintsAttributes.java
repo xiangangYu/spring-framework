@@ -118,9 +118,13 @@ class ReflectionHintsAttributes {
 
 	@SuppressWarnings("removal")
 	private void handleCategories(Map<String, Object> attributes, Set<MemberCategory> categories) {
+		// switch 的lambda表示
 		categories.stream().sorted().forEach(category -> {
 					switch (category) {
-						case INVOKE_PUBLIC_FIELDS, PUBLIC_FIELDS -> attributes.put("allPublicFields", true);
+						case INVOKE_PUBLIC_FIELDS, PUBLIC_FIELDS -> {
+							attributes.put("allPublicFields", true);
+							System.out.println("");
+						}
 						case INVOKE_DECLARED_FIELDS, DECLARED_FIELDS -> attributes.put("allDeclaredFields", true);
 						case INVOKE_PUBLIC_CONSTRUCTORS ->
 								attributes.put("allPublicConstructors", true);

@@ -25,7 +25,7 @@ import org.springframework.lang.Nullable;
  * MVC framework SPI, allowing parameterization of the core MVC workflow.
  *
  * <p>Interface that must be implemented for each handler type to handle a request.
- * This interface is used to allow the {@link DispatcherServlet} to be indefinitely
+ * This interface is used to allow the {@link DispatcherServlet} to be indefinitely(无限期)
  * extensible. The {@code DispatcherServlet} accesses all installed handlers through
  * this interface, meaning that it does not contain code specific to any handler type.
  *

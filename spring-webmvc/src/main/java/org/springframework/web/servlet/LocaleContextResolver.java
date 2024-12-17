@@ -31,7 +31,7 @@ import org.springframework.lang.Nullable;
  *
  * <p>Also provides {@code default} implementations of {@link #resolveLocale} and
  * {@link #setLocale} which delegate to {@link #resolveLocaleContext} and
- * {@link #setLocaleContext}, respectively.
+ * {@link #setLocaleContext}, respectively(各自，分别).
  *
  * @author Juergen Hoeller
  * @author Sam Brannen
