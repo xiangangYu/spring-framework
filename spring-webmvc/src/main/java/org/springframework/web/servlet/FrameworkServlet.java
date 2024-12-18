@@ -287,7 +287,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 * </ul>
 	 * If the context has already been refreshed or does not implement
 	 * {@code ConfigurableWebApplicationContext}, none of the above will occur under the
-	 * assumption that the user has performed these actions (or not) per his or her
+	 * assumption(假设,假定) that the user has performed these actions (or not) per his or her
 	 * specific needs.
 	 * <p>See {@link org.springframework.web.WebApplicationInitializer} for usage examples.
 	 * @param webApplicationContext the context to use
@@ -310,7 +310,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 	/**
 	 * Return the name of the ServletContext attribute which should be used to retrieve the
-	 * {@link WebApplicationContext} that this servlet is supposed to use.
+	 * {@link WebApplicationContext} that this servlet is supposed(家庭) to use.
 	 */
 	@Nullable
 	public String getContextAttribute() {
