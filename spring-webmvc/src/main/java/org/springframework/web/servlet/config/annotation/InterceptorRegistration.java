@@ -67,7 +67,7 @@ public class InterceptorRegistration {
 	 * <p>For pattern syntax see {@link PathPattern} when parsed patterns
 	 * are {@link PathMatchConfigurer#setPatternParser enabled} or
 	 * {@link AntPathMatcher} otherwise. The syntax is largely the same with
-	 * {@link PathPattern} more tailored for web usage and more efficient.
+	 * {@link PathPattern} more tailored(量身定做) for web usage and more efficient.
 	 */
 	public InterceptorRegistration addPathPatterns(String... patterns) {
 		return addPathPatterns(Arrays.asList(patterns));

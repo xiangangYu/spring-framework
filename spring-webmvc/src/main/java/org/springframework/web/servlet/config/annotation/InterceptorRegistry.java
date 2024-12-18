@@ -73,7 +73,7 @@ public class InterceptorRegistry {
 				.toList();
 	}
 
-
+	// 静态属性定义
 	private static final Comparator<Object> INTERCEPTOR_ORDER_COMPARATOR =
 			OrderComparator.INSTANCE.withSourceProvider(object -> {
 				if (object instanceof InterceptorRegistration interceptorRegistration) {

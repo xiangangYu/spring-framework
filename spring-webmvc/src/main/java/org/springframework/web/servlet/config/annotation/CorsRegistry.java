@@ -56,6 +56,7 @@ public class CorsRegistry {
 	 * keyed by path pattern.
 	 */
 	protected Map<String, CorsConfiguration> getCorsConfigurations() {
+		// CollectionUtils.newLinkedHashMap实例化一个linkedHashMap
 		Map<String, CorsConfiguration> configs = CollectionUtils.newLinkedHashMap(this.registrations.size());
 		for (CorsRegistration registration : this.registrations) {
 			configs.put(registration.getPathPattern(), registration.getCorsConfiguration());

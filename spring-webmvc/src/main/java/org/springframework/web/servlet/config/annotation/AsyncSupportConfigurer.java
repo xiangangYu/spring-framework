@@ -84,6 +84,7 @@ public class AsyncSupportConfigurer {
 	 * @param interceptors the interceptors to register
 	 */
 	public AsyncSupportConfigurer registerCallableInterceptors(CallableProcessingInterceptor... interceptors) {
+		// 可变参数使用数组来接
 		this.callableInterceptors.addAll(Arrays.asList(interceptors));
 		return this;
 	}

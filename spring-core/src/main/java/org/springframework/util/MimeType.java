@@ -61,6 +61,7 @@ public class MimeType implements Comparable<MimeType>, Serializable {
 
 	private static final BitSet TOKEN;
 
+	// static class initializer 静态的类初始化，静态代码块
 	static {
 		// variable names refer to RFC 2616, section 2.2
 		BitSet ctl = new BitSet(128);

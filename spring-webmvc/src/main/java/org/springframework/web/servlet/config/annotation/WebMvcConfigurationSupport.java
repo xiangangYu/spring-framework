@@ -191,6 +191,7 @@ import org.springframework.web.util.pattern.PathPatternParser;
  */
 public class WebMvcConfigurationSupport implements ApplicationContextAware, ServletContextAware {
 
+	// 下面的这些属性都没有赋值，而在静态代码块中进行初始化赋值
 	private static final boolean romePresent;
 
 	private static final boolean jaxb2Present;
@@ -215,6 +216,7 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 
 	private static final boolean kotlinSerializationProtobufPresent;
 
+	// static class initializer
 	static {
 		ClassLoader classLoader = WebMvcConfigurationSupport.class.getClassLoader();
 		romePresent = ClassUtils.isPresent("com.rometools.rome.feed.WireFeed", classLoader);
@@ -306,6 +308,7 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 	/**
 	 * Return a {@link RequestMappingHandlerMapping} ordered at 0 for mapping
 	 * requests to annotated controllers.
+	 * 这个注解@Qualifier用来表示要注入的是哪个bean
 	 */
 	@Bean
 	@SuppressWarnings("deprecation")
@@ -313,6 +316,7 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 			@Qualifier("mvcContentNegotiationManager") ContentNegotiationManager contentNegotiationManager,
 			@Qualifier("mvcConversionService") FormattingConversionService conversionService,
 			@Qualifier("mvcResourceUrlProvider") ResourceUrlProvider resourceUrlProvider) {
+		// 一个方法内没有包括太多的代码量，很复杂的业务逻辑都进行了拆分，层层分解，关注点聚焦
 
 		RequestMappingHandlerMapping mapping = createRequestMappingHandlerMapping();
 		mapping.setOrder(0);
@@ -358,9 +362,8 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 	 * {@link HandlerMapping} instances with.
 	 * <p>This method cannot be overridden; use {@link #addInterceptors} instead.
 	 */
-	protected final Object[] getInterceptors(
-			FormattingConversionService mvcConversionService,
-			ResourceUrlProvider mvcResourceUrlProvider) {
+	protected final Object[] getInterceptors(FormattingConversionService mvcConversionService,
+											 ResourceUrlProvider mvcResourceUrlProvider) {
 
 		if (this.interceptors == null) {
 			InterceptorRegistry registry = new InterceptorRegistry();
@@ -562,7 +565,7 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 	public RouterFunctionMapping routerFunctionMapping(
 			@Qualifier("mvcConversionService") FormattingConversionService conversionService,
 			@Qualifier("mvcResourceUrlProvider") ResourceUrlProvider resourceUrlProvider) {
-
+		// 这些方法都是比较简洁的，把复杂逻辑进行拆分，达到分而治之的效果
 		RouterFunctionMapping mapping = new RouterFunctionMapping();
 		mapping.setOrder(-1);  // go before RequestMappingHandlerMapping
 		mapping.setInterceptors(getInterceptors(conversionService, resourceUrlProvider));

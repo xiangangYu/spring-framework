@@ -69,7 +69,7 @@ import org.springframework.web.util.pattern.PathPatternParser;
  * <p><strong>Deprecation Note:</strong></p> In 5.2.4,
  * {@link #setUseSuffixPatternMatch(boolean) useSuffixPatternMatch} and
  * {@link #setUseRegisteredSuffixPatternMatch(boolean) useRegisteredSuffixPatternMatch}
- * were deprecated in order to discourage use of path extensions for request
+ * were deprecated in order to discourage(阻止,阻拦) use of path extensions for request
  * mapping and for content negotiation (with similar deprecations in
  * {@link org.springframework.web.accept.ContentNegotiationManagerFactoryBean
  * ContentNegotiationManagerFactoryBean}). For further context, please read issue
