@@ -38,5 +38,6 @@ public interface NamespaceHandlerResolver {
 	 */
 	@Nullable
 	NamespaceHandler resolve(String namespaceUri);
+	// read for mark
 
 }

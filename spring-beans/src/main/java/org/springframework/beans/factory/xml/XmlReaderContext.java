@@ -47,6 +47,7 @@ public class XmlReaderContext extends ReaderContext {
 	private final XmlBeanDefinitionReader reader;
 
 	private final NamespaceHandlerResolver namespaceHandlerResolver;
+	// resolver:解析器
 
 
 	/**
@@ -161,5 +162,7 @@ public class XmlReaderContext extends ReaderContext {
 			throw new BeanDefinitionStoreException("Failed to read XML document", ex);
 		}
 	}
+
+	// read for mark
 
 }

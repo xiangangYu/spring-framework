@@ -91,6 +91,7 @@ public class BeanDefinitionParserDelegate {
 	/**
 	 * Value of a T/F attribute that represents true.
 	 * Anything else represents false.
+	 * 使用常量来定义文本文案是不错的方式
 	 */
 	public static final String TRUE_VALUE = "true";
 

@@ -22,7 +22,7 @@ import java.io.InputStream;
 /**
  * Simple interface for objects that are sources for an {@link InputStream}.
  *
- * <p>This is the base interface for Spring's more extensive {@link Resource} interface.
+ * <p>This is the base interface for Spring's more extensive(广泛) {@link Resource} interface.
  *
  * <p>For single-use streams, {@link InputStreamResource} can be used for any
  * given {@code InputStream}. Spring's {@link ByteArrayResource} or any
@@ -56,4 +56,5 @@ public interface InputStreamSource {
 	 */
 	InputStream getInputStream() throws IOException;
 
+	// read for mark
 }

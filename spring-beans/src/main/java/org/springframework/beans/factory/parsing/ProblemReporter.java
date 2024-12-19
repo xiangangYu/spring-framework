@@ -17,7 +17,7 @@
 package org.springframework.beans.factory.parsing;
 
 /**
- * SPI interface allowing tools and other external processes to handle errors
+ * SPI(service provider api) interface allowing tools and other external processes to handle errors
  * and warnings reported during bean definition parsing.
  *
  * @author Rob Harrop
@@ -30,7 +30,7 @@ public interface ProblemReporter {
 	/**
 	 * Called when a fatal error is encountered during the parsing process.
 	 * <p>Implementations must treat the given problem as fatal,
-	 * i.e. they have to eventually raise an exception.
+	 * i.e. they have to eventually(最终) raise an exception.
 	 * @param problem the source of the error (never {@code null})
 	 */
 	void fatal(Problem problem);
@@ -49,4 +49,5 @@ public interface ProblemReporter {
 	 */
 	void warning(Problem problem);
 
+	// read for mark
 }

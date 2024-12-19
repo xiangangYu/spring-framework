@@ -68,7 +68,7 @@ public interface Resource extends InputStreamSource {
 	 * {@link #getInputStream()}.
 	 * <p>Will be {@code true} for typical resource descriptors that exist
 	 * since it strictly implies {@link #exists()} semantics as of 5.1.
-	 * Note that actual content reading may still fail when attempted.
+	 * Note that actual content reading may still fail when attempted(尝试,企图).
 	 * However, a value of {@code false} is a definitive indication
 	 * that the resource content cannot be read.
 	 * @see #getInputStream()
@@ -205,4 +205,5 @@ public interface Resource extends InputStreamSource {
 	 */
 	String getDescription();
 
+	// read for mark  资源，文件等
 }

@@ -42,7 +42,7 @@ public class XmlValidationModeDetector {
 
 	/**
 	 * Indicates that the validation mode should be auto-guessed, since we cannot find
-	 * a clear indication (probably choked on some special characters, or the like).
+	 * a clear indication(指示) (probably choked(哽咽) on some special characters, or the like).
 	 */
 	public static final int VALIDATION_AUTO = 1;
 
@@ -75,7 +75,7 @@ public class XmlValidationModeDetector {
 
 
 	/**
-	 * Indicates whether the current parse position is inside an XML comment.
+	 * Indicates whether the current parse position is inside an XML comment(注释,评论).
 	 */
 	private boolean inComment;
 
@@ -94,7 +94,7 @@ public class XmlValidationModeDetector {
 		// Peek into the file to look for DOCTYPE.
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
 			boolean isDtdValidated = false;
-			String content;
+			String content;// 没有进行初始化
 			while ((content = reader.readLine()) != null) {
 				content = consumeCommentTokens(content);
 				if (!StringUtils.hasText(content)) {
@@ -161,6 +161,7 @@ public class XmlValidationModeDetector {
 		}
 
 		if ((currLine = consume(currLine)) != null) {
+			// "+=" 操作符很少见， 把左边和右边的数据相加，最后把结果赋值给左边
 			result += consumeCommentTokens(currLine);
 		}
 		return result;
@@ -205,5 +206,7 @@ public class XmlValidationModeDetector {
 		}
 		return (index == -1 ? index : index + token.length());
 	}
+
+	// read for mark
 
 }

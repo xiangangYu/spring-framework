@@ -62,7 +62,7 @@ public class ReaderContext {
 	// Errors and warnings
 
 	/**
-	 * Raise a fatal error.
+	 * Raise(发生) a fatal error.
 	 */
 	public void fatal(String message, @Nullable Object source) {
 		fatal(message, source, null, null);
@@ -208,4 +208,5 @@ public class ReaderContext {
 		return this.sourceExtractor.extractSource(sourceCandidate, this.resource);
 	}
 
+	// read for mark
 }

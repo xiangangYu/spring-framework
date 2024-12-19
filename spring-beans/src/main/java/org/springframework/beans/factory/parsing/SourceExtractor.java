@@ -27,6 +27,7 @@ import org.springframework.lang.Nullable;
  * source metadata during the parse phase. They will offer this metadata in a
  * generic format which can be further modified by a {@link SourceExtractor}
  * before being attached to the bean definition metadata.
+ * extractor:提取器
  *
  * @author Rob Harrop
  * @author Juergen Hoeller
@@ -47,5 +48,7 @@ public interface SourceExtractor {
 	 */
 	@Nullable
 	Object extractSource(Object sourceCandidate, @Nullable Resource definingResource);
+
+	// read for mark
 
 }

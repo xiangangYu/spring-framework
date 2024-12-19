@@ -307,4 +307,6 @@ public abstract class MvcNamespaceUtils {
 				registry.containsBeanDefinition(beanName));
 	}
 
+	// read for  mark
+
 }

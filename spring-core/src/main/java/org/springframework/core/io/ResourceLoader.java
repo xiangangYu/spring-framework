@@ -79,4 +79,6 @@ public interface ResourceLoader {
 	@Nullable
 	ClassLoader getClassLoader();
 
+	// read for mark
+
 }

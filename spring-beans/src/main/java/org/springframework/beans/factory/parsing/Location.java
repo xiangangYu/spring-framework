@@ -80,4 +80,5 @@ public class Location {
 		return this.source;
 	}
 
+	// read for mark， 位置信息
 }

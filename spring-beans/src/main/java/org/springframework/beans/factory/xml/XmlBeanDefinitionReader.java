@@ -18,6 +18,7 @@ package org.springframework.beans.factory.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -103,6 +104,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	/**
 	 * Map of constant names to constant values for the validation constants defined
 	 * in this class.
+	 *
+	 * Map.of,Set.of等的使用
+	 *
 	 */
 	private static final Map<String, Integer> constants = Map.of(
 			"VALIDATION_NONE", VALIDATION_NONE,
