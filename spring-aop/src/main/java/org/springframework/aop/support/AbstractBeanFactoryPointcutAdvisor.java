@@ -20,10 +20,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 import org.aopalliance.aop.Advice;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
@@ -42,12 +42,11 @@ import org.springframework.util.Assert;
 @SuppressWarnings("serial")
 public abstract class AbstractBeanFactoryPointcutAdvisor extends AbstractPointcutAdvisor implements BeanFactoryAware {
 
-	@Nullable
-	private String adviceBeanName;
+	private @Nullable String adviceBeanName;
 
-	@Nullable
-	private BeanFactory beanFactory;
+	private @Nullable BeanFactory beanFactory;
 
+	private transient volatile @Nullable Advice advice;
 	// transient 表示不序列化，volatile表示属性值要拉取共享内存数据，保证数据一致性
 	@Nullable
 	private transient volatile Advice advice;
@@ -71,8 +70,7 @@ public abstract class AbstractBeanFactoryPointcutAdvisor extends AbstractPointcu
 	/**
 	 * Return the name of the advice bean that this advisor refers to, if any.
 	 */
-	@Nullable
-	public String getAdviceBeanName() {
+	public @Nullable String getAdviceBeanName() {
 		return this.adviceBeanName;
 	}
 

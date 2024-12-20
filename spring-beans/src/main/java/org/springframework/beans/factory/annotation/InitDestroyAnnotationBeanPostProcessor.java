@@ -35,6 +35,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanCreationException;
@@ -47,7 +48,6 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.Ordered;
 import org.springframework.core.PriorityOrdered;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ReflectionUtils;
@@ -120,6 +120,7 @@ public class InitDestroyAnnotationBeanPostProcessor implements DestructionAwareB
 	// 在属性中使用@Nullable修改，见的比较少
 	@Nullable
 	private final transient Map<Class<?>, LifecycleMetadata> lifecycleMetadataCache = new ConcurrentHashMap<>(256);
+	private final transient @Nullable Map<Class<?>, LifecycleMetadata> lifecycleMetadataCache = new ConcurrentHashMap<>(256);
 
 
 	/**
@@ -189,8 +190,7 @@ public class InitDestroyAnnotationBeanPostProcessor implements DestructionAwareB
 	}
 
 	@Override
-	@Nullable
-	public BeanRegistrationAotContribution processAheadOfTime(RegisteredBean registeredBean) {
+	public @Nullable BeanRegistrationAotContribution processAheadOfTime(RegisteredBean registeredBean) {
 		RootBeanDefinition beanDefinition = registeredBean.getMergedBeanDefinition();
 		beanDefinition.resolveDestroyMethodIfNecessary();
 		LifecycleMetadata metadata = findLifecycleMetadata(beanDefinition, registeredBean.getBeanClass());
@@ -211,7 +211,7 @@ public class InitDestroyAnnotationBeanPostProcessor implements DestructionAwareB
 		return metadata;
 	}
 
-	private static String[] safeMerge(@Nullable String[] existingNames, Collection<LifecycleMethod> detectedMethods) {
+	private static String[] safeMerge(String @Nullable [] existingNames, Collection<LifecycleMethod> detectedMethods) {
 		Stream<String> detectedNames = detectedMethods.stream().map(LifecycleMethod::getIdentifier);
 		Stream<String> mergedNames = (existingNames != null ?
 				Stream.concat(detectedNames, Stream.of(existingNames)) : detectedNames);
@@ -358,11 +358,9 @@ public class InitDestroyAnnotationBeanPostProcessor implements DestructionAwareB
 
 		private final Collection<LifecycleMethod> destroyMethods;
 
-		@Nullable
-		private volatile Set<LifecycleMethod> checkedInitMethods;
+		private volatile @Nullable Set<LifecycleMethod> checkedInitMethods;
 
-		@Nullable
-		private volatile Set<LifecycleMethod> checkedDestroyMethods;
+		private volatile @Nullable Set<LifecycleMethod> checkedDestroyMethods;
 
 		public LifecycleMetadata(Class<?> beanClass, Collection<LifecycleMethod> initMethods,
 				Collection<LifecycleMethod> destroyMethods) {

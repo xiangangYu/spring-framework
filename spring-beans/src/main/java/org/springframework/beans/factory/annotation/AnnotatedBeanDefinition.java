@@ -16,10 +16,11 @@
 
 package org.springframework.beans.factory.annotation;
 
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.MethodMetadata;
-import org.springframework.lang.Nullable;
 
 /**
  * Extended {@link org.springframework.beans.factory.config.BeanDefinition}
@@ -49,8 +50,7 @@ public interface AnnotatedBeanDefinition extends BeanDefinition {
 	 * @return the factory method metadata, or {@code null} if none
 	 * @since 4.1.1
 	 */
-	@Nullable
-	MethodMetadata getFactoryMethodMetadata();
+	@Nullable MethodMetadata getFactoryMethodMetadata();
 
 	// read for mark
 

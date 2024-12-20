@@ -24,8 +24,9 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.http.HttpHeaders;
-import org.springframework.lang.Nullable;
 
 /**
  * A WebSocket session abstraction. Allows sending messages over a WebSocket
@@ -44,8 +45,7 @@ public interface WebSocketSession extends Closeable {
 	/**
 	 * Return the URI used to open the WebSocket connection.
 	 */
-	@Nullable
-	URI getUri();
+	@Nullable URI getUri();
 
 	/**
 	 * Return the headers used in the handshake request (never {@code null}).
@@ -68,8 +68,7 @@ public interface WebSocketSession extends Closeable {
 	 * of the authenticated user.
 	 * <p>If the user has not been authenticated, the method returns <code>null</code>.
 	 */
-	@Nullable
-	Principal getPrincipal();
+	@Nullable Principal getPrincipal();
 
 	/**
 	 * Return the address on which the request was received.
@@ -77,24 +76,21 @@ public interface WebSocketSession extends Closeable {
 	 * 本地地址：服务端接收请求的地址
 	 *
 	 */
-	@Nullable
-	InetSocketAddress getLocalAddress();
+	@Nullable InetSocketAddress getLocalAddress();
 
 	/**
 	 * Return the address of the remote client.
 	 *
 	 * 远程地址：远程客户端地址
 	 */
-	@Nullable
-	InetSocketAddress getRemoteAddress();
+	@Nullable InetSocketAddress getRemoteAddress();
 
 	/**
 	 * Return the negotiated sub-protocol.
 	 * @return the protocol identifier, or {@code null} if no protocol
 	 * was specified or negotiated successfully
 	 */
-	@Nullable
-	String getAcceptedProtocol();
+	@Nullable String getAcceptedProtocol();
 
 	/**
 	 * Configure the maximum size for an incoming text message.

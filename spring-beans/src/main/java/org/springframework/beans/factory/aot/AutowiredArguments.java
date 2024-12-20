@@ -16,7 +16,8 @@
 
 package org.springframework.beans.factory.aot;
 
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
@@ -45,8 +46,7 @@ public interface AutowiredArguments {
 	 * @return the argument
 	 */
 	@SuppressWarnings("unchecked")
-	@Nullable
-	default <T> T get(int index, Class<T> requiredType) {
+	default <T> @Nullable T get(int index, Class<T> requiredType) {
 		Object value = getObject(index);
 		if (!ClassUtils.isAssignableValue(requiredType, value)) {
 			throw new IllegalArgumentException("Argument type mismatch: expected '" +
@@ -62,8 +62,7 @@ public interface AutowiredArguments {
 	 * @return the argument
 	 */
 	@SuppressWarnings("unchecked")
-	@Nullable
-	default <T> T get(int index) {
+	default <T> @Nullable T get(int index) {
 		return (T) getObject(index);
 	}
 
@@ -72,8 +71,7 @@ public interface AutowiredArguments {
 	 * @param index the argument index
 	 * @return the argument
 	 */
-	@Nullable
-	default Object getObject(int index) {
+	default @Nullable Object getObject(int index) {
 		return toArray()[index];
 	}
 

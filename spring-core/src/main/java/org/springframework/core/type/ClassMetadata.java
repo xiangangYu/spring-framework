@@ -16,7 +16,7 @@
 
 package org.springframework.core.type;
 
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Interface that defines abstract metadata of a specific class,
@@ -95,8 +95,7 @@ public interface ClassMetadata {
 	 * or {@code null} if the underlying class is a top-level class.
 	 * 返回底层类封装类的名字
 	 */
-	@Nullable
-	String getEnclosingClassName();
+	@Nullable String getEnclosingClassName();
 
 	/**
 	 * Return whether the underlying class has a superclass.
@@ -111,8 +110,7 @@ public interface ClassMetadata {
 	 * or {@code null} if there is no superclass defined.
 	 * 返回超类的名字
 	 */
-	@Nullable
-	String getSuperClassName();
+	@Nullable String getSuperClassName();
 
 	/**
 	 * Return the names of all interfaces that the underlying class

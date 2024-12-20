@@ -22,7 +22,8 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectStreamClass;
 
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.util.ClassUtils;
 
 /**
@@ -35,6 +36,7 @@ import org.springframework.util.ClassUtils;
  */
 public class ConfigurableObjectInputStream extends ObjectInputStream {
 
+	private final @Nullable ClassLoader classLoader;
 	// @Nullable也可以用来修饰成员变量
 	@Nullable
 	private final ClassLoader classLoader;
@@ -145,8 +147,7 @@ public class ConfigurableObjectInputStream extends ObjectInputStream {
 	 * <p>The default implementation simply returns {@code null}, indicating
 	 * that no specific fallback is available.
 	 */
-	@Nullable
-	protected ClassLoader getFallbackClassLoader() throws IOException {
+	protected @Nullable ClassLoader getFallbackClassLoader() throws IOException {
 		return null;
 	}
 

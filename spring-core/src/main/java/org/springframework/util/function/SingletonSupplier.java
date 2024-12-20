@@ -20,7 +20,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
 
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.util.Assert;
 
 /**
@@ -41,14 +42,11 @@ import org.springframework.util.Assert;
  */
 public class SingletonSupplier<T> implements Supplier<T> {
 
-	@Nullable
-	private final Supplier<? extends T> instanceSupplier;
+	private final @Nullable Supplier<? extends T> instanceSupplier;
 
-	@Nullable
-	private final Supplier<? extends T> defaultSupplier;
+	private final @Nullable Supplier<? extends T> defaultSupplier;
 
-	@Nullable
-	private volatile T singletonInstance;
+	private volatile @Nullable T singletonInstance;
 
 	/**
 	 * Guards(警卫) access to write operations on the {@code singletonInstance} field.
@@ -97,8 +95,7 @@ public class SingletonSupplier<T> implements Supplier<T> {
 	 * @return the singleton instance (or {@code null} if none)
 	 */
 	@Override
-	@Nullable
-	public T get() {
+	public @Nullable T get() {
 		T instance = this.singletonInstance;
 		if (instance == null) {
 			this.writeLock.lock();
@@ -147,8 +144,7 @@ public class SingletonSupplier<T> implements Supplier<T> {
 	 * @param instance the singleton instance (potentially {@code null})
 	 * @return the singleton supplier, or {@code null} if the instance was {@code null}
 	 */
-	@Nullable
-	public static <T> SingletonSupplier<T> ofNullable(@Nullable T instance) {
+	public static <T> @Nullable SingletonSupplier<T> ofNullable(@Nullable T instance) {
 		return (instance != null ? new SingletonSupplier<>(instance) : null);
 	}
 
@@ -166,8 +162,7 @@ public class SingletonSupplier<T> implements Supplier<T> {
 	 * @param supplier the instance supplier (potentially {@code null})
 	 * @return the singleton supplier, or {@code null} if the instance supplier was {@code null}
 	 */
-	@Nullable
-	public static <T> SingletonSupplier<T> ofNullable(@Nullable Supplier<T> supplier) {
+	public static <T> @Nullable SingletonSupplier<T> ofNullable(@Nullable Supplier<T> supplier) {
 		return (supplier != null ? new SingletonSupplier<>(supplier) : null);
 	}
 

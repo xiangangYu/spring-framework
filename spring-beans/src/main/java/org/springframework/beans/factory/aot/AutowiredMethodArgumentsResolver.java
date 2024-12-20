@@ -28,6 +28,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.*;
 
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.aot.hint.ExecutableMode;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.TypeConverter;
@@ -38,7 +40,6 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.core.MethodParameter;
-import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ReflectionUtils;
@@ -69,12 +70,11 @@ public final class AutowiredMethodArgumentsResolver extends AutowiredElementReso
 
 	private final boolean required;
 
-	@Nullable
-	private final String[] shortcutBeanNames;
+	private final String @Nullable [] shortcutBeanNames;
 
 
 	private AutowiredMethodArgumentsResolver(String methodName, Class<?>[] parameterTypes,
-			boolean required, @Nullable String[] shortcutBeanNames) {
+			boolean required, String @Nullable [] shortcutBeanNames) {
 
 		Assert.hasText(methodName, "'methodName' must not be empty");
 		this.methodName = methodName;
@@ -138,8 +138,7 @@ public final class AutowiredMethodArgumentsResolver extends AutowiredElementReso
 	 * @param registeredBean the registered bean
 	 * @return the resolved method arguments
 	 */
-	@Nullable
-	public AutowiredArguments resolve(RegisteredBean registeredBean) {
+	public @Nullable AutowiredArguments resolve(RegisteredBean registeredBean) {
 		Assert.notNull(registeredBean, "'registeredBean' must not be null");
 		return resolveArguments(registeredBean, getMethod(registeredBean));
 	}
@@ -161,8 +160,7 @@ public final class AutowiredMethodArgumentsResolver extends AutowiredElementReso
 		}
 	}
 
-	@Nullable
-	private AutowiredArguments resolveArguments(RegisteredBean registeredBean,
+	private @Nullable AutowiredArguments resolveArguments(RegisteredBean registeredBean,
 			Method method) {
 
 		String beanName = registeredBean.getBeanName();

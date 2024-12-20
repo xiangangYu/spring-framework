@@ -20,6 +20,8 @@ import java.lang.reflect.Field;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.aot.hint.ExecutableMode;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.TypeConverter;
@@ -29,7 +31,6 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.beans.factory.support.RegisteredBean;
-import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.function.ThrowingConsumer;
@@ -58,8 +59,7 @@ public final class AutowiredFieldValueResolver extends AutowiredElementResolver 
 
 	private final boolean required;
 
-	@Nullable
-	private final String shortcutBeanName;
+	private final @Nullable String shortcutBeanName;
 
 
 	// 构造函数通过全部的属性进行构造
@@ -127,9 +127,8 @@ public final class AutowiredFieldValueResolver extends AutowiredElementResolver 
 	 * @param requiredType the required type
 	 * @return the resolved field value
 	 */
-	@Nullable
 	@SuppressWarnings("unchecked")
-	public <T> T resolve(RegisteredBean registeredBean, Class<T> requiredType) {
+	public <T> @Nullable T resolve(RegisteredBean registeredBean, Class<T> requiredType) {
 		Object value = resolveObject(registeredBean);
 		Assert.isInstanceOf(requiredType, value);
 		return (T) value;
@@ -140,9 +139,8 @@ public final class AutowiredFieldValueResolver extends AutowiredElementResolver 
 	 * @param registeredBean the registered bean
 	 * @return the resolved field value
 	 */
-	@Nullable
 	@SuppressWarnings("unchecked")
-	public <T> T resolve(RegisteredBean registeredBean) {
+	public <T> @Nullable T resolve(RegisteredBean registeredBean) {
 		return (T) resolveObject(registeredBean);
 	}
 
@@ -151,8 +149,7 @@ public final class AutowiredFieldValueResolver extends AutowiredElementResolver 
 	 * @param registeredBean the registered bean
 	 * @return the resolved field value
 	 */
-	@Nullable
-	public Object resolveObject(RegisteredBean registeredBean) {
+	public @Nullable Object resolveObject(RegisteredBean registeredBean) {
 		Assert.notNull(registeredBean, "'registeredBean' must not be null");
 		return resolveValue(registeredBean, getField(registeredBean));
 	}
@@ -174,8 +171,7 @@ public final class AutowiredFieldValueResolver extends AutowiredElementResolver 
 		}
 	}
 
-	@Nullable
-	private Object resolveValue(RegisteredBean registeredBean, Field field) {
+	private @Nullable Object resolveValue(RegisteredBean registeredBean, Field field) {
 		String beanName = registeredBean.getBeanName();
 		Class<?> beanClass = registeredBean.getBeanClass();
 		ConfigurableBeanFactory beanFactory = registeredBean.getBeanFactory();

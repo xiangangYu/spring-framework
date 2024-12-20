@@ -28,9 +28,9 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.weaver.tools.PointcutParser;
 import org.aspectj.weaver.tools.PointcutPrimitive;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.core.ParameterNameDiscoverer;
-import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
 /**
@@ -158,22 +158,22 @@ public class AspectJAdviceParameterNameDiscoverer implements ParameterNameDiscov
 
 
 	/** The pointcut expression associated with the advice, as a simple String. */
+	private final @Nullable String pointcutExpression;
+
 	@Nullable
 	private final String pointcutExpression;
 	// raise 提升，增加
 	private boolean raiseExceptions;
 
 	/** If the advice is afterReturning, and binds the return value, this is the parameter name used. */
-	@Nullable
-	private String returningName;
+	private @Nullable String returningName;
 
 	/** If the advice is afterThrowing, and binds the thrown value, this is the parameter name used. */
-	@Nullable
-	private String throwingName;
+	private @Nullable String throwingName;
 
 	private Class<?>[] argumentTypes = new Class<?>[0];
 
-	private String[] parameterNameBindings = new String[0];
+	private @Nullable String[] parameterNameBindings = new String[0];
 
 	private int numberOfRemainingUnboundArguments;
 
@@ -222,8 +222,7 @@ public class AspectJAdviceParameterNameDiscoverer implements ParameterNameDiscov
 	 * @return the parameter names
 	 */
 	@Override
-	@Nullable
-	public String[] getParameterNames(Method method) {
+	public @Nullable String @Nullable [] getParameterNames(Method method) {
 		this.argumentTypes = method.getParameterTypes();
 		this.numberOfRemainingUnboundArguments = this.argumentTypes.length;
 		this.parameterNameBindings = new String[this.numberOfRemainingUnboundArguments];
@@ -290,8 +289,7 @@ public class AspectJAdviceParameterNameDiscoverer implements ParameterNameDiscov
 	 * {@link #setRaiseExceptions(boolean) raiseExceptions} has been set to {@code true}
 	 */
 	@Override
-	@Nullable
-	public String[] getParameterNames(Constructor<?> ctor) {
+	public String @Nullable [] getParameterNames(Constructor<?> ctor) {
 		if (this.raiseExceptions) {
 			throw new UnsupportedOperationException("An advice method can never be a constructor");
 		}
@@ -454,8 +452,7 @@ public class AspectJAdviceParameterNameDiscoverer implements ParameterNameDiscov
 	/**
 	 * If the token starts meets Java identifier conventions(约定), it's in.
 	 */
-	@Nullable
-	private String maybeExtractVariableName(@Nullable String candidateToken) {
+	private @Nullable String maybeExtractVariableName(@Nullable String candidateToken) {
 		if (AspectJProxyUtils.isVariableName(candidateToken)) {
 			return candidateToken;
 		}

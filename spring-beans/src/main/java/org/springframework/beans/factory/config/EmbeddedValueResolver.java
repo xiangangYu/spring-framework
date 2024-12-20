@@ -16,7 +16,8 @@
 
 package org.springframework.beans.factory.config;
 
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.util.StringValueResolver;
 
 /**
@@ -38,6 +39,7 @@ public class EmbeddedValueResolver implements StringValueResolver {
 
 	private final BeanExpressionContext exprContext;
 
+	private final @Nullable BeanExpressionResolver exprResolver;
 	// 下面的Nullable表示属性可以为空
 	@Nullable
 	private final BeanExpressionResolver exprResolver;
@@ -50,8 +52,7 @@ public class EmbeddedValueResolver implements StringValueResolver {
 
 
 	@Override
-	@Nullable
-	public String resolveStringValue(String strVal) {
+	public @Nullable String resolveStringValue(String strVal) {
 		String value = this.exprContext.getBeanFactory().resolveEmbeddedValue(strVal);
 		if (this.exprResolver != null && value != null) {
 			Object evaluated = this.exprResolver.evaluate(value, this.exprContext);

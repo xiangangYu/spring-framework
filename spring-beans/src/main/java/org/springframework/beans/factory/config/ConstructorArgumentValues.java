@@ -24,9 +24,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.beans.BeanMetadataElement;
 import org.springframework.beans.Mergeable;
-import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
@@ -149,8 +150,7 @@ public class ConstructorArgumentValues {
 	 * untyped values only)
 	 * @return the ValueHolder for the argument, or {@code null} if none set
 	 */
-	@Nullable
-	public ValueHolder getIndexedArgumentValue(int index, @Nullable Class<?> requiredType) {
+	public @Nullable ValueHolder getIndexedArgumentValue(int index, @Nullable Class<?> requiredType) {
 		return getIndexedArgumentValue(index, requiredType, null);
 	}
 
@@ -163,8 +163,7 @@ public class ConstructorArgumentValues {
 	 * unnamed values only, or empty String to match any name)
 	 * @return the ValueHolder for the argument, or {@code null} if none set
 	 */
-	@Nullable
-	public ValueHolder getIndexedArgumentValue(int index, @Nullable Class<?> requiredType, @Nullable String requiredName) {
+	public @Nullable ValueHolder getIndexedArgumentValue(int index, @Nullable Class<?> requiredType, @Nullable String requiredName) {
 		Assert.isTrue(index >= 0, "Index must not be negative");
 		ValueHolder valueHolder = this.indexedArgumentValues.get(index);
 		if (valueHolder != null &&
@@ -251,8 +250,7 @@ public class ConstructorArgumentValues {
 	 * @param requiredType the type to match
 	 * @return the ValueHolder for the argument, or {@code null} if none set
 	 */
-	@Nullable
-	public ValueHolder getGenericArgumentValue(Class<?> requiredType) {
+	public @Nullable ValueHolder getGenericArgumentValue(Class<?> requiredType) {
 		return getGenericArgumentValue(requiredType, null, null);
 	}
 
@@ -262,8 +260,7 @@ public class ConstructorArgumentValues {
 	 * @param requiredName the name to match
 	 * @return the ValueHolder for the argument, or {@code null} if none set
 	 */
-	@Nullable
-	public ValueHolder getGenericArgumentValue(Class<?> requiredType, String requiredName) {
+	public @Nullable ValueHolder getGenericArgumentValue(Class<?> requiredType, String requiredName) {
 		return getGenericArgumentValue(requiredType, requiredName, null);
 	}
 
@@ -279,8 +276,7 @@ public class ConstructorArgumentValues {
 	 * in the current resolution process and should therefore not be returned again
 	 * @return the ValueHolder for the argument, or {@code null} if none found
 	 */
-	@Nullable
-	public ValueHolder getGenericArgumentValue(@Nullable Class<?> requiredType, @Nullable String requiredName,
+	public @Nullable ValueHolder getGenericArgumentValue(@Nullable Class<?> requiredType, @Nullable String requiredName,
 			@Nullable Set<ValueHolder> usedValueHolders) {
 
 		for (ValueHolder valueHolder : this.genericArgumentValues) {
@@ -321,8 +317,7 @@ public class ConstructorArgumentValues {
 	 * @param requiredType the parameter type to match
 	 * @return the ValueHolder for the argument, or {@code null} if none set
 	 */
-	@Nullable
-	public ValueHolder getArgumentValue(int index, Class<?> requiredType) {
+	public @Nullable ValueHolder getArgumentValue(int index, Class<?> requiredType) {
 		return getArgumentValue(index, requiredType, null, null);
 	}
 
@@ -334,8 +329,7 @@ public class ConstructorArgumentValues {
 	 * @param requiredName the parameter name to match
 	 * @return the ValueHolder for the argument, or {@code null} if none set
 	 */
-	@Nullable
-	public ValueHolder getArgumentValue(int index, Class<?> requiredType, String requiredName) {
+	public @Nullable ValueHolder getArgumentValue(int index, Class<?> requiredType, String requiredName) {
 		return getArgumentValue(index, requiredType, requiredName, null);
 	}
 
@@ -353,8 +347,7 @@ public class ConstructorArgumentValues {
 	 * in case of multiple generic argument values of the same type)
 	 * @return the ValueHolder for the argument, or {@code null} if none set
 	 */
-	@Nullable
-	public ValueHolder getArgumentValue(int index, @Nullable Class<?> requiredType,
+	public @Nullable ValueHolder getArgumentValue(int index, @Nullable Class<?> requiredType,
 			@Nullable String requiredName, @Nullable Set<ValueHolder> usedValueHolders) {
 
 		Assert.isTrue(index >= 0, "Index must not be negative");
@@ -463,22 +456,17 @@ public class ConstructorArgumentValues {
 	 */
 	public static class ValueHolder implements BeanMetadataElement {
 
-		@Nullable
-		private Object value;
+		private @Nullable Object value;
 
-		@Nullable
-		private String type;
+		private @Nullable String type;
 
-		@Nullable
-		private String name;
+		private @Nullable String name;
 
-		@Nullable
-		private Object source;
+		private @Nullable Object source;
 
 		private boolean converted = false;
 
-		@Nullable
-		private Object convertedValue;
+		private @Nullable Object convertedValue;
 
 		/**
 		 * Create a new ValueHolder for the given value.
@@ -521,6 +509,7 @@ public class ConstructorArgumentValues {
 		/**
 		 * Return the value for the constructor argument.
 		 */
+		public @Nullable Object getValue() {
 		// 关于 @Nullable可以用来修改变量，表明在某些条件下可以可以为null
 		//  Should be used at parameter, return value, and field level. Methods override should
 		// repeat parent {@code @Nullable} annotations unless they behave differently.
@@ -539,8 +528,7 @@ public class ConstructorArgumentValues {
 		/**
 		 * Return the type of the constructor argument.
 		 */
-		@Nullable
-		public String getType() {
+		public @Nullable String getType() {
 			return this.type;
 		}
 
@@ -554,8 +542,7 @@ public class ConstructorArgumentValues {
 		/**
 		 * Return the name of the constructor argument.
 		 */
-		@Nullable
-		public String getName() {
+		public @Nullable String getName() {
 			return this.name;
 		}
 
@@ -568,8 +555,7 @@ public class ConstructorArgumentValues {
 		}
 
 		@Override
-		@Nullable
-		public Object getSource() {
+		public @Nullable Object getSource() {
 			return this.source;
 		}
 
@@ -594,8 +580,7 @@ public class ConstructorArgumentValues {
 		 * Return the converted value of the constructor argument,
 		 * after processed type conversion.
 		 */
-		@Nullable
-		public synchronized Object getConvertedValue() {
+		public synchronized @Nullable Object getConvertedValue() {
 			return this.convertedValue;
 		}
 
