@@ -91,7 +91,7 @@ class DefaultServerResponseBuilder implements ServerResponse.BodyBuilder {
 
 
 	@Override
-	@SuppressWarnings("NullAway") // TODO NullAway bug potentially due to the recursive generic type
+	@SuppressWarnings("NullAway") // https://github.com/uber/NullAway/issues/1113
 	public ServerResponse.BodyBuilder header(String headerName, @Nullable String... headerValues) {
 		Assert.notNull(headerName, "HeaderName must not be null");
 		for (String headerValue : headerValues) {
@@ -353,6 +353,12 @@ class DefaultServerResponseBuilder implements ServerResponse.BodyBuilder {
 		protected abstract Mono<Void> writeToInternal(ServerWebExchange exchange, Context context);
 
 		private static <K,V> void copy(MultiValueMap<K,V> src, MultiValueMap<K,V> dst) {
+			if (!src.isEmpty()) {
+				dst.putAll(src);
+			}
+		}
+
+		private static void copy(HttpHeaders src, HttpHeaders dst) {
 			if (!src.isEmpty()) {
 				dst.putAll(src);
 			}

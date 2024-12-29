@@ -81,7 +81,8 @@ public abstract class AbstractFactoryBean<T>
 
 	private boolean initialized = false;
 
-	private @Nullable T singletonInstance;
+	@SuppressWarnings("NullAway.Init")
+	private T singletonInstance;
 
 	private @Nullable T earlySingletonInstance;
 
@@ -153,7 +154,6 @@ public abstract class AbstractFactoryBean<T>
 	 * @see #getEarlySingletonInterfaces()
 	 */
 	@Override
-	@SuppressWarnings("NullAway")
 	public final T getObject() throws Exception {
 		if (isSingleton()) {
 			return (this.initialized ? this.singletonInstance : getEarlySingletonInstance());

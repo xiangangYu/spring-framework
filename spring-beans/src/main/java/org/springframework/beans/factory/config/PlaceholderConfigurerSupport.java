@@ -229,7 +229,6 @@ public abstract class PlaceholderConfigurerSupport extends PropertyResourceConfi
 		this.beanFactory = beanFactory;
 	}
 
-	@SuppressWarnings("NullAway")
 	protected void doProcessProperties(ConfigurableListableBeanFactory beanFactoryToProcess,
 			StringValueResolver valueResolver) {
 
