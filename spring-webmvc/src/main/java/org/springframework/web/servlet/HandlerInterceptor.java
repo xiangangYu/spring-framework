@@ -23,12 +23,22 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.web.method.HandlerMethod;
 
 /**
- * Workflow interface that allows for customized handler execution chains.
+ * Workflow(工作流) interface that allows for customized handler execution chains.
  * Applications can register any number of existing or custom interceptors
  * for certain groups of handlers, to add common preprocessing behavior
  * without needing to modify each handler implementation.
  *
- * <p>A HandlerInterceptor gets called before the appropriate HandlerAdapter
+ * handler:句柄毫无以为是编程学习中最头疼的翻译之一。这个词最初的来自形式语言中的handle，
+ * 在英语中，handler的一个意思可以理解为“someone who is a manager of your life that
+ * trying to manipulate aspects of your life”，或者“one that handles something”，
+ * 当然这是把它当成人来看了。但总之handler的本意肯定是一个类似管理者的东西。在urbandictionary网站里，
+ * handler还有一个更具体的意思是“Responsible for making sure that the talent knows when they
+ * are to perform, where they are to perform, and what time they are to be there.”意思是确
+ * 保有才能的人知道在何时何地如何去展示，对应的，在计算机领域，就是确保资源合适的调度和利用。在操作系
+ * 统或某些程序和程序语言中，句柄本身可以理解成像指针的一个东西，它指向某些资源（可以是函数，内存等等）
+
+ *
+ * <p>A HandlerInterceptor gets called before the appropriate HandlerAdapter(句柄适配器)
  * triggers the execution of the handler itself. This mechanism can be used
  * for a large field of preprocessing aspects, or common handler behavior
  * like locale or theme changes. Its main purpose is to allow for factoring
