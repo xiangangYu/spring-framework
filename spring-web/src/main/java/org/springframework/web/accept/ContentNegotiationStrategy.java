@@ -52,4 +52,6 @@ public interface ContentNegotiationStrategy {
 	List<MediaType> resolveMediaTypes(NativeWebRequest webRequest)
 			throws HttpMediaTypeNotAcceptableException;
 
+	// read for mark
+
 }
