@@ -215,7 +215,7 @@ public interface WebMvcConfigurer {
 	/**
 	 * Extending or modify the list of exception resolvers configured by default.
 	 * This can be useful for inserting a custom exception resolver without
-	 * interfering with default ones.
+	 * interfering(干扰) with default ones.
 	 * @param resolvers the list of configured resolvers to extend
 	 * @since 4.3
 	 * @see WebMvcConfigurationSupport#addDefaultHandlerExceptionResolvers(List, org.springframework.web.accept.ContentNegotiationManager)

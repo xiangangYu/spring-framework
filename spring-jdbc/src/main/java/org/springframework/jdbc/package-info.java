@@ -1,6 +1,6 @@
 /**
  * The classes in this package make JDBC easier to use and
- * reduce the likelihood of common errors. In particular, they:
+ * reduce the likelihood(可能性) of common errors. In particular, they:
  * <ul>
  * <li>Simplify error handling, avoiding the need for try/catch/finally
  * blocks in application code.
