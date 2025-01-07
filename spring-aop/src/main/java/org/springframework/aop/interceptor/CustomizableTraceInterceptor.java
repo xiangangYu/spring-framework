@@ -251,7 +251,7 @@ public class CustomizableTraceInterceptor extends AbstractTraceInterceptor {
 	 * @see #setExceptionMessage
 	 */
 	@Override
-	protected Object invokeUnderTrace(MethodInvocation invocation, Log logger) throws Throwable {
+	protected @Nullable Object invokeUnderTrace(MethodInvocation invocation, Log logger) throws Throwable {
 		String name = ClassUtils.getQualifiedMethodName(invocation.getMethod());
 		// stopwatch 用来记录消耗的时间，在测试环境中使用
 		StopWatch stopWatch = new StopWatch(name);
