@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2023 the original author or authors.
+ * Copyright 2002-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -314,6 +314,7 @@ public class ServiceLocatorFactoryBean implements FactoryBean<Object>, BeanFacto
 		Class<?>[] paramTypes = exceptionConstructor.getParameterTypes();
 		// 数组对象、好久没看到了
 		Object[] args = new Object[paramTypes.length];
+		@Nullable Object[] args = new Object[paramTypes.length];
 		for (int i = 0; i < paramTypes.length; i++) {
 			if (String.class == paramTypes[i]) {
 				args[i] = cause.getMessage();

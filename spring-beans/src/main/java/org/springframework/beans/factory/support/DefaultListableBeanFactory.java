@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2024 the original author or authors.
+ * Copyright 2002-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -357,7 +357,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T getBean(Class<T> requiredType, Object @Nullable ... args) throws BeansException {
+	public <T> T getBean(Class<T> requiredType, @Nullable Object @Nullable ... args) throws BeansException {
 		Assert.notNull(requiredType, "Required type must not be null");
 		Object resolved = resolveBean(ResolvableType.forRawClass(requiredType), args, false);
 		if (resolved == null) {
@@ -422,7 +422,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				return resolved;
 			}
 			@Override
-			public T getObject(Object... args) throws BeansException {
+			public T getObject(@Nullable Object... args) throws BeansException {
 				T resolved = resolveBean(requiredType, args, false);
 				if (resolved == null) {
 					throw new NoSuchBeanDefinitionException(requiredType);
@@ -497,10 +497,36 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				Stream<T> stream = matchingBeans.values().stream();
 				return stream.sorted(adaptOrderComparator(matchingBeans));
 			}
+			@SuppressWarnings("unchecked")
+			@Override
+			public Stream<T> stream(Predicate<Class<?>> customFilter) {
+				return Arrays.stream(getBeanNamesForTypedStream(requiredType, allowEagerInit))
+						.filter(name -> customFilter.test(getType(name)))
+						.map(name -> (T) getBean(name))
+						.filter(bean -> !(bean instanceof NullBean));
+			}
+			@SuppressWarnings("unchecked")
+			@Override
+			public Stream<T> orderedStream(Predicate<Class<?>> customFilter) {
+				String[] beanNames = getBeanNamesForTypedStream(requiredType, allowEagerInit);
+				if (beanNames.length == 0) {
+					return Stream.empty();
+				}
+				Map<String, T> matchingBeans = CollectionUtils.newLinkedHashMap(beanNames.length);
+				for (String beanName : beanNames) {
+					if (customFilter.test(getType(beanName))) {
+						Object beanInstance = getBean(beanName);
+						if (!(beanInstance instanceof NullBean)) {
+							matchingBeans.put(beanName, (T) beanInstance);
+						}
+					}
+				}
+				return matchingBeans.values().stream().sorted(adaptOrderComparator(matchingBeans));
+			}
 		};
 	}
 
-	private <T> @Nullable T resolveBean(ResolvableType requiredType, Object @Nullable [] args, boolean nonUniqueAsNull) {
+	private <T> @Nullable T resolveBean(ResolvableType requiredType, @Nullable Object @Nullable [] args, boolean nonUniqueAsNull) {
 		NamedBeanHolder<T> namedBean = resolveNamedBean(requiredType, args, nonUniqueAsNull);
 		if (namedBean != null) {
 			return namedBean.getBeanInstance();
@@ -1072,8 +1098,15 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 						"without bootstrap executor configured - falling back to mainline initialization");
 			}
 		}
+
 		if (!mbd.isLazyInit()) {
-			instantiateSingleton(beanName);
+			try {
+				instantiateSingleton(beanName);
+			}
+			catch (BeanCurrentlyInCreationException ex) {
+				logger.info("Bean '" + beanName + "' marked for pre-instantiation (not lazy-init) " +
+						"but currently initialized by other thread - skipping it in mainline thread");
+			}
 		}
 		return null;
 	}
@@ -1411,7 +1444,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	@SuppressWarnings("unchecked")
 	private <T> @Nullable NamedBeanHolder<T> resolveNamedBean(
-			ResolvableType requiredType, Object @Nullable [] args, boolean nonUniqueAsNull) throws BeansException {
+			ResolvableType requiredType, @Nullable Object @Nullable [] args, boolean nonUniqueAsNull) throws BeansException {
 
 		Assert.notNull(requiredType, "Required type must not be null");
 		String[] candidateNames = getBeanNamesForType(requiredType);
@@ -1465,7 +1498,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	}
 
 	private <T> @Nullable NamedBeanHolder<T> resolveNamedBean(
-			String beanName, ResolvableType requiredType, Object @Nullable [] args) throws BeansException {
+			String beanName, ResolvableType requiredType, @Nullable Object @Nullable [] args) throws BeansException {
 
 		Object bean = getBean(beanName, null, args);
 		if (bean instanceof NullBean) {
@@ -1858,8 +1891,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				candidates.put(candidateName, beanInstance);
 			}
 		}
-		else if (containsSingleton(candidateName) || (descriptor instanceof StreamDependencyDescriptor streamDescriptor &&
-				streamDescriptor.isOrdered())) {
+		else if (containsSingleton(candidateName) ||
+				(descriptor instanceof StreamDependencyDescriptor streamDescriptor && streamDescriptor.isOrdered())) {
 			Object beanInstance = descriptor.resolveCandidate(candidateName, requiredType, this);
 			candidates.put(candidateName, (beanInstance instanceof NullBean ? null : beanInstance));
 		}
@@ -2147,7 +2180,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	 * Create an {@link Optional} wrapper for the specified dependency.
 	 */
 	private Optional<?> createOptionalDependency(
-			DependencyDescriptor descriptor, @Nullable String beanName, final Object... args) {
+			DependencyDescriptor descriptor, @Nullable String beanName, final @Nullable Object... args) {
 
 		DependencyDescriptor descriptorToUse = new NestedDependencyDescriptor(descriptor) {
 			@Override
@@ -2317,7 +2350,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		}
 
 		@Override
-		public Object getObject(final Object... args) throws BeansException {
+		public Object getObject(final @Nullable Object... args) throws BeansException {
 			if (this.optional) {
 				return createOptionalDependency(this.descriptor, this.beanName, args);
 			}
@@ -2442,6 +2475,34 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			DependencyDescriptor descriptorToUse = new StreamDependencyDescriptor(this.descriptor, ordered);
 			Object result = doResolveDependency(descriptorToUse, this.beanName, null, null);
 			return (result instanceof Stream stream ? stream : Stream.of(result));
+		}
+
+		@Override
+		public Stream<Object> stream(Predicate<Class<?>> customFilter) {
+			return Arrays.stream(getBeanNamesForTypedStream(this.descriptor.getResolvableType(), true))
+					.filter(name -> AutowireUtils.isAutowireCandidate(DefaultListableBeanFactory.this, name))
+					.filter(name -> customFilter.test(getType(name)))
+					.map(name -> getBean(name))
+					.filter(bean -> !(bean instanceof NullBean));
+		}
+
+		@Override
+		public Stream<Object> orderedStream(Predicate<Class<?>> customFilter) {
+			String[] beanNames = getBeanNamesForTypedStream(this.descriptor.getResolvableType(), true);
+			if (beanNames.length == 0) {
+				return Stream.empty();
+			}
+			Map<String, Object> matchingBeans = CollectionUtils.newLinkedHashMap(beanNames.length);
+			for (String beanName : beanNames) {
+				if (AutowireUtils.isAutowireCandidate(DefaultListableBeanFactory.this, beanName) &&
+						customFilter.test(getType(beanName))) {
+					Object beanInstance = getBean(beanName);
+					if (!(beanInstance instanceof NullBean)) {
+						matchingBeans.put(beanName, beanInstance);
+					}
+				}
+			}
+			return matchingBeans.values().stream().sorted(adaptOrderComparator(matchingBeans));
 		}
 	}
 

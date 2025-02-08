@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2024 the original author or authors.
+ * Copyright 2002-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -176,9 +176,13 @@ public class HandlerMethod extends AnnotatedMethod {
 	}
 
 	/**
-	 * Re-create HandlerMethod with additional input.
+	 * Re-create new HandlerMethod instance that copies the given HandlerMethod
+	 * but replaces the handler, and optionally checks for the presence of
+	 * validation annotations.
+	 * <p>Subclasses can override this to ensure that a HandlerMethod is of the
+	 * same type if re-created.
 	 */
-	private HandlerMethod(HandlerMethod handlerMethod, @Nullable Object handler, boolean initValidateFlags) {
+	protected HandlerMethod(HandlerMethod handlerMethod, @Nullable Object handler, boolean initValidateFlags) {
 		super(handlerMethod);
 		this.bean = (handler != null ? handler : handlerMethod.bean);
 		this.beanFactory = handlerMethod.beanFactory;
@@ -192,7 +196,8 @@ public class HandlerMethod extends AnnotatedMethod {
 				handlerMethod.validateReturnValue);
 		this.responseStatus = handlerMethod.responseStatus;
 		this.responseStatusReason = handlerMethod.responseStatusReason;
-		this.resolvedFromHandlerMethod = handlerMethod;
+		this.resolvedFromHandlerMethod = (handlerMethod.resolvedFromHandlerMethod != null ?
+				handlerMethod.resolvedFromHandlerMethod : handlerMethod);
 		this.description = handlerMethod.toString();
 	}
 
@@ -309,15 +314,19 @@ public class HandlerMethod extends AnnotatedMethod {
 	}
 
 	/**
-	 * If the provided instance contains a bean name rather than an object instance,
-	 * the bean name is resolved before a {@link HandlerMethod} is created and returned.
+	 * If the {@link #getBean() handler} is a bean name rather than the actual
+	 * handler instance, resolve the bean name through Spring configuration
+	 * (e.g. for prototype beans), and return a new {@link HandlerMethod}
+	 * instance with the resolved handler.
+	 * <p>If the {@link #getBean() handler} is not String, return the same instance.
 	 */
 	public HandlerMethod createWithResolvedBean() {
-		Object handler = this.bean;
-		if (this.bean instanceof String beanName) {
-			Assert.state(this.beanFactory != null, "Cannot resolve bean name without BeanFactory");
-			handler = this.beanFactory.getBean(beanName);
+		if (!(this.bean instanceof String beanName)) {
+			return this;
 		}
+
+		Assert.state(this.beanFactory != null, "Cannot resolve bean name without BeanFactory");
+		Object handler = this.beanFactory.getBean(beanName);
 		Assert.notNull(handler, "No handler instance");
 		return new HandlerMethod(this, handler, false);
 	}
@@ -357,7 +366,7 @@ public class HandlerMethod extends AnnotatedMethod {
 	 * beans, and others). {@code @Controller}'s that require proxying should prefer
 	 * class-based proxy mechanisms.
 	 */
-	protected void assertTargetBean(Method method, Object targetBean, Object[] args) {
+	protected void assertTargetBean(Method method, Object targetBean, @Nullable Object[] args) {
 		Class<?> methodDeclaringClass = method.getDeclaringClass();
 		Class<?> targetBeanClass = targetBean.getClass();
 		if (!methodDeclaringClass.isAssignableFrom(targetBeanClass)) {
@@ -369,11 +378,14 @@ public class HandlerMethod extends AnnotatedMethod {
 		}
 	}
 
-	protected String formatInvokeError(String text, Object[] args) {
+	protected String formatInvokeError(String text, @Nullable Object[] args) {
 		String formattedArgs = IntStream.range(0, args.length)
-				.mapToObj(i -> (args[i] != null ?
-						"[" + i + "] [type=" + args[i].getClass().getName() + "] [value=" + args[i] + "]" :
-						"[" + i + "] [null]"))
+				.mapToObj(i -> {
+					Object arg = args[i];
+					return (arg != null ?
+							"[" + i + "] [type=" +arg.getClass().getName() + "] [value=" + arg + "]" :
+							"[" + i + "] [null]");
+				})
 				.collect(Collectors.joining(",\n", " ", " "));
 		return text + "\n" +
 				"Controller [" + getBeanType().getName() + "]\n" +

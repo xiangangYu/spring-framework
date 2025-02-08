@@ -162,7 +162,7 @@ public class FieldRetrievingFactoryBean
 
 
 	@Override
-	@SuppressWarnings("NullAway") // Lazy initialization
+	@SuppressWarnings("NullAway") // Dataflow analysis limitation
 	public void afterPropertiesSet() throws ClassNotFoundException, NoSuchFieldException {
 		if (this.targetClass != null && this.targetObject != null) {
 			throw new IllegalArgumentException("Specify either targetClass or targetObject, not both");

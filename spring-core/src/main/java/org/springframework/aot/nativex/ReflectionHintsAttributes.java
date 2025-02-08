@@ -122,6 +122,8 @@ class ReflectionHintsAttributes {
 		// switch 的lambda表示
 		categories.stream().sorted().forEach(category -> {
 					switch (category) {
+						case ACCESS_PUBLIC_FIELDS, PUBLIC_FIELDS -> attributes.put("allPublicFields", true);
+						case ACCESS_DECLARED_FIELDS, DECLARED_FIELDS -> attributes.put("allDeclaredFields", true);
 						case INVOKE_PUBLIC_FIELDS, PUBLIC_FIELDS -> {
 							attributes.put("allPublicFields", true);
 							System.out.println("");

@@ -190,7 +190,6 @@ class DefaultClientResponseTests {
 	}
 
 	@Test
-	@SuppressWarnings("deprecation")
 	void toEntity() {
 		byte[] bytes = "foo".getBytes(StandardCharsets.UTF_8);
 		DataBuffer dataBuffer = DefaultDataBufferFactory.sharedInstance.wrap(bytes);
@@ -202,12 +201,10 @@ class DefaultClientResponseTests {
 		ResponseEntity<String> result = defaultClientResponse.toEntity(String.class).block();
 		assertThat(result.getBody()).isEqualTo("foo");
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(result.getStatusCodeValue()).isEqualTo(HttpStatus.OK.value());
 		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 
 	@Test
-	@SuppressWarnings("deprecation")
 	void toEntityWithUnknownStatusCode() {
 		byte[] bytes = "foo".getBytes(StandardCharsets.UTF_8);
 		DataBuffer dataBuffer = DefaultDataBufferFactory.sharedInstance.wrap(bytes);
@@ -222,13 +219,11 @@ class DefaultClientResponseTests {
 
 		ResponseEntity<String> result = defaultClientResponse.toEntity(String.class).block();
 		assertThat(result.getBody()).isEqualTo("foo");
-		assertThat(result.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(999));
-		assertThat(result.getStatusCodeValue()).isEqualTo(999);
+		assertThat(result.getStatusCode().value()).isEqualTo(999);
 		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 
 	@Test
-	@SuppressWarnings("deprecation")
 	void toEntityTypeReference() {
 		byte[] bytes = "foo".getBytes(StandardCharsets.UTF_8);
 		DataBuffer dataBuffer = DefaultDataBufferFactory.sharedInstance.wrap(bytes);
@@ -240,12 +235,10 @@ class DefaultClientResponseTests {
 		ResponseEntity<String> result = defaultClientResponse.toEntity(STRING_TYPE).block();
 		assertThat(result.getBody()).isEqualTo("foo");
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(result.getStatusCodeValue()).isEqualTo(HttpStatus.OK.value());
 		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 
 	@Test
-	@SuppressWarnings("deprecation")
 	void toEntityList() {
 		byte[] bytes = "foo".getBytes(StandardCharsets.UTF_8);
 		DataBuffer dataBuffer = DefaultDataBufferFactory.sharedInstance.wrap(bytes);
@@ -257,12 +250,10 @@ class DefaultClientResponseTests {
 		ResponseEntity<List<String>> result = defaultClientResponse.toEntityList(String.class).block();
 		assertThat(result.getBody()).containsExactly("foo");
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(result.getStatusCodeValue()).isEqualTo(HttpStatus.OK.value());
 		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 
 	@Test
-	@SuppressWarnings("deprecation")
 	void toEntityListWithUnknownStatusCode() {
 		byte[] bytes = "foo".getBytes(StandardCharsets.UTF_8);
 		DataBuffer dataBuffer = DefaultDataBufferFactory.sharedInstance.wrap(bytes);
@@ -278,12 +269,10 @@ class DefaultClientResponseTests {
 		ResponseEntity<List<String>> result = defaultClientResponse.toEntityList(String.class).block();
 		assertThat(result.getBody()).containsExactly("foo");
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(999));
-		assertThat(result.getStatusCodeValue()).isEqualTo(999);
 		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 
 	@Test
-	@SuppressWarnings("deprecation")
 	void toEntityListTypeReference() {
 		byte[] bytes = "foo".getBytes(StandardCharsets.UTF_8);
 		DataBuffer dataBuffer = DefaultDataBufferFactory.sharedInstance.wrap(bytes);
@@ -296,7 +285,6 @@ class DefaultClientResponseTests {
 		ResponseEntity<List<String>> result = defaultClientResponse.toEntityList(STRING_TYPE).block();
 		assertThat(result.getBody()).containsExactly("foo");
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(result.getStatusCodeValue()).isEqualTo(HttpStatus.OK.value());
 		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 
@@ -339,7 +327,7 @@ class DefaultClientResponseTests {
 		WebClientResponseException exception = resultMono.block();
 		assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 		assertThat(exception.getMessage()).isEqualTo("404 Not Found from UNKNOWN https://example.org:9999/app/path");
-		assertThat(exception.getHeaders().asMultiValueMap()).containsExactly(entry("Content-Type", List.of("text/plain")));
+		assertThat(exception.getHeaders().containsHeaderValue("Content-Type", "text/plain")).isTrue();
 		assertThat(exception.getResponseBodyAsByteArray()).isEqualTo(bytes);
 	}
 
@@ -399,7 +387,7 @@ class DefaultClientResponseTests {
 					WebClientResponseException exception = (WebClientResponseException) t;
 					assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 					assertThat(exception.getMessage()).isEqualTo("404 Not Found");
-					assertThat(exception.getHeaders().asMultiValueMap()).containsExactly(entry("Content-Type",List.of("text/plain")));
+					assertThat(exception.getHeaders().containsHeaderValue("Content-Type", "text/plain"));
 					assertThat(exception.getResponseBodyAsByteArray()).isEqualTo(bytes);
 				})
 				.verify();
