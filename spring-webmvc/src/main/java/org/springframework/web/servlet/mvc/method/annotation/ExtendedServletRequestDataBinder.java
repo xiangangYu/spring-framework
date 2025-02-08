@@ -53,6 +53,7 @@ import org.springframework.web.servlet.HandlerMapping;
  */
 public class ExtendedServletRequestDataBinder extends ServletRequestDataBinder {
 
+	// Set的初始化方式
 	private static final Set<String> FILTERED_HEADER_NAMES = Set.of("Accept", "Authorization", "Connection",
 			"Cookie", "From", "Host", "Origin", "Priority", "Range", "Referer", "Upgrade");
 

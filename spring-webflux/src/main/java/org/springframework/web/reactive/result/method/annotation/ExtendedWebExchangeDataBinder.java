@@ -43,6 +43,7 @@ import org.springframework.web.server.ServerWebExchange;
  */
 public class ExtendedWebExchangeDataBinder extends WebExchangeDataBinder {
 
+	// Set的初始化方式Set.of()
 	private static final Set<String> FILTERED_HEADER_NAMES = Set.of("Accept", "Authorization", "Connection",
 			"Cookie", "From", "Host", "Origin", "Priority", "Range", "Referer", "Upgrade");
 
