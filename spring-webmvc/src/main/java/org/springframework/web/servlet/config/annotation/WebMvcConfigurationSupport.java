@@ -70,6 +70,7 @@ import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.OptionalValidatorFactoryBean;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.HttpRequestHandler;
+import org.springframework.web.accept.ApiVersionStrategy;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
@@ -245,6 +246,8 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 
 	private @Nullable ContentNegotiationManager contentNegotiationManager;
 
+	private @Nullable ApiVersionStrategy apiVersionStrategy;
+
 	private @Nullable List<HandlerMethodArgumentResolver> argumentResolvers;
 
 	private @Nullable List<HandlerMethodReturnValueHandler> returnValueHandlers;
@@ -298,9 +301,9 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 	 * 这个注解@Qualifier用来表示要注入的是哪个bean
 	 */
 	@Bean
-	@SuppressWarnings("deprecation")
 	public RequestMappingHandlerMapping requestMappingHandlerMapping(
 			@Qualifier("mvcContentNegotiationManager") ContentNegotiationManager contentNegotiationManager,
+			@Qualifier("mvcApiVersionStrategy") @Nullable ApiVersionStrategy apiVersionStrategy,
 			@Qualifier("mvcConversionService") FormattingConversionService conversionService,
 			@Qualifier("mvcResourceUrlProvider") ResourceUrlProvider resourceUrlProvider) {
 		// 一个方法内没有包括太多的代码量，很复杂的业务逻辑都进行了拆分，层层分解，关注点聚焦
@@ -308,6 +311,7 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 		RequestMappingHandlerMapping mapping = createRequestMappingHandlerMapping();
 		mapping.setOrder(0);
 		mapping.setContentNegotiationManager(contentNegotiationManager);
+		mapping.setApiVersionStrategy(apiVersionStrategy);
 
 		initHandlerMapping(mapping, conversionService, resourceUrlProvider);
 
@@ -467,6 +471,31 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 	 * @see DefaultServletHandlerConfigurer
 	 */
 	protected void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+	}
+
+	/**
+	 * Return the central strategy to manage API versioning with, or {@code null}
+	 * if the application does not use versioning.
+	 * @since 7.0
+	 */
+	@Bean
+	public @Nullable ApiVersionStrategy mvcApiVersionStrategy() {
+		if (this.apiVersionStrategy == null) {
+			ApiVersionConfigurer configurer = new ApiVersionConfigurer();
+			configureApiVersioning(configurer);
+			ApiVersionStrategy strategy = configurer.getApiVersionStrategy();
+			if (strategy != null) {
+				this.apiVersionStrategy = strategy;
+			}
+		}
+		return this.apiVersionStrategy;
+	}
+
+	/**
+	 * Override this method to configure API versioning.
+	 * @since 7.0
+	 */
+	protected void configureApiVersioning(ApiVersionConfigurer configurer) {
 	}
 
 	/**

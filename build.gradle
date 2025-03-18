@@ -1,6 +1,7 @@
 plugins {
 	// gradle插件配置
 	id 'io.freefair.aspectj' version '8.4' apply false
+	id 'io.freefair.aspectj' version '8.13' apply false
 	// kotlinVersion is managed in gradle.properties
 	id 'org.jetbrains.kotlin.plugin.serialization' version "${kotlinVersion}" apply false
 	id 'org.jetbrains.dokka' version '1.9.20'
@@ -27,13 +28,6 @@ configure(allprojects) { project ->
 	repositories {
 		// maven中心
 		mavenCentral()
-		maven {
-			url = "https://repo.spring.io/milestone"
-			content {
-				// Netty 5 optional support
-				includeGroup 'io.projectreactor.netty'
-			}
-		}
 		if (version.contains('-')) {
 			maven { url = "https://repo.spring.io/milestone" }
 		}
@@ -131,7 +125,7 @@ configure([rootProject] + javaProjects) { project ->
 			// TODO Uncomment link to JUnit 5 docs once we execute Gradle with Java 18+.
 			// See https://github.com/spring-projects/spring-framework/issues/27497
 			//
-			// "https://junit.org/junit5/docs/5.12.0/api/",
+			// "https://junit.org/junit5/docs/5.12.1/api/",
 			"https://www.reactive-streams.org/reactive-streams-1.0.3-javadoc/",
 			//"https://javadoc.io/static/io.rsocket/rsocket-core/1.1.1/",
 			"https://r2dbc.io/spec/1.0.0.RELEASE/api/",
