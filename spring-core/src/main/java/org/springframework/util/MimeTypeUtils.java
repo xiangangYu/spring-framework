@@ -280,6 +280,7 @@ public abstract class MimeTypeUtils {
 		if (!StringUtils.hasLength(mimeTypes)) {
 			return Collections.emptyList();
 		}
+		// 下面的代码使用lambda进行filter过滤，map进行类型转换,toList进行集合收集
 		return tokenize(mimeTypes).stream()
 				.filter(StringUtils::hasText)
 				.map(MimeTypeUtils::parseMimeType)
