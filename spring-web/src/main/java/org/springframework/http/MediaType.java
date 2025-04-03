@@ -740,6 +740,7 @@ public class MediaType extends MimeType implements Serializable {
 	 * @since 5.0
 	 */
 	public static MediaType asMediaType(MimeType mimeType) {
+		// 下面的instanceof后面的MediaType 变量mediaType类型就是MediaType类型了
 		if (mimeType instanceof MediaType mediaType) {
 			return mediaType;
 		}
