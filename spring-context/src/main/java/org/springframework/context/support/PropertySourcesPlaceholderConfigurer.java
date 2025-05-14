@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2024 the original author or authors.
+ * Copyright 2002-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ import org.springframework.core.env.ConfigurablePropertyResolver;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertiesPropertySource;
-import org.springframework.core.env.PropertyResolver;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.PropertySources;
 import org.springframework.core.env.PropertySourcesPropertyResolver;
@@ -50,7 +49,7 @@ import org.springframework.util.StringValueResolver;
  * XSD documentation for complete details.
  *
  * <p>Any local properties (for example, those added via {@link #setProperties}, {@link #setLocations}
- * et al.) are added as a {@code PropertySource}. Search precedence of local properties is
+ * et al.) are added as a single {@link PropertySource}. Search precedence of local properties is
  * based on the value of the {@link #setLocalOverride localOverride} property, which is by
  * default {@code false} meaning that local properties are to be searched last, after all
  * environment property sources.
@@ -99,8 +98,9 @@ public class PropertySourcesPlaceholderConfigurer extends PlaceholderConfigurerS
 	}
 
 	/**
-	 * {@code PropertySources} from the given {@link Environment}
-	 * will be searched when replacing ${...} placeholders.
+	 * {@inheritDoc}
+	 * <p>{@code PropertySources} from the given {@link Environment} will be searched
+	 * when replacing ${...} placeholders.
 	 * @see #setPropertySources
 	 * @see #postProcessBeanFactory
 	 */
@@ -130,27 +130,11 @@ public class PropertySourcesPlaceholderConfigurer extends PlaceholderConfigurerS
 		if (this.propertySources == null) {
 			this.propertySources = new MutablePropertySources();
 			if (this.environment != null) {
-				PropertyResolver propertyResolver = this.environment;
-				// If the ignoreUnresolvablePlaceholders flag is set to true, we have to create a
-				// local PropertyResolver to enforce that setting, since the Environment is most
-				// likely not configured with ignoreUnresolvablePlaceholders set to true.
-				// See https://github.com/spring-projects/spring-framework/issues/27947
-				if (this.ignoreUnresolvablePlaceholders &&
-						(this.environment instanceof ConfigurableEnvironment configurableEnvironment)) {
-					PropertySourcesPropertyResolver resolver =
-							new PropertySourcesPropertyResolver(configurableEnvironment.getPropertySources());
-					resolver.setIgnoreUnresolvableNestedPlaceholders(true);
-					propertyResolver = resolver;
-				}
-				PropertyResolver propertyResolverToUse = propertyResolver;
-				this.propertySources.addLast(
-					new PropertySource<>(ENVIRONMENT_PROPERTIES_PROPERTY_SOURCE_NAME, this.environment) {
-						@Override
-						public @Nullable String getProperty(String key) {
-							return propertyResolverToUse.getProperty(key);
-						}
-					}
-				);
+				PropertySource<?> environmentPropertySource =
+						(this.environment instanceof ConfigurableEnvironment configurableEnvironment ?
+							new ConfigurableEnvironmentPropertySource(configurableEnvironment) :
+							new FallbackEnvironmentPropertySource(this.environment));
+				this.propertySources.addLast(environmentPropertySource);
 			}
 			try {
 				PropertySource<?> localPropertySource =
@@ -173,6 +157,7 @@ public class PropertySourcesPlaceholderConfigurer extends PlaceholderConfigurerS
 
 	/**
 	 * Create a {@link ConfigurablePropertyResolver} for the specified property sources.
+	 * <p>The default implementation creates a {@link PropertySourcesPropertyResolver}.
 	 * @param propertySources the property sources to use
 	 * @since 6.0.12
 	 */
@@ -185,7 +170,7 @@ public class PropertySourcesPlaceholderConfigurer extends PlaceholderConfigurerS
 	 * placeholders with values from the given properties.
 	 */
 	protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess,
-			final ConfigurablePropertyResolver propertyResolver) throws BeansException {
+			ConfigurablePropertyResolver propertyResolver) throws BeansException {
 
 		propertyResolver.setPlaceholderPrefix(this.placeholderPrefix);
 		propertyResolver.setPlaceholderSuffix(this.placeholderSuffix);
@@ -229,6 +214,75 @@ public class PropertySourcesPlaceholderConfigurer extends PlaceholderConfigurerS
 	public PropertySources getAppliedPropertySources() throws IllegalStateException {
 		Assert.state(this.appliedPropertySources != null, "PropertySources have not yet been applied");
 		return this.appliedPropertySources;
+	}
+
+
+	/**
+	 * Custom {@link PropertySource} that delegates to the
+	 * {@link ConfigurableEnvironment#getPropertySources() PropertySources} in a
+	 * {@link ConfigurableEnvironment}.
+	 * @since 6.2.7
+	 */
+	private static class ConfigurableEnvironmentPropertySource extends PropertySource<ConfigurableEnvironment> {
+
+		ConfigurableEnvironmentPropertySource(ConfigurableEnvironment environment) {
+			super(ENVIRONMENT_PROPERTIES_PROPERTY_SOURCE_NAME, environment);
+		}
+
+		@Override
+		public boolean containsProperty(String name) {
+			for (PropertySource<?> propertySource : super.source.getPropertySources()) {
+				if (propertySource.containsProperty(name)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		@Override
+		public @Nullable Object getProperty(String name) {
+			for (PropertySource<?> propertySource : super.source.getPropertySources()) {
+				Object candidate = propertySource.getProperty(name);
+				if (candidate != null) {
+					return candidate;
+				}
+			}
+			return null;
+		}
+
+		@Override
+		public String toString() {
+			return "ConfigurableEnvironmentPropertySource {propertySources=" + super.source.getPropertySources() + "}";
+		}
+	}
+
+
+	/**
+	 * Fallback {@link PropertySource} that delegates to a raw {@link Environment}.
+	 * <p>Should never apply in a regular scenario, since the {@code Environment}
+	 * in an {@code ApplicationContext} should always be a {@link ConfigurableEnvironment}.
+	 * @since 6.2.7
+	 */
+	private static class FallbackEnvironmentPropertySource extends PropertySource<Environment> {
+
+		FallbackEnvironmentPropertySource(Environment environment) {
+			super(ENVIRONMENT_PROPERTIES_PROPERTY_SOURCE_NAME, environment);
+		}
+
+		@Override
+		public boolean containsProperty(String name) {
+			return super.source.containsProperty(name);
+		}
+
+		@Override
+		public @Nullable Object getProperty(String name) {
+			return super.source.getProperty(name);
+		}
+
+		@Override
+		public String toString() {
+			return "FallbackEnvironmentPropertySource {environment=" + super.source + "}";
+		}
 	}
 
 }
