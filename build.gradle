@@ -1,7 +1,5 @@
 plugins {
 	// gradle插件配置
-	id 'io.freefair.aspectj' version '8.4' apply false
-	id 'io.freefair.aspectj' version '8.13' apply false
 	id 'io.freefair.aspectj' version '8.13.1' apply false
 	// kotlinVersion is managed in gradle.properties
 	id 'org.jetbrains.kotlin.plugin.serialization' version "${kotlinVersion}" apply false
@@ -72,7 +70,6 @@ configure([rootProject] + javaProjects) { project ->
 	// 应用org.springframework.build.conventions插件
 	apply plugin: 'org.springframework.build.conventions'
 	// 应用从下面配置文件的插件
-	apply from: "${rootDir}/gradle/toolchains.gradle"
 	apply from: "${rootDir}/gradle/ide.gradle"
 
 	// 配置项
