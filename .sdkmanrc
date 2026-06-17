@@ -1,3 +1,11 @@
 # Enable auto-env through the sdkman_auto_env config
 # Add key=value pairs of SDKs to use below
+# .sdkmanrc 是 SDKMAN!（一个强大的软件开发工具包版本管理器）生成的一个项目级环境配置文件。它的核心作用是实现项目级别的环境隔离，
+# 确保团队成员或 CI/CD 流水线在不同机器上运行同一个项目时，能够使用完全一致的 SDK 版本（如 Java、Gradle、Maven 等），
+# 从而避免因为版本不一致导致的冲突或报错。锁定项目依赖版本。该文件通常位于项目的根目录下，以简单的 键=值 格式记录了该项目所需的 SDK 版本
+
 java=25-librca
+
+
+
+
