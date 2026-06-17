@@ -8,3 +8,7 @@ indent_style = tab
 indent_size = 4
 continuation_indent_size = 8
 end_of_line = lf
+
+
+# .editorconfig 是一个跨编辑器，跨IDE的代码风格统一配置文件。它的作用是让团队中所有开发者无论使用IDEA，VS Code还是其他编辑器，
+# 都能够自动应用同一套代码格式规范，避免因为编辑器不同导致的格式差异。
