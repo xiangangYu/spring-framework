@@ -1,90 +1,151 @@
+// =============================================================================
+// 1. 插件声明 (Plugins)
+// =============================================================================
+// 这里定义了项目构建过程中所需的各种 Gradle 插件及其版本
 plugins {
+    // AspectJ 支持插件 (用于面向切面编程)，版本锁定，但不立即应用到当前项目
 	id 'io.freefair.aspectj' version '8.13.1' apply false
 	// kotlinVersion is managed in gradle.properties
+    // Kotlin 序列化插件,版本由 gradle.properties 文件中的 kotlinVersion 变量管理,不立即应用，等待子项目按需启用
 	id 'org.jetbrains.kotlin.plugin.serialization' version "${kotlinVersion}" apply false
+    // Dokka：Kotlin 的文档生成工具
 	id 'org.jetbrains.dokka'
+    // XJC：用于 XML Schema (XSD) 生成 Java 类的插件
 	id 'com.github.bjornvester.xjc' version '1.8.2' apply false
+    // Shadow：用于创建 Fat Jar (Uber Jar) 的插件，重命名依赖包以避免冲突
 	id 'com.gradleup.shadow' version "9.2.2" apply false
+    // JMH：Java 微基准测试套件，用于性能测试
 	id 'me.champeau.jmh' version '0.7.2' apply false
+    // Nullability：Spring 团队开发的插件，用于分析代码中的空值注解（如 @NonNull）
 	id 'io.spring.nullability' version '0.0.11' apply false
 }
 
+// =============================================================================
+// 2. 全局扩展属性 (Global Extra Properties)
+// =============================================================================
+// 定义一些全局变量，供后续配置使用，用于分组管理子项目
 ext {
+    // 查找所有名称以 "spring-" 开头的子项目（通常是具体的模块）
 	moduleProjects = subprojects.findAll { it.name.startsWith("spring-") }
+    // 查找所有名称不以 "framework-" 开头的子项目（通常是 Java 工具类或通用项目）
 	javaProjects = subprojects.findAll { !it.name.startsWith("framework-") }
 }
 
+// 项目的描述信息
 description = "Spring Framework"
 
+// =============================================================================
+// 3. 全局项目配置 (All Projects Configuration)
+// =============================================================================
+// 对所有项目（包括根项目和子项目）生效的配置
 configure(allprojects) { project ->
+    // 应用 Spring 内部的本地开发构建插件（可能包含一些开发环境的便利功能）
 	apply plugin: "org.springframework.build.localdev"
+    // 设置所有项目的 Group ID 为 org.springframework
 	group = "org.springframework"
+    // 配置依赖仓库
 	repositories {
+        // 优先使用 Maven 中央仓库
 		mavenCentral()
+        // 如果版本号中包含 '-'（例如 Milestone 版本），添加 Spring 的里程碑仓库
 		if (version.contains('-')) {
 			maven { url = "https://repo.spring.io/milestone" }
 		}
+        // 如果版本号以 '-SNAPSHOT' 结尾，添加 Spring 的快照仓库
 		if (version.endsWith('-SNAPSHOT')) {
 			maven { url = "https://repo.spring.io/snapshot" }
 		}
 	}
+    // 配置所有依赖配置（configurations）
 	configurations.all {
 		resolutionStrategy {
+            // 不缓存快照版本（Changing Modules），强制每次构建都检查更新
 			cacheChangingModulesFor 0, "seconds"
+            // 不缓存动态版本（如 1.2.+），强制检查最新版本
 			cacheDynamicVersionsFor 0, "seconds"
 		}
 	}
 }
 
+// =============================================================================
+// 4. 依赖管理配置 (Dependency Management)
+// =============================================================================
+// 针对除了 ":framework-platform" 之外的所有项目进行配置
+// ":framework-platform" 通常是一个 BOM (Bill of Materials) 项目，定义了依赖版本
 configure(allprojects - project(":framework-platform")) {
 	configurations {
+        // 创建一个名为 "dependencyManagement" 的配置
 		dependencyManagement {
-			canBeConsumed = false
-			canBeResolved = false
-			visible = false
+			canBeConsumed = false // 该配置不能被其他项目作为依赖使用
+			canBeResolved = false // 该配置不能被直接解析（下载）
+			visible = false  // 在 Gradle UI/报告中隐藏
 		}
+        // 查找所有名称以 "Classpath" 结尾的配置（如 compileClasspath, runtimeClasspath）
+        // 并让它们继承 "dependencyManagement" 配置
+        // 这样做的目的是将依赖管理规则注入到实际的编译和运行时类路径中
 		matching { it.name.endsWith("Classpath") }.all { it.extendsFrom(dependencyManagement) }
 	}
 	dependencies {
+        // 强制使用 ":framework-platform" 项目定义的依赖版本
+        // enforcedPlatform 相当于 Maven 的 <dependencyManagement> 导入
 		dependencyManagement(enforcedPlatform(dependencies.project(path: ":framework-platform")))
 	}
 }
 
+// =============================================================================
+// 5. Java 项目通用配置 (Java Conventions)
+// =============================================================================
+// 针对根项目和所有 "javaProjects" 进行配置
 configure([rootProject] + javaProjects) { project ->
+    // 应用标准 Java 插件
 	apply plugin: "java"
+    // 启用 Java 测试夹具（Test Fixtures），允许其他模块复用测试辅助类
 	apply plugin: "java-test-fixtures"
+    // 应用 Spring 内部的通用约定插件（可能包含代码格式、编译选项等）
 	apply plugin: 'org.springframework.build.conventions'
+    // 引入 IDE 相关的配置（如 .iml 文件生成规则等）
 	apply from: "${rootDir}/gradle/ide.gradle"
 
+    // 定义依赖
 	dependencies {
-		testImplementation("org.junit.jupiter:junit-jupiter")
-		testImplementation("org.junit.platform:junit-platform-suite")
-		testImplementation("org.mockito:mockito-core")
-		testImplementation("org.mockito:mockito-junit-jupiter")
-		testImplementation("io.mockk:mockk") {
-			exclude group: 'junit', module: 'junit'
+        // 在 Gradle 中，testImplementation 和 testRuntimeOnly 是专门针对测试代码（src/test 目录）的依赖配置。
+        // 它们的核心区别在于生效的阶段（编译期vs运行期）以及依赖的作用。testImplementation:编译期+运行期，testRuntimeOnly：仅运行期
+        // 测试实现依赖
+		testImplementation("org.junit.jupiter:junit-jupiter") // JUnit 5
+		testImplementation("org.junit.platform:junit-platform-suite")// 测试套件支持
+		testImplementation("org.mockito:mockito-core")// Mock 框架
+		testImplementation("org.mockito:mockito-junit-jupiter")// Mockito 与 JUnit 5 的集成
+		testImplementation("io.mockk:mockk") {// Kotlin 友好的 Mock 框架
+			exclude group: 'junit', module: 'junit' // 排除 JUnit 4 传递依赖
 		}
-		testImplementation("org.assertj:assertj-core")
-		testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-		testRuntimeOnly("org.apache.logging.log4j:log4j-core")
+		testImplementation("org.assertj:assertj-core")// 流式断言库
+        // 测试运行时依赖
+		testRuntimeOnly("org.junit.platform:junit-platform-launcher") // 启动器
+		testRuntimeOnly("org.apache.logging.log4j:log4j-core") // 日志实现
 	}
 
+    // 配置 Javadoc 链接，用于生成文档时链接到外部 API
 	ext.javadocLinks = [
-		"https://docs.oracle.com/en/java/javase/17/docs/api/",
-		//"https://jakarta.ee/specifications/platform/11/apidocs/",
-		"https://docs.hibernate.org/orm/7.2/javadocs/",
-		"https://www.quartz-scheduler.org/api/2.3.0/",
-		"https://hc.apache.org/httpcomponents-client-5.6.x/5.6/httpclient5/apidocs/",
-		"https://projectreactor.io/docs/core/release/api/",
-		"https://projectreactor.io/docs/test/release/api/",
-		"https://junit.org/junit4/javadoc/4.13.2/",
-		"https://docs.junit.org/6.1.0/api/",
-		"https://www.reactive-streams.org/reactive-streams-1.0.4-javadoc/",
-		"https://r2dbc.io/spec/1.0.0.RELEASE/api/",
-		"https://jspecify.dev/docs/api/"
+		"https://docs.oracle.com/en/java/javase/17/docs/api/",// Java 17
+		//"https://jakarta.ee/specifications/platform/11/apidocs/", // Jakarta EE
+		"https://docs.hibernate.org/orm/7.2/javadocs/",// Hibernate ORM 7.2
+		"https://www.quartz-scheduler.org/api/2.3.0/",// Quartz 调度器
+		"https://hc.apache.org/httpcomponents-client-5.6.x/5.6/httpclient5/apidocs/", // Apache HttpClient 5
+		"https://projectreactor.io/docs/core/release/api/",// Reactor Core
+		"https://projectreactor.io/docs/test/release/api/",// Reactor Test
+		"https://junit.org/junit4/javadoc/4.13.2/",// JUnit 4 (用于兼容性)
+		"https://docs.junit.org/6.1.0/api/",// JUnit 5 (Jakarta)
+		"https://www.reactive-streams.org/reactive-streams-1.0.4-javadoc/",// Reactive Streams 规范
+		"https://r2dbc.io/spec/1.0.0.RELEASE/api/",// R2DBC (响应式数据库连接)
+		"https://jspecify.dev/docs/api/"// JSpecify (空值规范)
 	] as String[]
 }
 
+// =============================================================================
+// 6. 模块项目专用配置 (Module Projects)
+// =============================================================================
+// 针对所有 "moduleProjects" (即 spring-* 开头的项目)
 configure(moduleProjects) { project ->
+    // 应用专门针对 Spring 模块的通用配置脚本,这个脚本里通常包含打包、发布、源码编译等具体逻辑
 	apply from: "${rootDir}/gradle/spring-module.gradle"
 }
