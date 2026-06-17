@@ -1,4 +1,4 @@
-# Miscellaneous
+# Miscellaneous(各种各样的,混杂的)
 *.java.hsp
 *.sonarj
 *.sw*
@@ -16,7 +16,7 @@ jxl.log
 jmx.log
 derby.log
 
-# Gradle artifacts
+# Gradle artifacts(构建,制品)
 .gradle
 .gradletasknamecache
 /build
