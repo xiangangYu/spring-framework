@@ -1,7 +1,19 @@
+// 这是 Spring Framework 多模块项目的 settings.gradle 文件。它不仅定义了项目的模块结构，
+// 还包含了自定义构建文件名的逻辑以及构建扫描（Build Scan）的集成
+// =============================================================================
+// 1. 插件管理 (Plugins)
+// =============================================================================
 plugins {
+    // 引入 Spring 官方的 Develocity (原 Gradle Enterprise) 约定插件
+    // 该插件用于自动化配置构建扫描(Build Scan)、性能监控和构建优化
 	id "io.spring.develocity.conventions" version "0.0.22"
 }
 
+// =============================================================================
+// 2. 子模块声明 (Include Subprojects)
+// =============================================================================
+// 使用 include 指令将各个子模块加入到项目的构建树中
+// 这些是 Spring Framework 的核心业务模块
 include "spring-aop"
 include "spring-aspects"
 include "spring-beans"
@@ -24,26 +36,47 @@ include "spring-web"
 include "spring-webflux"
 include "spring-webmvc"
 include "spring-websocket"
+// 这些是 Spring Framework 的基础设施与文档模块
 include "framework-api"
 include "framework-bom"
 include "framework-docs"
 include "framework-platform"
 include "integration-tests"
 
+// =============================================================================
+// 3. 根项目配置 (Root Project Configuration)
+// =============================================================================
+// 设置整个多项目构建的根项目名称为 "spring"
 rootProject.name = "spring"
+// 遍历根项目下的所有子项目，并为它们动态设置构建脚本的文件名
 rootProject.children.each {project ->
+    // 默认情况下，Gradle 期望子模块的构建文件叫 build.gradle
+    // 这里将其修改为与模块同名的 .gradle 文件（例如 spring-core 模块使用 spring-core.gradle）
+    // 这种命名方式在大型项目中能让目录结构更清晰，一眼看出哪个文件属于哪个模块
 	project.buildFileName = "${project.name}.gradle"
 }
 
+// =============================================================================
+// 4. 构建扫描 (Build Scan) 集成
+// =============================================================================
+// 监听项目加载完成的事件，在此阶段配置 Develocity 的构建扫描功能
 settings.gradle.projectsLoaded {
 	develocity {
 		buildScan {
+            // 获取根项目的构建目录 (通常是 build 文件夹)
 			File buildDir = settings.gradle.rootProject
 					.getLayout().getBuildDirectory().getAsFile().get()
+            // 确保构建目录存在，如果不存在则创建
 			buildDir.mkdirs()
+            // 在构建目录下创建一个文本文件，初始写入占位符文本
+            // 用于记录本次构建扫描的链接地址
 			new File(buildDir, "build-scan-uri.txt").text = "(build scan not generated)"
+            // 注册一个回调：当构建扫描成功发布到 Develocity 服务器后触发
 			buildScanPublished { scan ->
+                // 再次检查构建目录是否存在
 				if (buildDir.exists()) {
+                    // 将生成的构建扫描 URL 写入到 build-scan-uri.txt 文件中
+                    // 这方便开发者在构建结束后直接查看详细的性能分析报告
 					new File(buildDir, "build-scan-uri.txt").text = "${scan.buildScanUri}\n"
 				}
 			}
