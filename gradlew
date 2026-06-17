@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# gradlew 和 gradlew.bat 是 Gradle Wrapper（Gradle 包装器） 的脚本文件。简单来说，它们是项目自带的“Gradle 启动器”，用于简化
+# Gradle 的使用和版本管理,传统开发中，开发者需要在电脑上手动安装 Gradle 并配置环境变量。而 gradlew 会自动读取项目配置文件
+# （gradle-wrapper.properties），检测本地是否有对应版本的 Gradle。如果没有，它会自动从互联网下载并安装到本地缓存中。
+# 这极大降低了新成员接手项目的门槛
 #
 # Copyright © 2015 the original authors.
 #
