@@ -1,18 +1,74 @@
+// 设置当前模块（spring-aop）的描述信息
 description = "Spring AOP"
-
+// 应用 Kotlin 插件，表示该模块包含 Kotlin 代码或需要 Kotlin 编译器支持
 apply plugin: "kotlin"
 
+// 开始声明当前模块的依赖关系
 dependencies {
+
+    // =========================================================================
+    // 1. 核心项目依赖 (api)
+    // =========================================================================
+    // 声明对 spring-beans 模块的 api 依赖
+    // api 表示该依赖不仅当前模块编译和运行时需要，还会传递给依赖 spring-aop 的其他模块
 	api(project(":spring-beans"))
+
+    // 声明对 spring-core 模块的 api 依赖
+    // spring-aop 是建立在核心容器和 Bean 工厂之上的，因此必须依赖这两个基础模块
 	api(project(":spring-core"))
+
+    // =========================================================================
+    // 2. 编译期依赖 (compileOnly)
+    // =========================================================================
+    // 仅在编译期使用的依赖，不会打包到最终的 JAR 中
+    // JSR-305 提供了空值安全注解（如 @Nonnull, @Nullable）
+    // 注释说明这是为了 AOP Alliance 的 fork（分支）版本使用的
 	compileOnly("com.google.code.findbugs:jsr305") // for the AOP Alliance fork
+
+    // =========================================================================
+    // 3. 可选依赖 (optional)
+    // 这些依赖在编译当前模块时需要，但不会强制传递给下游模块
+    // 下游模块只有在真正使用到相关功能时才需要自己引入
+    // =========================================================================
+    // Apache Commons Pool2：对象池化库，Spring AOP 在某些代理场景下可选使用
 	optional("org.apache.commons:commons-pool2")
+
+    // AspectJ Weaver：这是 Spring AOP 的核心底层依赖
+    // Spring AOP 内部使用 AspectJ 的切点表达式解析和织入能力
+    // 设为 optional 是因为如果用户只用 JDK 动态代理，理论上可以不引入它
 	optional("org.aspectj:aspectjweaver")
+
+    // Kotlin 协程与 Reactor 的集成库
+    // 用于支持在 AOP 切面中处理响应式（Reactive）和协程代码
 	optional("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+
+    // =========================================================================
+    // 4. 测试夹具依赖 (testFixtures)
+    // 用于引入其他模块的测试辅助代码，方便编写当前模块的测试
+    // =========================================================================
+    // 引入 spring-beans 模块的测试夹具
 	testFixturesImplementation(testFixtures(project(":spring-beans")))
+
+    // 引入 spring-core 模块的测试夹具
 	testFixturesImplementation(testFixtures(project(":spring-core")))
+
+    // =========================================================================
+    // 5. 测试依赖 (testImplementation)
+    // 仅在运行 src/test 目录下的测试代码时生效
+    // =========================================================================
+    // 引入 spring-core-test 模块，提供 Spring 专用的测试工具和断言
 	testImplementation(project(":spring-core-test"))
+
+    // 再次引入 spring-beans 和 spring-core 的测试夹具，供测试代码使用
 	testImplementation(testFixtures(project(":spring-beans")))
 	testImplementation(testFixtures(project(":spring-core")))
+
+    // 在测试中引入 Kotlin 协程与 Reactor 的集成库，用于测试响应式 AOP 场景
 	testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+
+    // api：自己用 + 下游模块用 + 打包
+    // compileOnly：自己编译用 + 不打包
+    // optional：自己用 + 下游按需引入 + 打包
+    // testImplementation：仅测试代码用 + 不打包
+    // testFixturesImplementation：仅测试辅助代码用 + 不打包
 }
