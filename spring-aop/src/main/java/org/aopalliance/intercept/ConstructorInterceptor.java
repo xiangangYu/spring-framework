@@ -44,8 +44,8 @@ package org.aopalliance.intercept;
 public interface ConstructorInterceptor extends Interceptor {
 
 	/**
-	 * Implement this method to perform extra treatments before and
-	 * after the construction of a new object. Polite implementations
+	 * Implement this method to perform extra treatments(处理) before and
+	 * after the construction of a new object. Polite(礼貌的,得体的) implementations
 	 * would certainly like to invoke {@link Joinpoint#proceed()}.
 	 * @param invocation the construction joinpoint
 	 * @return the newly created object, which is also the result of
