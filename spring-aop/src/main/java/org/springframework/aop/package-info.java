@@ -1,5 +1,5 @@
 /**
- * Core Spring AOP interfaces, built on AOP Alliance AOP interoperability interfaces.
+ * Core Spring AOP interfaces, built on AOP Alliance AOP interoperability(互操作性) interfaces.
  *
  * <p>Any AOP Alliance MethodInterceptor is usable in Spring.
  *
