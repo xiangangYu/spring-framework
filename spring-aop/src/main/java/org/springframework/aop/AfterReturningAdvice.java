@@ -24,6 +24,11 @@ import org.jspecify.annotations.Nullable;
  * After returning advice is invoked only on normal method return, not if an
  * exception is thrown. Such advice can see the return value, but cannot change it.
  *
+ * 后置返回通知（After returning advice）仅在方法正常返回时被调用，如果抛出了异常，则不会被调用。
+ *
+ * After returning advice：方法正常返回 ➡️ 执行；方法抛出异常 ➡️ 不执行。
+ * After advice：无论方法是正常返回还是抛出异常，都会执行（它的行为非常类似于 Java 中的 finally 代码块）。
+ *
  * @author Rod Johnson
  * @see MethodBeforeAdvice
  * @see ThrowsAdvice

@@ -24,6 +24,8 @@ import org.aopalliance.aop.Advice;
  * <p>Spring supports only method before advice. Although this is unlikely to change,
  * this API is designed to allow field advice in future if desired.
  *
+ * Spring 目前仅支持方法级别的前置通知。虽然这种情况不太可能发生改变，但该 API 在设计时预留了扩展性，以便在未来有需要时支持字段级别的前置通知。
+ *
  * @author Rod Johnson
  * @see AfterAdvice
  */

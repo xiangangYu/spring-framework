@@ -20,7 +20,7 @@ import org.springframework.core.NestedRuntimeException;
 
 /**
  * Exception that gets thrown when an AOP invocation failed
- * because of misconfiguration or unexpected runtime issues.
+ * because of misconfiguration(配置错误,配置不当) or unexpected runtime issues.
  *
  * @author Juergen Hoeller
  * @since 2.0
