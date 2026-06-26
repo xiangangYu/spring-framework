@@ -21,7 +21,12 @@ import java.lang.reflect.Method;
 /**
  * A specialized type of {@link MethodMatcher} that takes into account introductions
  * when matching methods. If there are no introductions on the target class,
- * a method matcher may be able to optimize matching more effectively for example.
+ * a method matcher may be able to optimize matching more effectively for example(这个for example放在了句尾，但是中文翻译应该放在句首).
+ *
+ * aware：感知
+ * takes into account：考虑到...,将...纳入考虑
+ *
+ *
  *
  * @author Adrian Colyer
  * @since 2.0
