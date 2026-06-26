@@ -20,7 +20,7 @@ package org.springframework.aop;
  * Core Spring pointcut abstraction.
  *
  * <p>A pointcut is composed of a {@link ClassFilter} and a {@link MethodMatcher}.
- * Both these basic terms and a Pointcut itself can be combined to build up combinations
+ * Both these basic terms(术语,组件) and a Pointcut itself can be combined to build up combinations
  * (for example, through {@link org.springframework.aop.support.ComposablePointcut}).
  *
  * @author Rod Johnson
@@ -51,3 +51,12 @@ public interface Pointcut {
 	Pointcut TRUE = TruePointcut.INSTANCE;
 
 }
+
+/**
+ * 1. 核心公式
+ * 在 Spring AOP 中，切入点并不是一个单一的规则，而是两个规则的交集：
+ * Pointcut = ClassFilter（决定对哪些类生效） + MethodMatcher（决定对这些类里的哪些方法生效）
+ * 2. 什么是“组合（Combinations）”？
+ * 在实际业务中，我们往往需要非常复杂的拦截规则。Spring 允许你把多个基础的 ClassFilter、MethodMatcher
+ * 甚至整个 Pointcut 像搭积木一样拼装起来（比如通过 ComposablePointcut 类进行 AND、OR、NOT 等逻辑运算）。
+ */
