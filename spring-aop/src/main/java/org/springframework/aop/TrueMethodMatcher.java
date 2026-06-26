@@ -22,7 +22,7 @@ import java.lang.reflect.Method;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Canonical MethodMatcher instance that matches all methods.
+ * Canonical(标准的) MethodMatcher instance that matches all methods.
  *
  * @author Rod Johnson
  */
