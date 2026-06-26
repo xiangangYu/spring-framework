@@ -30,6 +30,20 @@ import org.springframework.aop.TargetSource;
  * <p>Any AOP proxy obtained from Spring can be cast to this interface to
  * allow manipulation of its AOP advice.
  *
+ * 1. 为什么叫 Advised（被通知的）？
+ * 在 Spring AOP 中，所有的增强逻辑（如 @Before、@Around、事务管理等）都被抽象称为 Advice（通知/建议）。
+ * 当一个普通的业务对象被 Spring AOP 代理后，它就不再是一个“裸”的对象了，而是被附加了各种 Advice。因此，这个对象的状态就被称为 Advised（被通知过的/被增强的）。
+ * 2. 核心接口：org.springframework.aop.framework.Advised
+ * 在源码中，这是一个极其重要的接口。它代表了“被增强对象的配置信息”。
+ * 通过 Advised 接口，你可以：
+ * 查询当前对象身上绑定了哪些 Advisor（通知器）或 Advice（通知）。
+ * 动态地添加或移除某个拦截器（比如动态加上一个日志拦截器）。
+ * 获取底层的 TargetSource（目标源）。
+ * 3. 与代理工厂的联系
+ * 代理工厂（如 ProxyFactory）实现了 Advised 接口。这意味着代理工厂不仅负责“制造”代理，它还持有并管理着所有的增强配置（Advised 状态）。
+ * 源码小贴士：
+ * 下次在源码里看到 Advised，可以直接把它脑补为“被 AOP 增强过的”。它代表着底层框架在说：“这个对象已经被我贴上了各种拦截标签，处于被增强（Advised）的状态了。”
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @since 13.03.2003

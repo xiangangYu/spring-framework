@@ -30,6 +30,22 @@ import org.jspecify.annotations.Nullable;
  * <p>Application developers don't usually need to work with
  * {@code TargetSources} directly: this is an AOP framework interface.
  *
+ *
+ * 1. 核心概念：什么是 TargetSource？
+ * 在 Spring AOP 中，代理对象（Proxy）并不是直接持有目标对象（Target）的引用，而是持有一个 TargetSource。
+ * 每次 AOP 拦截器链执行时，都会通过这个 TargetSource 去动态获取当前的目标对象。这种设计实现了目标对象的“解耦”，
+ * 使得 Spring 可以实现对象池、延迟加载（Lazy）、热替换（Hot Swapping）等高级功能。
+ * 2. 为什么强调“通过反射调用”？
+ * AOP 拦截器链（Interceptor Chain）在底层执行时，当所有的增强逻辑（Advice）都走完，最终要调用目标方法时，
+ * Spring 底层使用的是 Java 的反射机制（Method.invoke()）来触发这个目标对象。
+ * 3. 关键条件：“如果没有环绕通知终结拦截器链”
+ * 这是这段话的精髓。在 AOP 中，环绕通知（Around Advice） 拥有最高权限。
+ * 正常情况：环绕通知内部会调用 proceed()，让拦截器链继续往下走，最终通过反射调用目标对象。
+ * 短路情况：如果环绕通知内部不调用 proceed()（比如命中了缓存直接返回，或者发生异常直接抛出），拦截器链就被“终结”了。此时，TargetSource 获取到的目标对象根本不会被执行。
+ * 总结：
+ * “TargetSource 就是负责在运行时把真正的目标对象‘掏出来’的组件。只要拦截器链没有被环绕通知强行打断，这个被掏出来的目标对象最终就会被反射调用。”
+ *
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
